@@ -1,0 +1,303 @@
+<!DOCTYPE html>
+<html lang="de">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Stochastik Lernseite</title>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        background-color: #f5f5f5;
+        margin: 0;
+        padding: 0;
+      }
+      .container {
+        display: flex;
+        min-height: 100vh;
+      }
+      .sidebar {
+        width: 200px;
+        background-color: #0066cc;
+        color: white;
+        padding: 10px;
+      }
+      .sidebar button {
+        display: block;
+        width: 100%;
+        margin-bottom: 5px;
+        padding: 8px;
+        background-color: #005fa3;
+        color: white;
+        border: none;
+        cursor: pointer;
+        text-align: left;
+      }
+      .sidebar button.active {
+        background-color: #00b4d8;
+      }
+      .main {
+        flex: 1;
+        padding: 20px;
+      }
+      .content-box {
+        background-color: white;
+        padding: 15px;
+        margin-bottom: 10px;
+        border-left: 4px solid #00b4d8;
+      }
+      .games-section {
+        display: flex;
+        gap: 10px;
+      }
+      .game-box {
+        flex: 1;
+        background-color: #e6f2ff;
+        border: 2px solid #0066cc;
+        border-radius: 5px;
+        text-align: center;
+        padding: 20px;
+        cursor: pointer;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <div class="sidebar">
+        <h3>Themen</h3>
+        <button id="btnIntro" class="active" onclick="showEinfuhrung()">
+          Einführung
+        </button>
+        <button id="btnWahrscheinlichkeit" onclick="showWahrscheinlichkeit()">
+          Wahrscheinlichkeit
+        </button>
+        <button id="btnZufallsversuche" onclick="showZufallsversuche()">
+          Zufallsversuche
+        </button>
+        <button id="btnBaumdiagramme" onclick="showBaumdiagramme()">
+          Baumdiagramme
+        </button>
+      </div>
+
+      <div class="main">
+        <h1 style="color: #0066cc; text-align: center">STOCHASTIK</h1>
+
+        <div id="intro" class="content-box">
+          <h2>Einführung in die Stochastik</h2>
+          <p>Willkommen in der spannenden Welt des Zufalls! 🎲</p>
+          <p>
+            Hier kannst du herausfinden, wie Wahrscheinlichkeiten funktionieren,
+            warum manche Ergebnisse überraschend sind und wie man das alles
+            spielerisch entdecken kann.
+          </p>
+          <p>Auf unserer Seite warten drei coole Spiele auf dich:</p>
+          <ul>
+            <li>Würfelspiel: Wer würfelt die 6? Teste dein Glück!</li>
+            <li>Glücksrad: Welche Zahl oder Farbe taucht als Nächstes auf?</li>
+          </ul>
+          <p>
+            Dabei wirst du spielerisch die wichtigsten Stochastik-Themen
+            kennenlernen:
+          </p>
+          <ul>
+            <li>
+              Wahrscheinlichkeit: Wie groß ist die Chance, dass etwas passiert?
+            </li>
+            <li>
+              Zufallsversuche: Experimente, deren Ergebnisse man nicht
+              vorhersehen kann - wie Würfeln oder Karten mischen.
+            </li>
+            <li>
+              Baumdiagramme: Eine Art Landkarte, die zeigt, welche Ergebnisse
+              bei einem Zufallsexperiment möglich sind und wie wahrscheinlich
+              sie sind.
+            </li>
+          </ul>
+          <p>
+            Jedes Spiel hilft dir zu verstehen, wie Zufall und
+            Wahrscheinlichkeit zusammenhängen. Du kannst direkt erleben, dass
+            manche Ergebnisse total unerwartet sind - genau das macht Stochastik
+            so spannend!
+          </p>
+          <p>Also, viel Spaß beim Spielen, Ausprobieren und Entdecken! 🃏🎡</p>
+        </div>
+
+        <div id="wahrscheinlichkeit" class="content-box" style="display: none">
+          <h2>Wahrscheinlichkeit</h2>
+          <p>
+            Wahrscheinlichkeit sagt dir, wie wahrscheinlich etwas passiert. 🎲
+          </p>
+          <p>
+            Beim Würfelspiel merkst du das sofort: Wenn du einen Würfel wirfst,
+            kann jede Zahl von 1 bis 6 erscheinen. Manche Zahlen tauchen öfter
+            auf, manche seltener - das ist Zufall, aber du kannst es mit
+            Wahrscheinlichkeiten beschreiben.
+          </p>
+          <ul>
+            <li>Beispiel: Die Chance, eine 6 zu würfeln, ist 1 von 6.</li>
+            <li>
+              Das bedeutet: Wenn du 6-mal würfelst, erscheint die 6 ungefähr
+              einmal - manchmal öfter, manchmal seltener.
+            </li>
+            <li>
+              Mit der Wahrscheinlichkeit kannst du also vorhersagen, wie oft ein
+              Ergebnis ungefähr auftreten könnte.
+            </li>
+          </ul>
+          <p>
+            Beim Spielen kannst du dieses Wissen nutzen: Du weißt ungefähr, wann
+            etwas passiert oder wie oft du mit Glück rechnen kannst. So macht
+            das Würfeln mehr Spaß, weil du ein Gefühl für die Chancen bekommst.
+          </p>
+        </div>
+
+        <div id="zufallsversuche" class="content-box" style="display: none">
+          <h2>Zufallsversuche</h2>
+          <p>
+            Ein Zufallsversuch ist ein Experiment, bei dem du vorher nicht genau
+            weißt, was passiert. 🃏
+          </p>
+          <p>Typische Zufallsversuche sind zum Beispiel:</p>
+          <ul>
+            <li>das Werfen eines Würfels</li>
+            <li>das Drehen eines Glücksrads</li>
+            <li>das Ziehen einer Karte aus einem Stapel</li>
+            </ul>
+            <p>Bei Zufallsversuchen ist meistens folgendes zu betrachten:</p>
+
+          <ul>
+            <li>Jeder Spielzug ist ein Zufallsversuch.</li>
+            <li>
+              Du kannst beobachten, welche Ergebnisse häufiger vorkommen und
+              welche seltener - das ist das Grundprinzip der Stochastik.
+            </li>
+            <li>
+              Mit der Zeit lernst du, dass manche Dinge rein zufällig sind und
+              manche wahrscheinlich häufiger passieren.
+            </li>
+          </ul>
+          <p>
+            Beim Spielen hilft dir das Wissen über Zufallsversuche: Du kannst
+            Entscheidungen treffen und verstehen, warum manche Ergebnisse
+            überraschend sind. So siehst du, dass Stochastik direkt in den
+            Spielen vorkommt.
+          </p>
+        </div>
+
+        <div id="baumdiagramme" class="content-box" style="display: none">
+          <h2>Baumdiagramme</h2>
+          <p>
+            Ein Baumdiagramm zeigt alle möglichen Ergebnisse eines
+            Zufallsexperiments und wie sie zusammenhängen. 🌳
+          </p>
+          <p>
+            Beim Glücksrad kannst du zum Beispiel ein Diagramm zeichnen, das
+            zeigt:
+          </p>
+          <ul>
+            <li>Welche Zahlen oder Farben es gibt</li>
+            <li>Welche Reihenfolgen auftreten könnten</li>
+            <li>Wie wahrscheinlich jede Möglichkeit ist</li>
+            </ul>
+            <p>
+              Beispiel: Wenn das Rad 4 Farben hat, zeigt ein Baumdiagramm, wie
+              die Farben hintereinander erscheinen könnten.
+            </p>
+            <p>
+              So kannst du überlegen, was passieren könnte, auch wenn der Zufall
+              das Ergebnis bestimmt.
+            </p>
+          
+          <p>
+            Beim Spielen hilft dir ein Baumdiagramm: Du siehst die Struktur
+            aller möglichen Ergebnisse, kannst besser verstehen, wie
+            Wahrscheinlichkeiten zusammenhängen, und erkennst Muster.
+          </p>
+        </div>
+
+        <div class="games-section">
+          <div
+            class="game-box"
+            onclick="window.open('wurfel.php', '_blank')"
+          >
+            Würfelspiel
+          </div>
+          <div class="game-box">
+            <!-- onclick="window.open('test.php', '_blank')" -->
+            To be continued
+          </div>
+          <div
+            class="game-box"
+            onclick="window.open('glucksrad.php', '_blank')"
+          >
+            Glücksrad
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <script>
+      function showEinfuhrung() {
+        document.getElementById("intro").style.display = "block";
+        document.getElementById("wahrscheinlichkeit").style.display = "none";
+        document.getElementById("zufallsversuche").style.display = "none";
+        document.getElementById("baumdiagramme").style.display = "none";
+
+        document.getElementById("btnIntro").classList.add("active");
+        document
+          .getElementById("btnWahrscheinlichkeit")
+          .classList.remove("active");
+        document
+          .getElementById("btnZufallsversuche")
+          .classList.remove("active");
+        document.getElementById("btnBaumdiagramme").classList.remove("active");
+      }
+
+      function showWahrscheinlichkeit() {
+        document.getElementById("intro").style.display = "none";
+        document.getElementById("wahrscheinlichkeit").style.display = "block";
+        document.getElementById("zufallsversuche").style.display = "none";
+        document.getElementById("baumdiagramme").style.display = "none";
+
+        document.getElementById("btnIntro").classList.remove("active");
+        document
+          .getElementById("btnWahrscheinlichkeit")
+          .classList.add("active");
+        document
+          .getElementById("btnZufallsversuche")
+          .classList.remove("active");
+        document.getElementById("btnBaumdiagramme").classList.remove("active");
+      }
+
+      function showZufallsversuche() {
+        document.getElementById("intro").style.display = "none";
+        document.getElementById("wahrscheinlichkeit").style.display = "none";
+        document.getElementById("zufallsversuche").style.display = "block";
+        document.getElementById("baumdiagramme").style.display = "none";
+
+        document.getElementById("btnIntro").classList.remove("active");
+        document
+          .getElementById("btnWahrscheinlichkeit")
+          .classList.remove("active");
+        document.getElementById("btnZufallsversuche").classList.add("active");
+        document.getElementById("btnBaumdiagramme").classList.remove("active");
+      }
+
+      function showBaumdiagramme() {
+        document.getElementById("intro").style.display = "none";
+        document.getElementById("wahrscheinlichkeit").style.display = "none";
+        document.getElementById("zufallsversuche").style.display = "none";
+        document.getElementById("baumdiagramme").style.display = "block";
+
+        document.getElementById("btnIntro").classList.remove("active");
+        document
+          .getElementById("btnWahrscheinlichkeit")
+          .classList.remove("active");
+        document
+          .getElementById("btnZufallsversuche")
+          .classList.remove("active");
+        document.getElementById("btnBaumdiagramme").classList.add("active");
+      }
+    </script>
+  
+<a href="../Hub_Mainpage/Hub_Lernseite_Mint.php" style="position:fixed;top:16px;left:16px;z-index:9999;display:inline-flex;align-items:center;gap:8px;background:rgba(20,30,55,0.85);border:1px solid rgba(255,255,255,0.15);backdrop-filter:blur(8px);color:#e5e7eb;text-decoration:none;padding:9px 18px;border-radius:999px;font-family:Arial,sans-serif;font-size:14px;font-weight:600;box-shadow:0 4px 16px rgba(0,0,0,0.4);transition:background 0.2s;" onmouseover="this.style.background='rgba(69,123,157,0.9)'" onmouseout="this.style.background='rgba(20,30,55,0.85)'">&#8592; Hub</a>
+</body>
+</html>

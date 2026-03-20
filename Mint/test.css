@@ -1,0 +1,156 @@
+/* ================================
+   DESIGN TOKENS
+================================ */
+:root {
+  --bg-space-1: #05070c;
+  --bg-space-2: #0a1020;
+  --bg-stage: #121826;
+
+  --text-primary: #e5e7eb;
+  --text-secondary: #9ca3af;
+
+  --accent: #60a5fa;
+  --border-subtle: rgba(255, 255, 255, 0.06);
+
+  --radius-xl: 32px;
+
+  --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+/* ================================
+   RESET
+================================ */
+* {
+  box-sizing: border-box;
+}
+
+html, body {
+  margin: 0;
+  padding: 0;
+}
+
+/* ================================
+   SPACE BACKGROUND
+================================ */
+body {
+  min-height: 100vh;
+  background: radial-gradient(
+      circle at top,
+      #111a33,
+      var(--bg-space-2) 40%,
+      var(--bg-space-1) 75%
+  );
+  color: var(--text-primary);
+  font-family: Inter, system-ui, -apple-system, sans-serif;
+  overflow-x: hidden;
+}
+
+/* ================================
+   STAR FIELD (PURE CSS)
+================================ */
+.stars,
+.stars::after {
+  position: fixed;
+  inset: 0;
+  background-image:
+    radial-gradient(1px 1px at 20% 30%, #fff, transparent),
+    radial-gradient(1px 1px at 80% 70%, #fff, transparent),
+    radial-gradient(1px 1px at 50% 90%, #fff, transparent),
+    radial-gradient(1px 1px at 10% 60%, #fff, transparent),
+    radial-gradient(1px 1px at 90% 10%, #fff, transparent),
+    radial-gradient(1px 1px at 40% 20%, #fff, transparent);
+  background-size: 100% 100%;
+  opacity: 0.35;
+  pointer-events: none;
+  animation: star-drift 180s linear infinite;
+}
+
+.stars::after {
+  content: "";
+  opacity: 0.2;
+  transform: scale(1.5);
+}
+
+@keyframes star-drift {
+  from { transform: translateY(0); }
+  to   { transform: translateY(-2000px); }
+}
+
+/* ================================
+   STAGE (MAIN CONTENT CARD)
+================================ */
+.stage {
+  max-width: 1200px;
+  margin: 6vh auto;
+  padding: 3rem;
+
+  background:
+    linear-gradient(
+      180deg,
+      rgba(255,255,255,0.04),
+      rgba(255,255,255,0.01)
+    ),
+    var(--bg-stage);
+
+  border-radius: var(--radius-xl);
+  border: 1px solid var(--border-subtle);
+
+  box-shadow:
+    0 50px 120px rgba(0,0,0,0.75),
+    inset 0 1px 0 rgba(255,255,255,0.04);
+
+  position: relative;
+  z-index: 2;
+}
+
+/* ================================
+   TYPOGRAPHY
+================================ */
+h1, h2, h3 {
+  font-weight: 600;
+  letter-spacing: -0.02em;
+}
+
+p {
+  color: var(--text-secondary);
+}
+
+/* ================================
+   INTERNAL CARDS
+================================ */
+.card {
+  background: rgba(255,255,255,0.04);
+  border: 1px solid var(--border-subtle);
+  border-radius: 24px;
+  padding: 1.75rem;
+
+  transition:
+    transform 0.4s var(--ease-out),
+    box-shadow 0.4s var(--ease-out);
+}
+
+.card:hover {
+  transform: translateY(-6px);
+  box-shadow:
+    0 0 0 1px rgba(96,165,250,0.25),
+    0 25px 60px rgba(0,0,0,0.6);
+}
+
+#space-canvas {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+}
+
+
+/* ================================
+   RESPONSIVE
+================================ */
+@media (max-width: 768px) {
+  .stage {
+    margin: 3vh 1rem;
+    padding: 1.75rem;
+  }
+}
+

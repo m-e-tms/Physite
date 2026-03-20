@@ -1,0 +1,127 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+    <title>Registrierungsseite</title>
+    <meta name="author" content="joerg.ludwig">
+    <meta name="editor" content="html-editor phase 5">
+
+    <script>
+        function checkSelection() {
+            var part1 = document.getElementById("name1").value;
+            var part2 = document.getElementById("name2").value;
+            var number = document.getElementById("number").value;
+            var button = document.getElementById("createBtn");
+
+            // Button nur aktivieren, wenn alle Auswahlfelder gef�llt sind
+            if (part1 !== "" && part2 !== "" && number !== "") {
+                button.disabled = false;
+            } else {
+                button.disabled = true;
+            }
+        }
+
+        function createUsername() {
+            // Weiterleitung zur Lernseite
+            window.location.href = "\../Hub_Mainpage/Hub_Lernseite_Mint.html";
+        }
+    </script>
+    <link rel="stylesheet" href="../test.css">
+
+</head>
+
+<body text="#000000" bgcolor="#FFFFFF" link="#FF0000" alink="#FF0000" vlink="#FF0000">
+<canvas id="space-canvas"></canvas>
+    <main class="stage">
+    <h1>Registrierungsseite</h1>
+    <h2>(Platzhalter, noch nicht integriert.)</h2>
+
+    <p>W&auml;hle deinen Benutzernamen:</p>
+
+    <!-- Auswahlfeld 1 -->
+    <select id="name1" onchange="checkSelection()">
+        <option value="">-- Bitte w&auml;hlen --</option>
+        <option>Hippy</option>
+        <option>Bohne</option>
+        <option>Mayo</option>
+        <option>Delta</option>
+        <option>Epsilon</option>
+        <option>Zebra</option>
+        <option>Theta</option>
+        <option>Kopper</option>
+        <option>Lama</option>
+        <option>Harzer</option>
+        <option>Onion</option>
+        <option>Supernova</option>
+        <option>Cosmos</option>
+        <option>Astra</option>
+        <option>Solar</option>
+        <option>Lunar</option>
+        <option>TerraX</option>
+        <option>Neo</option>
+        <option>Cytra</option>
+        <option>Pixel</option>
+    </select>
+
+    <!-- Auswahlfeld 2 -->
+    <select id="name2" onchange="checkSelection()">
+        <option value="">-- Bitte w&auml;hlen --</option>
+        <option>Rider</option>
+        <option>Master</option>
+        <option>Coder</option>
+        <option>Walker</option>
+        <option>Runner</option>
+        <option>Dreamer</option>
+        <option>K&auml;se</option>
+        <option>Wizard</option>
+        <option>Hero</option>
+        <option>Star</option>
+        <option>Beast</option>
+        <option>Bot</option>
+        <option>Engine</option>
+        <option>Machine</option>
+        <option>Pilot</option>
+        <option>Guardian</option>
+        <option>Ranger</option>
+        <option>Genius</option>
+        <option>Power</option>
+        <option>Vision</option>
+    </select>
+
+<!-- Auswahlfeld -->
+<select id="number" onchange="checkSelection()">
+    <option value="">-- Nr. --</option>
+
+    <script>
+        // Zahlen, die NICHT angezeigt werden sollen
+        const blacklist = [14, 18, 67, 69, 88];
+
+        // Zus�tzliche Zahlen, die angezeigt werden sollen (z. B. "007")
+        const extraNumbers = ["007", "161", "3,14159265359"];
+        // <-- hier kannst du beliebig weitere hinzuf�gen
+
+        // 1�99 einf�gen
+        for (let i = 1; i <= 99; i++) {
+            if (!blacklist.includes(i)) {
+                document.write(`<option value="${i}">${i}</option>`);
+            }
+        }
+
+        // Extra-Zahlen einf�gen (sofern sie nicht geblacklistet sind)
+        extraNumbers.forEach(num => {
+            if (!blacklist.includes(num)) {
+                document.write(`<option value="${num}">${num}</option>`);
+            }
+        });
+    </script>
+</select>
+
+<br><br>
+
+<!-- Button -->
+<button id="createBtn" onclick="createUsername()" disabled>Erstellen</button>
+</main>
+<script src="../space.js"></script>
+
+
+</body>
+</html>
