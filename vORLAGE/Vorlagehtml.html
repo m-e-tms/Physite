@@ -1,0 +1,49 @@
+<html> <head>
+<title></title>
+<meta charset="UTF-8">
+<meta name="author" content="USERNAME">
+<meta name="editor" content="html-editor phase 5">
+<link rel="stylesheet" href="test.css">
+</head>
+<body text="#000000" bgcolor="#FFFFFF" link="#FF0000" alink="#FF0000" vlink="#FF0000">
+
+<header></header>       //Hier kommt sp&auml;ter der Header hin.
+<br>
+
+<div class="content-card">
+<h1>F&uuml;ge hier deine &Uuml;berschrift ein.</h1>
+<p align="left">Hier dein Text.</p>
+<canvas></canvas>
+</div>
+<br>
+
+<!-- Für PHP-Quiz -->
+<div class="content-card">
+<h1>Quiz</h1>
+
+
+<!-- Nach dem Abschluss des Quizes. Bei dieser Verwendung als PHP-Datei speichern. Ansonsten entfernen (bis <form)-->
+<div class="widget">
+<?php
+$score = $_POST["score"] ?? $_GET["score"] ?? 0;
+$tasknumber = $_POST["tasknumber"] ?? $_GET["tasknumber"]-1 ?? 0;
+echo "<p>Du hast das Quiz abgeschlossen.</p>";
+echo "<p>Punkte: $score</p>";
+echo "<p>Bearbeitete Aufgaben: $tasknumber</p>";
+?>
+
+
+<form action="Vorlagequizphp.php" method="post">  <!-- Php Seitennamen einfügen -->
+    <input type="hidden" name="score" value="0">
+    <input type="hidden" name="tasknumber" value="1">
+    <div class="buttons">
+    <button type="submit">Quiz starten</button>
+    </div>
+</form>
+</div>
+<p align="left">Gebrauchsanweisung</p>
+</div>
+<br>
+
+</body>
+</html>
