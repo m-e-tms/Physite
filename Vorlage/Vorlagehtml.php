@@ -22,22 +22,22 @@
     </div>
   </nav>
 
-<div class="content-card">
-<h1>Füge hier deine Überschrift ein.</h1>
+<div class="card">
+<h1>FÃ¼ge hier deine Ãœberschrift ein.</h1>
 <p align="left">Hier dein Text.</p>
 <canvas></canvas>
 </div>
 <br>
 
-<!-- Für PHP-Quiz -->
-<div class="content-card">
+<!-- FÃ¼r PHP-Quiz -->
+<div class="card">
 <h1>Quiz</h1>
 
 
 <!-- Nach dem Abschluss des Quizes. Bei dieser Verwendung als PHP-Datei speichern. Ansonsten entfernen (bis <form)-->
 <div class="widget">
 <?php
-$score = $_POST["score"] ?? $_GET["score"] ?? 0;
+$score = $_POST["score"] ?? $_GET["score"] ?? 0; 
 $tasknumber = $_POST["tasknumber"] ?? $_GET["tasknumber"] -1?? 0;
 echo "<p>Du hast das Quiz abgeschlossen.</p>";
 echo "<p>Punkte: $score</p>";
@@ -45,7 +45,7 @@ echo "<p>Bearbeitete Aufgaben: $tasknumber</p>";
 ?>
 
 
-<form action="Vorlagequizphp.php" method="post">  <!-- Php Seitennamen einfügen -->
+<form action="Vorlagequizphp.php" method="post">  <!-- Php Seitennamen einfÃ¼gen -->
     <input type="hidden" name="score" value="0">
     <input type="hidden" name="tasknumber" value="1">
     <div class="buttons">

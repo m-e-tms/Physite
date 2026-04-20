@@ -22,7 +22,7 @@
     </div>
   </nav>
 
-<div class="content-card">
+<div class="card">
     <h1>Supercooles Quiz</h1>
     <p align="left">Hier irgendein genereller Text.</p>
     <canvas></canvas>
@@ -31,7 +31,7 @@
 
 <div class="widget">
 <?php
-//Körper des Php-Quizes
+//KÃ¶rper des Php-Quizes
 session_start();
 
 $solution = $_POST["answer"] ??0;
@@ -43,34 +43,34 @@ $solutioncorrect="";
 $task="";
 $quizend=0;
 
-//Füge Hier die Aufgaben, richtige Lösungen als Nummer und alle Antwortmöglichkeiten (als Text in "") ein
-// Du brauchst keine Antwortmöglichkeiten, wenn du mit einem Textfel arbeitest
+//FÃ¼ge Hier die Aufgaben, richtige LÃ¶sungen als Nummer und alle AntwortmÃ¶glichkeiten (als Text in "") ein
+// Du brauchst keine AntwortmÃ¶glichkeiten, wenn du mit einem Textfeld arbeitest
 //Passe $tasknumber an (Aufgabennummer)
 if($tasknumber==1){
     $task="<p>Hier dein Aufgaben text.</p>";
-    $solutioncorrect =1; //Richtige Lösung einfügen//Wenn du das Textfeld verwendest, dann in "" gewünschte Eingabe angeben.
-    $antwort1="Antwortmöglichkeit";
-    $antwort2="Antwortmöglichkeit";
-    $antwort3="Antwortmöglichkeit";
-    $antwort4="Antwortmöglichkeit";
+    $solutioncorrect =1; //Richtige LÃ¶sung einfÃ¼gen//Wenn du das Textfeld verwendest, dann in "" gewÃ¼nschte Eingabe angeben.
+    $antwort1="AntwortmÃ¶glichkeit";
+    $antwort2="AntwortmÃ¶glichkeit";
+    $antwort3="AntwortmÃ¶glichkeit";
+    $antwort4="AntwortmÃ¶glichkeit";
 }
 
 elseif($tasknumber==2){
     $task="<p>Hier dein Aufgaben text.</p>";
-    $solutioncorrect =3; //Richtige Lösung einfügen
-    $antwort1="Antwortmöglichkeit";
-    $antwort2="Antwortmöglichkeit";
-    $antwort3="Antwortmöglichkeit";
-    $antwort4="Antwortmöglichkeit";
+    $solutioncorrect =3; //Richtige LÃ¶sung einfÃ¼gen
+    $antwort1="AntwortmÃ¶glichkeit";
+    $antwort2="AntwortmÃ¶glichkeit";
+    $antwort3="AntwortmÃ¶glichkeit";
+    $antwort4="AntwortmÃ¶glichkeit";
 }
 
 elseif($tasknumber==3){
     $task="<p>Hier dein Aufgaben text.</p>";
-    $solutioncorrect =4; //Richtige Lösung einfügen
-    $antwort1="Antwortmöglichkeit";
-    $antwort2="Antwortmöglichkeit";
-    $antwort3="Antwortmöglichkeit";
-    $antwort4="Antwortmöglichkeit";
+    $solutioncorrect =4; //Richtige LÃ¶sung einfÃ¼gen
+    $antwort1="AntwortmÃ¶glichkeit";
+    $antwort2="AntwortmÃ¶glichkeit";
+    $antwort3="AntwortmÃ¶glichkeit";
+    $antwort4="AntwortmÃ¶glichkeit";
 }
 
 //usw.
@@ -79,7 +79,7 @@ elseif($tasknumber>3){
     $quizend=1;$tasknumber=$tasknumber-1;
 } //Gib hier unbedingt die Nummer deiner letzten Aufgab ein  (in die Klammer von elseif)
 
- //Kontrolle der Lösungen
+ //Kontrolle der LÃ¶sungen
 if (isset($_POST['answer']) && isset($_SESSION['solutioncorrect'])) {
     $userSolution = trim($solution);
     if ($userSolution == $_SESSION['solutioncorrect']) {
@@ -141,19 +141,19 @@ echo $task;
 
 if($quizend==0){
 
-    echo "<form action='Vorlagequizphp.php' method='post'>"; // Php-Seitennamn dieser Seite einfügen einfügen
+    echo "<form action='Vorlagequizphp.php' method='post'>"; // Php-Seitennamn dieser Seite einfÃ¼en einfÃ¼gen
 
     echo" <input type='hidden' name='score' value='$score'> ";
     echo" <input type='hidden' name='tasknumber' value='$tasknumber'> ";
 
-    //Antwort über Textfeld
+    //Antwort Ã¼ber Textfeld
     echo "<div class='inputtext'><input type='text' name='answer' autofocus></div>";
 
     echo "<div class='buttons'>
-            <button type='submit'>Button um zu bestätigen</button>
+            <button type='submit'>Button um zu bestÃ¤tigen</button>
           </div>";
 
-    //Anrtwortüber Buttons
+    //Anrtwort Ã¼ber Buttons
     echo "<div class='buttons'>";
 
     echo " <button type='submit' name='answer' value='1'>$antwort1</button>";
@@ -163,19 +163,19 @@ if($quizend==0){
 
     echo "</div>";
 
-    //Wähle entweder BUttons oder Textfeld
+    //Wï¿½hle entweder BUttons oder Textfeld
     echo "</form>";
 }
 
 else{
 
-    echo "<form action='Vorlagehtml.php' method='post'>"; //Seite des Abschlusses einfügen
+    echo "<form action='Vorlagehtml.php' method='post'>"; //Seite des Abschlusses einfÃ¼gen
 
     echo" <input type='hidden' name='score' value='$score'> ";
     echo" <input type='hidden' name='tasknumber' value='$tasknumber'> ";
 
     echo "<div class='buttons'>
-            <button type='submit'>Quizabschließen</button>
+            <button type='submit'>QuizabschlieÃŸen</button>
           </div>";
 
     echo "</form>";
