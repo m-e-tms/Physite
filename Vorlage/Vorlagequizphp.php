@@ -38,7 +38,7 @@ $solution = $_POST["answer"] ??0;
 $score = $_POST["score"] ??0;
 $tasknumber = $_POST["tasknumber"] ??1;
 
-
+$answercorrect1="";//bei bedarf entfernen (Wenn ohne anzeigung der richtigen lösung nach fehler)
 $solutioncorrect="";
 $task="";
 $quizend=0;
@@ -49,28 +49,31 @@ $quizend=0;
 if($tasknumber==1){
     $task="<p>Hier dein Aufgaben text.</p>";
     $solutioncorrect =1; //Richtige Lösung einfügen//Wenn du das Textfeld verwendest, dann in "" gewünschte Eingabe angeben.
-    $antwort1="Antwortmöglichkeit";
-    $antwort2="Antwortmöglichkeit";
-    $antwort3="Antwortmöglichkeit";
-    $antwort4="Antwortmöglichkeit";
+    $antwort1="Antwortmöglichkeit1";
+    $antwort2="Antwortmöglichkeit2";
+    $antwort3="Antwortmöglichkeit3";
+    $antwort4="Antwortmöglichkeit4";
+    $answercorrect1="angezeigte Lösung mit Erklärung"; //optional raustreichen
 }
 
 elseif($tasknumber==2){
     $task="<p>Hier dein Aufgaben text.</p>";
     $solutioncorrect =3; //Richtige Lösung einfügen
-    $antwort1="Antwortmöglichkeit";
-    $antwort2="Antwortmöglichkeit";
-    $antwort3="Antwortmöglichkeit";
-    $antwort4="Antwortmöglichkeit";
+    $antwort1="Antwortmöglichkeit1";
+    $antwort2="Antwortmöglichkeit2";
+    $antwort3="Antwortmöglichkeit3";
+    $antwort4="Antwortmöglichkeit4";
+    $answercorrect1="angezeigte Lösung mit Erklärung"; //optional raustreichen
 }
 
 elseif($tasknumber==3){
     $task="<p>Hier dein Aufgaben text.</p>";
     $solutioncorrect =4; //Richtige Lösung einfügen
-    $antwort1="Antwortmöglichkeit";
-    $antwort2="Antwortmöglichkeit";
-    $antwort3="Antwortmöglichkeit";
-    $antwort4="Antwortmöglichkeit";
+    $antwort1="Antwortmöglichkeit1";
+    $antwort2="Antwortmöglichkeit2";
+    $antwort3="Antwortmöglichkeit3";
+    $antwort4="Antwortmöglichkeit4";
+    $answercorrect1="angezeigte Lösung mit Erklärung"; //optional raustreichen
 }
 
 //usw.
@@ -78,6 +81,8 @@ elseif($tasknumber==3){
 elseif($tasknumber>3){
     $quizend=1;$tasknumber=$tasknumber-1;
 } //Gib hier unbedingt die Nummer deiner letzten Aufgab ein  (in die Klammer von elseif)
+
+
 
  //Kontrolle der Lösungen
 if (isset($_POST['answer']) && isset($_SESSION['solutioncorrect'])) {
@@ -87,16 +92,21 @@ if (isset($_POST['answer']) && isset($_SESSION['solutioncorrect'])) {
         echo "<b><font color='#00FF00'><p>korrekt</p></font></b>";
     }
     else {
-        echo "<font color='#FF0000'><p>falsch</p></font></b>";
+        echo "<font color='#FF0000'><p>falsch</p>
+        <p>Die richtige Lösung wäre:" . $_SESSION['answercorrect'] . "</p><!--//diese Zeile optional raustreichen-->
+        </font></b>";
     }
 
-    unset($_SESSION['solutioncorrect']);
+    
 }
-if($quizend==0){echo "<font color='#FF8000'><p>Zeit: <span id='timer'>00:00</span></p></font>";}
+unset($_SESSION['solutioncorrect']);
+unset($_SESSION['answercorrect']);
+if($quizend==0){echo "<font color='#FF8000'><p>Zeit: <span id='timer'>00:00</span></p></font>";}  //Diese Zeile entfernen, wenn ohne Timer verwendet.
 echo "<p>Punkte: $score</p>";
 
 
 //gesamten <script> blockentfernen, wenn ohne timer verwendet
+//passe den var duration block an, um die dauer zu 
 if($quizend==0){
 ?>
 <script>
@@ -132,7 +142,9 @@ setInterval(updateTimer, 1000);
 
 
 //Anzeige diverse
-if($quizend==0){$_SESSION['solutioncorrect'] = $solutioncorrect;}
+if($quizend==0){$_SESSION['solutioncorrect'] = $solutioncorrect;
+    $_SESSION['answercorrect']=$answercorrect1;//diese Zeile optional raustreichen
+    }
     echo "<p>Aufgabe: $tasknumber</p>";
 if($quizend==0){
 echo $task;
@@ -141,7 +153,7 @@ echo $task;
 
 if($quizend==0){
 
-    echo "<form action='Vorlagequizphp.php' method='post'>"; // Php-Seitennamn dieser Seite einfüen einfügen
+    echo "<form action='Vorlagequizphp.php' method='post'>"; // Php-Seitennamn dieser Seite selbst einfüen einfügen
 
     echo" <input type='hidden' name='score' value='$score'> ";
     echo" <input type='hidden' name='tasknumber' value='$tasknumber'> ";
@@ -163,7 +175,7 @@ if($quizend==0){
 
     echo "</div>";
 
-    //W�hle entweder BUttons oder Textfeld
+    //Wähle entweder Buttons oder Textfeld als Eingabe für dn User
     echo "</form>";
 }
 
