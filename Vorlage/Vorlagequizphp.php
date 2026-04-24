@@ -92,7 +92,7 @@ if (isset($_POST['answer']) && isset($_SESSION['solutioncorrect'])) {
         echo "<b><font color='#00FF00'><p>korrekt</p></font></b>";
     }
     else {
-        echo "<font color='#FF0000'><p>falsch</p>
+        echo "<b><font color='#FF0000'><p>falsch</p>
         <p>Die richtige Lösung wäre:" . $_SESSION['answercorrect'] . "</p><!--//diese Zeile optional raustreichen-->
         </font></b>";
     }
