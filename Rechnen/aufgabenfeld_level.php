@@ -1,11 +1,31 @@
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<!DOCTYPE html>
 <html>
+    <title>Aufgabe</title>
 <head>
-<title>Aufgabe</title>
-<meta name="author" content="joerg.ludwig">
-<meta name="editor" content="html-editor phase 5">
+
+  <meta charset="UTF-8">
+  <link rel="stylesheet" href="test.css">
+
 </head>
-<p>Zeit: <span id="timer">00:00</span></p>
+<body>
+
+  <nav>
+    <div class="element">Home</div>
+    <div class="element">Scoreboard</div>
+    <div class="element">News</div>
+    <div class="element no-border dropdown">
+      Dropdown
+      <div class="dropdown-content">
+        <button>Link 1</button>
+        <button>Link 2</button>
+        <button>Link 3</button>
+      </div>
+    </div>
+  </nav>
+
+<div class="card"><p>Progressivmodus:</p>
+<div class="widget">
+<font color='#FF8000'><p>Zeit: <span id="timer">00:00</span></p></font>
  <?php
  session_start();
 $solution = $_POST["solution"] ?? "";
@@ -62,7 +82,7 @@ if (isset($_POST['solution']) && isset($_SESSION['ergebnis'])) {
     $userSolution = trim($_POST['solution']);
     if ($userSolution == $_SESSION['ergebnis']) {
         $score++;
-        echo "<p>korrekt</p>";}
+        echo "<b><font color='#00FF00'><p>korrekt</p></font></b>";}
     else {header("Location: endfeld_level.php?score=$score&mode=$mode");
         exit;}
     unset($_SESSION['ergebnis']); }}
@@ -299,7 +319,7 @@ echo "<p align='left'>Es gilt keine Punkt-Vor-Strichrechnung!</p> ";
 $anzahlGlieder = 1 + floor(($level - 1) / 3);
 $operatoren = ['*','/']; // Basis-Operatoren
 
-// Ab dem 3. Rechenglied (+ und - hinzufügen)
+// Ab dem 3. Rechenglied (+ und - hinzufï¿½gen)
 if ($anzahlGlieder >= 3) {
     $operatoren[] = '+';
     $operatoren[] = '-';
@@ -363,11 +383,11 @@ for ($i = $min; $i <= $max; $i++) {
     }
 }
 
-// Teiler auswählen
+// Teiler auswï¿½hlen
 if (count($moeglicheTeiler) > 0) {
     $zahl = $moeglicheTeiler[array_rand($moeglicheTeiler)];
 } else {
-    $zahl = 1; // Notlösung, keine Kommazahlen
+    $zahl = 1; // Notlï¿½sung, keine Kommazahlen
 }
 
 $ergebnis = $ergebnis / $zahl;
@@ -396,10 +416,10 @@ echo "<p>Eingabe:   ";
 echo "<input type='text' name='solution' autofocus>";
 echo "<input type='hidden' name='score' value='$score'>";
 echo "<input type='hidden' name='mode' value='$mode'>";
-echo "   <input type='submit' value='Senden'>";
+echo "  <div class='buttons'> <input type='submit' value='Senden'></div>";
 echo "<input type='hidden' name='hide' value=''>";
 echo "</p></form>";
 ?>
-<p class="neustart"><a href="startfeld.html">neu starten</a></p>
-</div></body>
+</div><p><a href="startfeld.html">neu starten</a></p>
+</div></div></body>
 </html>

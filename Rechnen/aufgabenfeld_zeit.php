@@ -1,12 +1,31 @@
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<!DOCTYPE html>
 <html>
+    <title>Aufgabe</title>
 <head>
-<title>Aufgabe</title>
-<meta name="author" content="">
-<meta name="editor" content="html-editor phase 5">
+
+  <meta charset="UTF-8">
+  <link rel="stylesheet" href="test.css">
+
 </head>
 <body>
-<p>Zeit: <span id="timer" class="time-digits">00:00</span></p>
+
+  <nav>
+    <div class="element">Home</div>
+    <div class="element">Scoreboard</div>
+    <div class="element">News</div>
+    <div class="element no-border dropdown">
+      Dropdown
+      <div class="dropdown-content">
+        <button>Link 1</button>
+        <button>Link 2</button>
+        <button>Link 3</button>
+      </div>
+    </div>
+  </nav>
+
+<div class="card"><p>Progressivmodus:</p>
+<div class="widget">
+<font color='#FF8000'><p>Zeit: <span id="timer" class="time-digits">00:00</span></p></font>
 
 <?php
 session_start();
@@ -22,9 +41,9 @@ else {
         $userSolution = trim($_POST['solution']);
         if ($userSolution == $_SESSION['solutioncorrect']) {
             $score++;
-            echo "<p>korrekt</p>";
+            echo "<b><font color='#00FF00'><p>korrekt</p></font></b>";
         } else {
-            echo "<p>falsch</p>";
+            echo "<b><font color='#FF0000'><p>falsch</p></font></b>";
         }
         $_SESSION['score'] = $score;
         unset($_SESSION['solutioncorrect']);
@@ -72,15 +91,15 @@ echo "<form action='aufgabenfeld_zeit.php' method='post'>";
 echo "<p>Eingabe:   ";
 echo "<input type='text' name='solution' autofocus>";
 echo "<input type='hidden' name='score' value='$score'>";
-echo "  <input type='submit' value='Senden'>";
-echo "<input type='hidden' name='endTime' value='$endTime'>";
+echo "  <div class='buttons'><input type='submit' value='Senden'>";
+echo "</div><input type='hidden' name='endTime' value='$endTime'>";
 echo "<input type='hidden' name='hide' value=''>";
 echo "</p></form>";
 ?>
-
+</div>
 <div class="buttons">
     <a href="startfeld.html" class="button-link">Neu starten</a>
   </div>
-</div>
+</div></div>
 </body>
 </html>
