@@ -1,112 +1,55 @@
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<!DOCTYPE html>
 <html>
+    <title>Auswahl der Modi</title>
 <head>
-<title>Modus-Auswahl</title>
-<meta name="author" content="joerg.ludwig">
-<meta name="editor" content="html-editor phase 5">
-<style>
-/* ============================= */
-/* Modernes Modus-Design         */
-/* ============================= */
 
-    body {
-        margin: 0;
-        font-family: Arial, sans-serif;
-        /* Hintergrundverlauf von Zeitmodus-Farbe zu Progressivmodus-Farbe */
-        background: linear-gradient(135deg, #ecc2f0 0%, #9ac7e3 100%);
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        height: 100vh;
-        /* einfacher Farbverlauf zwischen Zeitmodus und Progressivmodus */
-    }
+  <meta charset="UTF-8">
+  <link rel="stylesheet" href="test.css">
 
-.container {
-  background: #fff;
-  padding: 40px;
-  border-radius: 16px;
-  text-align: center;
-  width: 360px;
-  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
-}
-
-.container h1 {
-  margin-bottom: 25px;
-  font-size: 28px;
-  color: #333;
-}
-
-.mode-description {
-  text-align: left;
-  margin: 20px 0 10px 0;
-  font-size: 18px;
-}
-
-form {
-  margin-bottom: 20px;
-}
-
-/* Buttons mit jeweiliger Modusfarbe */
-button.timemode {
-  width: 100%;
-  padding: 12px;
-  margin-top: 10px;
-  font-size: 16px;
-  border: none;
-  border-radius: 10px;
-  cursor: pointer;
-  background: #800080; /* Zeitmodus: blau-lila */
-  color: white;
-  transition: 0.2s;
-}
-
-    button.timemode:hover {
-        background: #5e368c;
-    }
-
-button.progressivemode {
-  width: 100%;
-  padding: 12px;
-  margin-top: 10px;
-  font-size: 16px;
-  border: none;
-  border-radius: 10px;
-  cursor: pointer;
-  background:#457b9d; /* Progressivmodus: lila */
-  color: white;
-  transition: 0.2s;
-}
-
-    button.progressivemode:hover {
-        background: #5e368c;
-    }
-</style>
 </head>
 <body>
 
-<div class="container">
-<h1>Modus ausw&auml;hlen</h1>
+  <nav>
+    <div class="element">Home</div>
+    <div class="element">Scoreboard</div>
+    <div class="element">News</div>
+    <div class="element no-border dropdown">
+      Dropdown
+      <div class="dropdown-content">
+        <button>Link 1</button>
+        <button>Link 2</button>
+        <button>Link 3</button>
+      </div>
+    </div>
+  </nav>
 
-<p class="mode-description">Zeitmodus:</p>
+<div class="card">
+<h1>W&auml;hle deinen Modus</h1>
+<p>Löse entweder so viele Aufgaben wie möglich in vorgegebener Zeit im Zeitmodus oder kämpfe dich durch immer schwieriger werdene Aufgaben im Progressivmodus:</p>
+<div class="widget">
+<h1>Zeitmodus:</h1>
 <form action="aufgabenfeld_zeit.php" method="post">
     <input type="hidden" name="solution" value="">
     <input type="hidden" name="score" value="0">
     <input type="hidden" name="hide" value="1">
     <input type="hidden" name="endTime" value="">
     <button type="submit" class="timemode">Starten</button>
-</form>
-
-<p class="mode-description">Progressivmodus:</p>
+</form>                       <i></i>
+</div><div class="widget">
+<h1>Progressivmodus:</h1>
 <form action="aufgabenfeld_level.php" method="post">
     <input type="hidden" name="solution" value="">
     <input type="hidden" name="score" value="1">
     <input type="hidden" name="hide" value="1">
+    <select name="mode">
+        <option value="0">Normal</option>
+        <option value="25">Schwierig</option>
+        <option value="50">Ultraschwierig</option>
+    </select>
     <button type="submit" class="progressivemode">Starten</button>
 </form>
-
+</div>
 </div>
 
-
-<a href="../Hub_Mainpage/Hub_Lernseite_Mint.php" style="position:fixed;top:16px;left:16px;z-index:9999;display:inline-flex;align-items:center;gap:8px;background:rgba(20,30,55,0.85);border:1px solid rgba(255,255,255,0.15);backdrop-filter:blur(8px);color:#e5e7eb;text-decoration:none;padding:9px 18px;border-radius:999px;font-family:Arial,sans-serif;font-size:14px;font-weight:600;box-shadow:0 4px 16px rgba(0,0,0,0.4);transition:background 0.2s;" onmouseover="this.style.background='rgba(69,123,157,0.9)'" onmouseout="this.style.background='rgba(20,30,55,0.85)'">&#8592; Hub</a>
 </body>
 </html>

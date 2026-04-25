@@ -1,122 +1,78 @@
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<!DOCTYPE html>
 <html>
+    <title>Aufgabe</title>
 <head>
-<title>Aufgabe</title>
-<meta name="author" content="joerg.ludwig">
-<meta name="editor" content="html-editor phase 5">
+
+  <meta charset="UTF-8">
+  <link rel="stylesheet" href="test.css">
+
 </head>
-<body><div class="container">
-<style>
-/* =============================
-   BASIS – Design 1 (zentriert)
-   ============================= */
+<body>
 
-    body {
-        font-family: 'Arial', sans-serif;
-        background: #9ac7e3;
-        color: #222;
-        margin: 0;
-        padding: 0;
-        /* Zentrierung */
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        min-height: 100vh;
-        text-align: center;
-    }
+  <nav>
+    <div class="element">Home</div>
+    <div class="element">Scoreboard</div>
+    <div class="element">News</div>
+    <div class="element no-border dropdown">
+      Dropdown
+      <div class="dropdown-content">
+        <button>Link 1</button>
+        <button>Link 2</button>
+        <button>Link 3</button>
+      </div>
+    </div>
+  </nav>
 
-/* Hauptcontainer */
-.container {
-    width: 100%;
-    max-width: 600px;
-    background: #ffffff;
-    padding: 35px;
-    border-radius: 12px;
-    box-shadow: 0 10px 25px rgba(0,0,0,0.12);
-}
-
-/* Text */
-p {
-    font-size: 20px;
-    margin: 15px 0;
-}
-
-/* Zeit – NUR Zahlen rot */
-.time-digits {
-    color: #e63946;
-    font-weight: bold;
-    font-size: 22px;
-}
-
-/* Eingabe */
-input[type="text"] {
-    padding: 10px;
-    font-size: 18px;
-    width: 160px;
-    text-align: center;
-    border: 2px solid #800080;
-    border-radius: 6px;
-}
-
-/* Button */
-input[type="submit"] {
-    padding: 10px 22px;
-    font-size: 16px;
-    background: #457b9d;
-    color: white;
-    border: none;
-    border-radius: 6px;
-    cursor: pointer;
-}
-
-    input[type="submit"]:hover {
-        background: #5e368c;
-    }
-
-/* Link */
-a {
-    color: #457b9d;
-    text-decoration: none;
-    font-weight: bold;
-}
-
-a:hover {
-    text-decoration: underline;
-}
-
-/* bestehendes CSS bleibt */
-
-/* Einheitliche Textgröße für normalen Text */
-p {
-    font-size: 20px;
-    margin: 15px 0;
-}
-
-/* Aufgabe extra groß */
-.aufgabe {
-    font-size: 36px;
-    font-weight: bold;
-    margin: 30px 0;
-}
-.neustart {
-    margin-top: 30px;
-}
-</style>
-<p>Zeit: <span id="timer">00:00</span></p>
+<div class="card"><p>Progressivmodus:</p>
+<div class="widget">
+<font color='#FF8000'><p>Zeit: <span id="timer">00:00</span></p></font>
  <?php
  session_start();
-$solution = $_POST["solution"];
-$score =$_POST["score"];
-$hide = $_POST["hide"];
+$solution = $_POST["solution"] ?? "";
+$score = $_POST["score"] ?? 0;
+$hide = $_POST["hide"] ?? 0;
+$mode=$_POST["mode"]??0;
 
-//Errechnen des Levels und der dazughoerigen Zeit
-$level = intdiv($score, 5) + 1;
+$level = intdiv(($score+$mode), 5) + 1;
 
-if ($level <= 9) {
-    $newTime = time() + intdiv($level-1, 2)*10+10 ;
+if ($level <= 4) {
+    $newTime = time() + 15;
 }
-elseif ($level >= 10) {
+elseif ($level <= 6) {
+    $newTime = time() + 20;
+}
+elseif ($level <= 8) {
+    $newTime = time() + 25;
+}
+elseif ($level <= 10) {
+    $newTime = time() + 30;
+}
+elseif ($level <= 12) {
+    $newTime = time() + 40;
+}
+elseif ($level <= 14) {
+    $newTime = time() + 50;
+}
+elseif ($level <= 16) {
     $newTime = time() + 60;
+}
+elseif ($level <= 18) {
+    $newTime = time() + 70;
+}
+elseif ($level <= 20) {
+    $newTime = time() + 80;
+}
+elseif ($level <= 22) {
+    $newTime = time() + 90;
+}
+elseif ($level <= 24) {
+    $newTime = time() + 100;
+}
+elseif ($level <= 26) {
+    $newTime = time() + 110;
+}
+else { // ab Level 27
+    $newTime = time() + 120;
 }
 $endTime=$newTime;
 
@@ -126,10 +82,9 @@ if (isset($_POST['solution']) && isset($_SESSION['ergebnis'])) {
     $userSolution = trim($_POST['solution']);
     if ($userSolution == $_SESSION['ergebnis']) {
         $score++;
-        echo "<p>korrekt</p>";}
-    else {header("Location: endfeld_level.php?score=$score");
+        echo "<b><font color='#00FF00'><p>korrekt</p></font></b>";}
+    else {header("Location: endfeld_level.php?score=$score&mode=$mode");
         exit;}
-    $_SESSION['score'] = $score;
     unset($_SESSION['ergebnis']); }}
 echo "<p>Level: $level</p>";
 //Timerblock:
@@ -138,6 +93,7 @@ echo "<p>Level: $level</p>";
 <script>
 var endTime = Number("<?php echo $endTime; ?>");
 var score = Number("<?php echo $score; ?>");
+var mode = Number("<?php echo $mode; ?>");
 function updateTimer() {
 var currentTime = Math.floor(Date.now() / 1000);
 var timeRemaining = endTime - currentTime;
@@ -145,7 +101,7 @@ if (timeRemaining <= 0) {
    document.getElementById("timer").innerHTML = "00:00";
    clearInterval(timerInterval);
    // Weiterleiten zum Endfeld inklusive Score
-   window.location.href = "endfeld_level.php?score=" + score;
+  window.location.href = "endfeld_level.php?score=" + score + "&mode=" + mode;
    return;}
 var minutes = Math.floor(timeRemaining / 60);
 var seconds = timeRemaining % 60;
@@ -157,9 +113,64 @@ if (seconds < 10) seconds = "0" + seconds;
 
 
 <?php
-//Level haben versch Aufgaben
 $operatoren=null;
-if ($level==1) {
+
+
+if ($level == 1) {
+    $zahl1 = rand(5,20);
+    $zahl2 = rand(5, 20);
+
+    if (rand(0,1) == 0) {
+        $ergebnis = $zahl1 + $zahl2;
+        $aufgabe = "$zahl1 + $zahl2";
+    } else {
+        if ($zahl2 > $zahl1) {
+            [$zahl1, $zahl2] = [$zahl2, $zahl1];
+        }
+        $ergebnis = $zahl1 - $zahl2;
+        $aufgabe = "$zahl1 - $zahl2";
+    }
+}
+if ($level == 2) {
+    $zahl1 = rand(51, 99);
+    $zahl2 = rand(10, 17);
+
+    if (rand(0,1) == 0) {
+        $ergebnis = $zahl1 + $zahl2;
+        $aufgabe = "$zahl1 + $zahl2";
+    } else {
+        if ($zahl2 > $zahl1) {
+            [$zahl1, $zahl2] = [$zahl2, $zahl1];
+        }
+        $ergebnis = $zahl1 - $zahl2;
+        $aufgabe = "$zahl1 - $zahl2";
+    }
+}
+if ($level == 3) {
+    $zahl1 = rand(75, 125);
+    $zahl2 = rand(10, 17);
+
+    if (rand(0,1) == 0) {
+        $ergebnis = $zahl1 + $zahl2;
+        $aufgabe = "$zahl1 + $zahl2";
+    } else {
+        if ($zahl2 > $zahl1) {
+            [$zahl1, $zahl2] = [$zahl2, $zahl1];
+        }
+        $ergebnis = $zahl1 - $zahl2;
+        $aufgabe = "$zahl1 - $zahl2";
+    }
+}
+if ($level == 5) {
+    $a = rand(50, 100);
+    $b = rand(10, 30);
+    $c = rand(10, 30);
+
+    $ergebnis = $a - $b + $c;
+    $aufgabe = "$a - $b + $c";
+}
+
+if ($level==4) {
 $zahl1 = rand(3,15);
 $zahl2 = rand(3,9);
 $operatoren = ['*','/'];
@@ -168,46 +179,46 @@ switch ($operator) {
 
     case '*':
         $ergebnis = $zahl1 * $zahl2;
-        $aufgabe="$zahl1 \u{00D7} $zahl2";
+        $aufgabe="$zahl1 * $zahl2";
         break;
 
 
     case '/':
         while ( $zahl1 % $zahl2 !== 0){
-        $zahl1 = rand(10,35);
-        $zahl2 = rand(3,9);
+        $zahl1 = rand(3,24);
+        $zahl2 = rand(11,24);
         }
         $ergebnis = $zahl1 / $zahl2;
-        $aufgabe="$zahl1 \u{00F7} $zahl2";
+        $aufgabe="$zahl1 / $zahl2";
         break;
 
     }
 
 }
-if ($level==2){
-$zahl1 = rand(3,24);
-$zahl2 = rand(11,24);
+if ($level==6){
+$zahl1 = rand(3,15);
+$zahl2 = rand(7,15);
 $operatoren = ['*','/'];
 $operator = $operatoren[array_rand($operatoren)];
 switch ($operator) {
 
     case '*':
         $ergebnis = $zahl1 * $zahl2;
-        $aufgabe="$zahl1 \u{00D7} $zahl2";
+        $aufgabe="$zahl1 * $zahl2";
         break;
     case '/':
         while ( $zahl1 % $zahl2 !== 0){
-        $zahl1 = rand(24,50);
-        $zahl2 = rand(6,19);
+        $zahl1 = rand(3,24);
+        $zahl2 = rand(11,24);
         }
         $ergebnis = $zahl1 / $zahl2;
-        $aufgabe="$zahl1 \u{00F7} $zahl2";
+        $aufgabe="$zahl1 / $zahl2";
         break;
 
 
     }
 }
-if ($level==3){
+if ($level==7){
 $zahl1 = rand(3,24);
 $zahl2 = rand(11,24);
 $operatoren = ['*'];
@@ -215,14 +226,15 @@ $operator = $operatoren[array_rand($operatoren)];
 switch ($operator) {
 
     case '*':
-        $ergebnis = $zahl1 * $zahl2;$aufgabe="$zahl1 \u{00D7} $zahl2";
+        $ergebnis = $zahl1 * $zahl2;
+        $aufgabe="$zahl1 * $zahl2";
         break;
 
 
     }
 
 }
-if ($level==4){
+if ($level==8){
 $zahl1 = rand(11,19);
 $zahl2 = rand(11,19);
 $operatoren = ['*'];
@@ -230,13 +242,13 @@ $operator = $operatoren[array_rand($operatoren)];
 switch ($operator) {
 
     case '*':
-        $ergebnis = $zahl1 * $zahl2; $aufgabe="$zahl1 \u{00D7} $zahl2";
+        $ergebnis = $zahl1 * $zahl2; $aufgabe="$zahl1 * $zahl2";
         break;
 
 
     }
 }
-if ($level==5){
+if ($level==9){
 $zahl1 = rand(3,15);
 $zahl2 = rand(3,15);
 $zahl3 = rand(3,15);
@@ -250,9 +262,9 @@ switch ($operator) {
         break;
 
 
-    }  $aufgabe="$zahl1 \u{00D7} $zahl2 +  $zahl3 \u{00D7} $zahl4" ;
+    }  $aufgabe="$zahl1 * $zahl2 +  $zahl3 * $zahl4" ;
 }
-if ($level==6){
+if ($level==10){
 $zahl1 = rand(3,24);
 $zahl2 = rand(11,24);
 $zahl3 = rand(5,12);
@@ -261,13 +273,13 @@ $operator = $operatoren[array_rand($operatoren)];
 switch ($operator) {
 
     case '*':
-        $ergebnis = $zahl1 * $zahl2 + $zahl3;  $aufgabe="$zahl1 \u{00D7} $zahl2 + $zahl3";
+        $ergebnis = $zahl1 * $zahl2 + $zahl3;  $aufgabe="$zahl1 $operator $zahl2 + $zahl3";
         break;
 
 
     }
 }
-if ($level==7){
+if ($level==11){
 $zahl1 = rand(150,1000);
 $zahl2 = rand(11,15);
 $operatoren = ['/',];
@@ -277,16 +289,16 @@ switch ($operator) {
     case '/':
         while ( $zahl1 % $zahl2 !== 0){
         $zahl1 = rand(1000,1500);
-        $zahl2 = rand(3,20);
+        $zahl2 = rand(11,15);
         }
-        $ergebnis = $zahl1 / $zahl2;     $aufgabe="$zahl1 \u{00F7} $zahl2";
+        $ergebnis = $zahl1 / $zahl2;     $aufgabe="$zahl1 / $zahl2";
 
         break;
 
        }
 
     }
-if ($level==8){
+if ($level==12){
 $zahl1 = rand(3,9);
 $zahl2 = rand(11,24);
 
@@ -294,20 +306,20 @@ $zahl2 = rand(11,24);
 $ergebnis = ($zahl1 + $zahl2)*($zahl1 + $zahl2);
 $aufgabe="( $zahl1 + $zahl2 )^2";
 }
-if ($level==9){
+if ($level==13){
 $zahl1 = rand(15,29);
 $zahl2 = rand(11,24);
 
 
 $ergebnis = ($zahl1 + $zahl2)*($zahl1 + $zahl2);
-$aufgabe="( $zahl1 + $zahl2 )^2";
+$aufgabe="( $zahl1 + $zahl2 )<sup>2</sup>";
 }
-if($level >= 10){
+if($level >= 14){
 echo "<p align='left'>Es gilt keine Punkt-Vor-Strichrechnung!</p> ";
 $anzahlGlieder = 1 + floor(($level - 1) / 3);
 $operatoren = ['*','/']; // Basis-Operatoren
 
-// Ab dem 3. Rechenglied (+ und - hinzufügen)
+// Ab dem 3. Rechenglied (+ und - hinzufï¿½gen)
 if ($anzahlGlieder >= 3) {
     $operatoren[] = '+';
     $operatoren[] = '-';
@@ -371,11 +383,11 @@ for ($i = $min; $i <= $max; $i++) {
     }
 }
 
-// Teiler auswählen
+// Teiler auswï¿½hlen
 if (count($moeglicheTeiler) > 0) {
     $zahl = $moeglicheTeiler[array_rand($moeglicheTeiler)];
 } else {
-    $zahl = 1; // Notlösung, keine Kommazahlen
+    $zahl = 1; // Notlï¿½sung, keine Kommazahlen
 }
 
 $ergebnis = $ergebnis / $zahl;
@@ -396,16 +408,18 @@ $ergebnis = $ergebnis / $zahl;
 
  echo "<p class='aufgabe'>Aufgabe: $aufgabe = ?</p>";
 
+
 $_SESSION['ergebnis'] = $ergebnis;
  //Eingabe und Datenuebertragfung
 echo "<form action='aufgabenfeld_level.php' method='post'>";
 echo "<p>Eingabe:   ";
 echo "<input type='text' name='solution' autofocus>";
 echo "<input type='hidden' name='score' value='$score'>";
-echo "   <input type='submit' value='Senden'>";
+echo "<input type='hidden' name='mode' value='$mode'>";
+echo "  <div class='buttons'> <input type='submit' value='Senden'></div>";
 echo "<input type='hidden' name='hide' value=''>";
 echo "</p></form>";
 ?>
-<p class="neustart"><a href="startfeld.html">Neu starten</a></p>
-</div></body>
+</div><p><a href="startfeld.html">neu starten</a></p>
+</div></div></body>
 </html>
