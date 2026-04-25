@@ -1,2 +1,0 @@
-# Physite
-Seite des Physikprofils
