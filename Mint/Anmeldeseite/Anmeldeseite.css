@@ -1,3 +1,63 @@
-body {
-    background-color: rgb(255, 255, 255)
+.form-group {
+    margin: 14px 0;
 }
+label {
+    display: block;
+    color: var(--text-secondary);
+    margin-bottom: 6px;
+    font-size: 0.9rem;
+}
+select, input[type="password"] {
+    background: rgba(255,255,255,0.07);
+    border: 1px solid rgba(255,255,255,0.12);
+    border-radius: 10px;
+    color: var(--text-primary);
+    padding: 10px 14px;
+    font-size: 1rem;
+    width: 100%;
+    max-width: 340px;
+    outline: none;
+    transition: border-color .2s;
+}
+select:focus, input[type="password"]:focus {
+    border-color: var(--accent);
+}
+select option { background: #1a2340; }
+.preview {
+    margin: 18px 0 8px;
+    font-size: 1.05rem;
+    color: var(--text-secondary);
+}
+.preview strong { color: var(--accent); font-size: 1.2rem; }
+button#loginBtn {
+    margin-top: 10px;
+    padding: 12px 32px;
+    background: var(--accent);
+    color: #05070c;
+    border: none;
+    border-radius: 12px;
+    font-size: 1rem;
+    font-weight: 700;
+    cursor: pointer;
+    transition: opacity .2s, transform .2s;
+}
+button#loginBtn:disabled {
+    opacity: .35;
+    cursor: not-allowed;
+}
+button#loginBtn:not(:disabled):hover {
+    opacity: .85;
+    transform: translateY(-2px);
+}
+.msg-error {
+    background: rgba(239,68,68,.15);
+    border: 1px solid rgba(239,68,68,.4);
+    color: #fca5a5;
+    padding: 10px 16px;
+    border-radius: 10px;
+    margin-bottom: 16px;
+}
+.back-link { margin-top: 20px; display: inline-block; color: var(--text-secondary); font-size: .9rem; }
+.back-link:hover { color: var(--accent); }
+.reg-hint { margin-top: 12px; font-size: .9rem; color: var(--text-secondary); }
+.reg-hint a { color: var(--accent); }
