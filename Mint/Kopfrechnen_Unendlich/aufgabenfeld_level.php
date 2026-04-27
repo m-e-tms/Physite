@@ -184,7 +184,7 @@ switch ($operator) {
 
 
     case '/':
-        while ( $zahl1 % $zahl2 !== 0){
+        while ( $zahl1 % $zahl2 !== 0 && $zahl1 / $zahl2 !== 1 && $zahl1 / $zahl2 !== 2){
         $zahl1 = rand(3,24);
         $zahl2 = rand(11,24);
         }
@@ -207,7 +207,7 @@ switch ($operator) {
         $aufgabe="$zahl1 * $zahl2";
         break;
     case '/':
-        while ( $zahl1 % $zahl2 !== 0){
+        while ( $zahl1 % $zahl2 !== 0&& $zahl1 / $zahl2 !== 1 && $zahl1 / $zahl2 !== 2){
         $zahl1 = rand(3,24);
         $zahl2 = rand(11,24);
         }
@@ -287,7 +287,7 @@ $operator = $operatoren[array_rand($operatoren)];
 switch ($operator) {
 
     case '/':
-        while ( $zahl1 % $zahl2 !== 0){
+        while ( $zahl1 % $zahl2 !== 0&& $zahl1 / $zahl2 !== 1 && $zahl1 / $zahl2 !== 2){
         $zahl1 = rand(1000,1500);
         $zahl2 = rand(11,15);
         }
@@ -345,7 +345,7 @@ switch ($operator) {
         do {
             $zahl2 = rand($min, $max);
             $versuche++;
-            if ($zahl1 % $zahl2 === 0) break;
+            if ($zahl1 % $zahl2 === 0&& $zahl1 / $zahl2 !== 1 && $zahl1 / $zahl2 !== 2) break;
             if ($versuche > 100) { $zahl2 = 1; break; }
         } while (true);
 
