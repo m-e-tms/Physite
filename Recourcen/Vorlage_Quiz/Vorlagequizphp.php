@@ -106,6 +106,7 @@ echo "<p>Punkte: $score</p>";
 
 
 //gesamten <script> blockentfernen, wenn ohne timer verwendet
+//Füge auch hier den Namen der abschlussseite ein. (wo "Vorlagehtml.php" steht)
 //passe den var duration block an, um die dauer zu 
 if($quizend==0){
 ?>
