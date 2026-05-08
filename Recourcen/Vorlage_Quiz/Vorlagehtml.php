@@ -38,7 +38,7 @@
 <div class="widget">
 <?php
 $score = $_POST["score"] ?? $_GET["score"] ?? 0; 
-$tasknumber = $_POST["tasknumber"] ?? $_GET["tasknumber"] -1?? 0;
+$tasknumber = isset($_POST['tasknumber']) ? $_POST['tasknumber'] : (isset($_GET['tasknumber']) ? $_GET['tasknumber'] - 1 : 0);
 echo "<p>Du hast das Quiz abgeschlossen.</p>";
 echo "<p>Punkte: $score</p>";
 echo "<p>Bearbeitete Aufgaben: $tasknumber</p>";
