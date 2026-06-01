@@ -26,7 +26,7 @@
     <h1>Quiz zur Bahn- und Winkelgeschwindigkeit</h1>
 <div class="widget">
     <h2>Der Jahrmarktbesuch</h2>
-    <p align="left"> Anton, Babara und Claus besuchen den Jahrmarkt. Dort sehen die Drei kleines Kinder-Karussel. Der Umfang dieses Karussells beträgt ca. 12m mit einem Radius von ca. 2m. Anton nimmt an einer Fahrt teil, wobie er sich ganz außen auf das Karussel setzt. Barbara läuft mit einem Abstand von 4 Metern neben Anton her. Claus will wissen, wie schnell beide sind. Er stoppt misst die Fahrtzeit mit einer Stoppuhr. Eine Karussellfahrt dauert 3 Minuten. Dabei dreht das Karussell 9 Runden. </p>
+    <p align="left"> Anton, Babara und Claus besuchen den Jahrmarkt. Dort sehen die Drei kleines Kinder-Karussel. Der Umfang dieses Karussells beträgt ca. 12m mit einem Radius von ca. 2m. Anton nimmt an einer Fahrt teil, wobei er sich ganz außen auf das Karussel setzt. Barbara läuft mit einem Abstand von 4 Metern neben Anton her. Claus will wissen, wie schnell beide sind. Er stoppt misst die Fahrtzeit mit einer Stoppuhr. Eine Karussellfahrt dauert 3 Minuten. Dabei dreht das Karussell 9 Runden. </p>
 <?php
 session_start();
 $solution = $_POST["answer"] ??0;
@@ -48,13 +48,13 @@ elseif($tasknumber==2){
 }
 elseif($tasknumber==3){
     $task="<p>Welche Winkelgeschwindigkeit hat demnach das Karussel? (Karussell: v=0,6 m/s) Gib die Lösung in der Einheit pro Sekunde an (ohne Buchstaben der Einheit).</p>";
-    $solutioncorrect ="0,15"; 
-    $answercorrect1=" 0,15 - v = ω·r => ω = v÷r = 0,6 m/s ÷ 4m = 0,15 1/s"; 
+    $solutioncorrect ="0,3"; 
+    $answercorrect1=" 0,3 - v = ω·r => ω = v÷r = 0,6 m/s ÷ 2m = 0,3 1/s"; 
 }
 elseif($tasknumber==4){
-    $task="<p>Bestimme anhand der Winkelgeschdigkeit die Bahngeschwindigkeit von Babara. Gib die Lösung in der Einheit Meter pro Sekunde an (ohne Buchstaben der Einheit).</p>";
-    $solutioncorrect ="0,9"; 
-    $answercorrect1=" 0,9 - r_Babara = 2m + 4m = 6m => v = ω·r = 0,15 1/s · 6m = 0,9 m/s"; 
+    $task="<p>Bestimme anhand der Winkelgeschdigkeit des Karussels (ω=0,3 1/s) die Bahngeschwindigkeit von Babara. Gib die Lösung in der Einheit Meter pro Sekunde an (ohne Buchstaben der Einheit).</p>";
+    $solutioncorrect ="1,8"; 
+    $answercorrect1=" 1,8 - r_Babara = 2m + 4m = 6m    v = ω·r = 0,3 1/s · 6m = 1,8 m/s"; 
 }
 elseif($tasknumber>4){
     $quizend=1;$tasknumber=$tasknumber-1;
