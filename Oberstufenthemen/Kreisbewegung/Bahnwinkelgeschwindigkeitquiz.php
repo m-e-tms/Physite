@@ -54,7 +54,7 @@ elseif($tasknumber==3){
 elseif($tasknumber==4){
     $task="<p>Bestimme anhand der Winkelgeschdigkeit des Karussels (ω=0,3 1/s) die Bahngeschwindigkeit von Babara. Gib die Lösung in der Einheit Meter pro Sekunde an (ohne Buchstaben der Einheit).</p>";
     $solutioncorrect ="1,8"; 
-    $answercorrect1=" 1,8 - r_Babara = 2m + 4m = 6m    v = ω·r = 0,3 1/s · 6m = 1,8 m/s"; 
+    $answercorrect1=" 1,8 - r<sub>Babara</sub> = 2m + 4m = 6m    v = ω·r = 0,3 1/s · 6m = 1,8 m/s"; 
 }
 elseif($tasknumber>4){
     $quizend=1;$tasknumber=$tasknumber-1;

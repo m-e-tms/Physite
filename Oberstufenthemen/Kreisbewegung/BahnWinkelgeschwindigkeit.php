@@ -27,9 +27,9 @@
   <div class="widget">
     <h2>Einleitung</h2>
     <p align="left">Manchmal bewegen sich Objekte auf kreisförmigen Bahnen. Die Bewegung dieser Objekte können wir physikalisch beschreiben. Auf dieser Seite setzen wir uns mit Periodendauer, Bahn- und Winkelgeschwindigkeit auseinander.</p>
-    <p align="left">Die Periodendauer, auch als Umlaufzeit bezeichnet, beschreibt dabei die Zeit, in der das Objekt die gesamte Kreisbahn einmal umläuft.</p>
-    <p align="left">Um die Geschwindigkeit zu beschreiben, gibt zwei unterschiedliche Möglichkeiten. Erstens, die Bahngeschwindigkeit. Diese entspricht der klassischen Geschwindigkeit als Strecke pro Zeit. Hierfür muss man den Umfang der Kreisbahn berechnen. Diese entspricht der in der Periodendauer zurückgelegten Strecke. </p>
-    <p align="left">Zweitens, die Winkelgeschwindigkeit. Diese beschreibt die Bewegung als Winkel pro Zeit. Man kann an ihr also nicht ablesen, welche Distanz ein Objekt zurücklegt (bzw. nur indirekt), sondern nur die Länge der zurückgelegten Strecke im Verhältnis zum Kreis. In der Physik wird hierfür i.d.R. das Bogenmaß verwendet (360°=2 &#960). Alle drei Größen sind unten mit Formelzeichen, Formel und Einheit aufgelistet.</p>
+    <p align="left">Die Periodendauer <i>T</i>, auch als Umlaufzeit bezeichnet, beschreibt dabei die Zeit, in der das Objekt die gesamte Kreisbahn einmal umläuft.</p>
+    <p align="left">Um die Geschwindigkeit zu beschreiben, gibt zwei unterschiedliche Möglichkeiten. Erstens, die Bahngeschwindigkeit <i>v</i>. Diese entspricht der klassischen Geschwindigkeit als Strecke pro Zeit. Hierfür muss man den Umfang der Kreisbahn berechnen. Diese entspricht der in der Periodendauer zurückgelegten Strecke. </p>
+    <p align="left">Zweitens, die Winkelgeschwindigkeit <i>ω</i>. Diese beschreibt die Bewegung als Winkel pro Zeit. Man kann an ihr also nicht ablesen, welche Distanz ein Objekt zurücklegt (bzw. nur indirekt), sondern nur die Länge der zurückgelegten Strecke im Verhältnis zum Kreis. In der Physik wird hierfür i.d.R. das Bogenmaß verwendet (360°=2 &#960). Alle drei Größen sind unten mit Formelzeichen, Formel und Einheit aufgelistet.</p>
     
     <table border="1" cellspacing="0" cellpadding="5" align="center">
   <thead>
