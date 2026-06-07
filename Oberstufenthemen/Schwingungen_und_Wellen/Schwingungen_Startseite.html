@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html>
+<head>
+
+  <meta charset="UTF-8">
+  <link rel="stylesheet" href="test.css">
+  <link rel="stylesheet" href="Schwingungen_Startseite.css">
+
+</head>
+<body>
+
+  <nav>
+    <div class="element">Home</div>
+    <div class="element">Scoreboard</div>
+    <div class="element">News</div>
+    <div class="element no-border dropdown">
+      Dropdown
+      <div class="dropdown-content">
+        <button>Link 1</button>
+        <button>Link 2</button>
+        <button>Link 3</button>
+      </div>
+    </div>
+  </nav>
+
+<div class="card">
+<div class="widget">
+<h1>Simulation: Grundlagen einer Schwingung</h1>
+<p align="left">
+  Eine Schwingung ist eine zeitlich periodische Bewegung eines Systems um eine Gleichgewichtslage. Wenn sich diese Schwingung im Raum ausbreitet, spricht man von einer Welle. 
+  Nutzen Sie die Schieberegler unter dem Graphen, um die Frequenz (Geschwindigkeit der Bewegung) und die Amplitude (Höhe der Welle) in Echtzeit zu steuern. 
+  Die farbigen Maßklammern zeigen Ihnen direkt im Graphen die resultierende Amplitude (in Rot) und Wellenlänge (in Grün) an.
+</p>
+<canvas id="schwingungCanvas"></canvas>
+
+<div class="slider-container">
+  <div class="slider-group">
+    <div class="slider-label-row">
+      <span class="slider-name">
+        <span class="slider-name-dot freq"></span>
+        Frequenz
+      </span>
+      <span class="slider-value freq"><span id="freqValue">1.0</span> Hz</span>
+    </div>
+    <input type="range" id="freqSlider" min="0.1" max="5.0" step="0.1" value="1.0" class="custom-slider">
+  </div>
+
+  <div class="slider-group">
+    <div class="slider-label-row">
+      <span class="slider-name">
+        <span class="slider-name-dot amp"></span>
+        Amplitude
+      </span>
+      <span class="slider-value amp"><span id="ampValue">100</span> px</span>
+    </div>
+    <input type="range" id="ampSlider" min="10" max="200" step="5" value="100" class="custom-slider">
+  </div>
+</div>
+
+</div>
+</div>
+
+<script src="Schwingungen_Startseite.js"></script>
+</body>
+</html>
