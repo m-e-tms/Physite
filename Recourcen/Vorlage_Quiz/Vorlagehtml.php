@@ -23,13 +23,15 @@
   </nav>
 
 <div class="card">
+  <div class="widget">
 <h1>Füge hier deine Überschrift ein.</h1>
 <p align="left">Hier dein Text.</p>
 <canvas></canvas>
 </div>
+</div>
 <br>
 
-<!-- Für PHP-Quiz -->
+<!-- Für PHP-Quiz, ggb. in eine "Card" -->
 <div class="card">
 <h1>Quiz</h1>
 
@@ -37,7 +39,7 @@
 <!-- Nach dem Abschluss des Quizes. Bei dieser Verwendung als PHP-Datei speichern. Ansonsten entfernen (bis <form)-->
 <div class="widget">
 <?php
-$score = $_POST["score"] ?? $_GET["score"] ?? 0; 
+$score = $_POST["score"] ?? $_GET["score"] ?? 0;
 $tasknumber = isset($_POST['tasknumber']) ? $_POST['tasknumber'] : (isset($_GET['tasknumber']) ? $_GET['tasknumber'] - 1 : 0);
 echo "<p>Du hast das Quiz abgeschlossen.</p>";
 echo "<p>Punkte: $score</p>";
