@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html>
+<head>
+
+  <meta charset="UTF-8">
+  <link rel="stylesheet" href="test.css">
+  <link rel="stylesheet" href="interferenz.css">
+
+</head>
+<body>
+
+  <nav>
+    <div class="element">Home</div>
+    <div class="element">Scoreboard</div>
+    <div class="element">News</div>
+    <div class="element no-border dropdown">
+      Dropdown
+      <div class="dropdown-content">
+        <button>Link 1</button>
+        <button>Link 2</button>
+        <button>Link 3</button>
+      </div>
+    </div>
+  </nav>
+
+<div class="card">
+<div class="widget">
+<h1>Simulation: Interferenz zweier Wellen</h1>
+<p align="left">
+  Wenn zwei Wellenpulse aufeinander zulaufen, überlagern sie sich im Moment des Zusammentreffens.
+  Bei gleicher Auslenkungsrichtung entsteht <strong>konstruktive Interferenz</strong> – die Amplituden addieren sich.
+  Bei entgegengesetzter Auslenkung kommt es zur <strong>destruktiven Interferenz</strong> – die Amplituden heben sich teilweise oder vollständig auf.
+  Stellen Sie Amplitude und Wellenlänge beider Pulse über die Schieberegler ein und beobachten Sie das Ergebnis.
+</p>
+<canvas id="interferenzCanvas"></canvas>
+
+<div class="slider-row">
+  <!-- Welle A (links) -->
+  <div class="slider-column">
+    <div class="column-header waveA-header">
+      <span class="column-dot waveA-dot"></span>
+      Welle A <span class="direction-arrow">→</span>
+    </div>
+
+    <div class="slider-group">
+      <div class="slider-label-row">
+        <span class="slider-name">
+          <span class="slider-name-dot ampA"></span>
+          Amplitude A
+        </span>
+        <span class="slider-value val-ampA"><span id="ampAValue">100</span> px</span>
+      </div>
+      <input type="range" id="ampASlider" min="-200" max="200" step="5" value="100" class="custom-slider slider-waveA">
+    </div>
+
+    <div class="slider-group">
+      <div class="slider-label-row">
+        <span class="slider-name">
+          <span class="slider-name-dot lamA"></span>
+          Wellenlänge A
+        </span>
+        <span class="slider-value val-lamA"><span id="lambdaAValue">200</span> px</span>
+      </div>
+      <input type="range" id="lambdaASlider" min="50" max="500" step="10" value="200" class="custom-slider slider-waveA">
+    </div>
+  </div>
+
+  <!-- Welle B (rechts) -->
+  <div class="slider-column">
+    <div class="column-header waveB-header">
+      <span class="column-dot waveB-dot"></span>
+      Welle B <span class="direction-arrow">←</span>
+    </div>
+
+    <div class="slider-group">
+      <div class="slider-label-row">
+        <span class="slider-name">
+          <span class="slider-name-dot ampB"></span>
+          Amplitude B
+        </span>
+        <span class="slider-value val-ampB"><span id="ampBValue">100</span> px</span>
+      </div>
+      <input type="range" id="ampBSlider" min="-200" max="200" step="5" value="100" class="custom-slider slider-waveB">
+    </div>
+
+    <div class="slider-group">
+      <div class="slider-label-row">
+        <span class="slider-name">
+          <span class="slider-name-dot lamB"></span>
+          Wellenlänge B
+        </span>
+        <span class="slider-value val-lamB"><span id="lambdaBValue">200</span> px</span>
+      </div>
+      <input type="range" id="lambdaBSlider" min="50" max="500" step="10" value="200" class="custom-slider slider-waveB">
+    </div>
+  </div>
+</div>
+
+<!-- Geschwindigkeit (volle Breite) -->
+<div class="slider-full">
+  <div class="slider-group">
+    <div class="slider-label-row">
+      <span class="slider-name">
+        <span class="slider-name-dot speed-dot"></span>
+        Geschwindigkeit
+      </span>
+      <span class="slider-value val-speed"><span id="speedValue">1.0</span></span>
+    </div>
+    <input type="range" id="speedSlider" min="0.1" max="5" step="0.1" value="1" class="custom-slider slider-speed">
+  </div>
+</div>
+
+</div>
+</div>
+
+<script src="interferenz.js"></script>
+</body>
+</html>
