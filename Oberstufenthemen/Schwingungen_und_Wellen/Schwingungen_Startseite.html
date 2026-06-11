@@ -27,10 +27,142 @@
 <div class="widget">
 <h1>Simulation: Grundlagen einer Schwingung</h1>
 <p align="left">
-  Eine Schwingung ist eine zeitlich periodische Bewegung eines Systems um eine Gleichgewichtslage. Wenn sich diese Schwingung im Raum ausbreitet, spricht man von einer Welle. 
-  Nutzen Sie die Schieberegler unter dem Graphen, um die Frequenz (Geschwindigkeit der Bewegung) und die Amplitude (Höhe der Welle) in Echtzeit zu steuern. 
-  Die farbigen Maßklammern zeigen Ihnen direkt im Graphen die resultierende Amplitude (in Rot) und Wellenlänge (in Grün) an.
+Eine Schwingung ist eine periodische Bewegung um eine Ruhelage, die durch das Zusammenspiel von Rückstellkraft und Trägheit entsteht.
 </p>
+<span class="box" align="center">
+  <p>
+    <b>Jello
+  </p>
+</span>
+<canvas id="pendelCanvas"></canvas>
+
+<script>
+(function() {
+  const canvas = document.getElementById('pendelCanvas');
+  const ctx = canvas.getContext('2d');
+
+  const LW = 900, LH = 340;
+
+  function resize() {
+    const rect = canvas.getBoundingClientRect();
+    const dpr = window.devicePixelRatio || 1;
+    canvas.width  = rect.width  * dpr;
+    canvas.height = rect.height * dpr;
+    ctx.resetTransform();
+    ctx.scale(canvas.width / LW, canvas.height / LH);
+  }
+
+  const OMEGA  = Math.PI * 0.55;
+  const THETA0 = Math.PI / 7;
+  const AMP_SP = 80;
+  const L_ROD  = 160;
+  const BOB_R  = 18;
+
+  const CX_PEND = 230, PY_PEND = 60;
+  const CX_SPRI = 670, SPR_TOP = 30;
+
+  function drawSpring(x, y1, y2, coils) {
+    const len  = y2 - y1;
+    const step = len / (coils * 2 + 2);
+    const w    = 18;
+    ctx.beginPath();
+    ctx.moveTo(x, y1);
+    ctx.lineTo(x, y1 + step);
+    for (let i = 0; i < coils; i++) {
+      ctx.lineTo(x + w, y1 + step + (2*i+1)*step);
+      ctx.lineTo(x - w, y1 + step + (2*i+2)*step);
+    }
+    ctx.lineTo(x, y2);
+  }
+
+  function draw(t) {
+    ctx.fillStyle = '#0b0f19';
+    ctx.fillRect(0, 0, LW, LH);
+
+    ctx.strokeStyle = '#1e293b';
+    ctx.lineWidth = 1;
+    ctx.beginPath(); ctx.moveTo(60, LH-4); ctx.lineTo(LW-60, LH-4); ctx.stroke();
+
+    const phase = OMEGA * t;
+
+    // ── Fadenpendel ───────────────────────────────────────────────────
+    const theta = THETA0 * Math.cos(phase);
+    const bx = CX_PEND + L_ROD * Math.sin(theta);
+    const by = PY_PEND + L_ROD * Math.cos(theta);
+
+    ctx.fillStyle = '#334155';
+    ctx.fillRect(CX_PEND - 24, PY_PEND - 10, 48, 10);
+    ctx.fillStyle = '#475569';
+    ctx.beginPath(); ctx.arc(CX_PEND, PY_PEND, 5, 0, Math.PI*2); ctx.fill();
+
+    ctx.strokeStyle = '#94a3b8'; ctx.lineWidth = 2;
+    ctx.beginPath(); ctx.moveTo(CX_PEND, PY_PEND); ctx.lineTo(bx, by); ctx.stroke();
+
+    const g1 = ctx.createRadialGradient(bx-5, by-5, 2, bx, by, BOB_R);
+    g1.addColorStop(0, '#93c5fd'); g1.addColorStop(1, '#1d4ed8');
+    ctx.beginPath(); ctx.arc(bx, by, BOB_R, 0, Math.PI*2);
+    ctx.fillStyle = 'rgba(59,130,246,0.18)'; ctx.fill();
+    ctx.beginPath(); ctx.arc(bx, by, BOB_R, 0, Math.PI*2);
+    ctx.fillStyle = g1; ctx.fill();
+    ctx.strokeStyle = '#60a5fa'; ctx.lineWidth = 1.5; ctx.stroke();
+
+    ctx.font = '500 14px Outfit, sans-serif';
+    ctx.fillStyle = '#64748b'; ctx.textAlign = 'center';
+    ctx.fillText('Fadenpendel', CX_PEND, LH - 16);
+
+    // ── Federpendel ───────────────────────────────────────────────────
+    const disp  = AMP_SP * Math.cos(phase);
+    const restY = 170;
+    const massY = restY + disp;
+    const massW = 52, massH = 36;
+
+    ctx.fillStyle = '#334155';
+    ctx.fillRect(CX_SPRI - 28, SPR_TOP, 56, 10);
+
+    ctx.strokeStyle = '#94a3b8'; ctx.lineWidth = 2;
+    drawSpring(CX_SPRI, SPR_TOP + 10, massY - massH/2, 7);
+    ctx.stroke();
+
+    const mgx = CX_SPRI - massW/2, mgy = massY - massH/2, r = 6;
+    ctx.fillStyle = 'rgba(59,130,246,0.12)';
+    ctx.strokeStyle = '#3b82f6'; ctx.lineWidth = 1.5;
+    ctx.beginPath();
+    ctx.moveTo(mgx+r, mgy); ctx.lineTo(mgx+massW-r, mgy);
+    ctx.arcTo(mgx+massW, mgy, mgx+massW, mgy+r, r);
+    ctx.lineTo(mgx+massW, mgy+massH-r);
+    ctx.arcTo(mgx+massW, mgy+massH, mgx+massW-r, mgy+massH, r);
+    ctx.lineTo(mgx+r, mgy+massH);
+    ctx.arcTo(mgx, mgy+massH, mgx, mgy+massH-r, r);
+    ctx.lineTo(mgx, mgy+r);
+    ctx.arcTo(mgx, mgy, mgx+r, mgy, r);
+    ctx.closePath();
+    ctx.fill();
+    ctx.shadowColor = 'rgba(96,165,250,0.5)'; ctx.shadowBlur = 10;
+    ctx.stroke();
+    ctx.shadowBlur = 0;
+
+    ctx.font = '500 14px Outfit, sans-serif';
+    ctx.fillStyle = '#64748b'; ctx.textAlign = 'center';
+    ctx.fillText('Federpendel', CX_SPRI, LH - 16);
+
+    ctx.font = '600 15px Outfit, sans-serif';
+    ctx.fillStyle = '#475569'; ctx.textAlign = 'center';
+    ctx.fillText('', LW/2, LH - 16);
+  }
+
+  let start = null;
+  function loop(ts) {
+    if (!start) start = ts;
+    draw((ts - start) / 1000);
+    requestAnimationFrame(loop);
+  }
+
+  resize();
+  requestAnimationFrame(loop);
+  window.addEventListener('resize', resize);
+})();
+</script>
+
 <canvas id="schwingungCanvas"></canvas>
 
 <div class="slider-container">
