@@ -1,0 +1,1220 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Doppelspalt-Experiment – Physiksimulation</title>
+<style>
+:root{
+  --bg:#080c12;--panel:#0f1520;--border:#1c2838;--accent:#00c8ff;
+  --accent2:#ff6b35;--green:#2ecc71;--red:#e74c3c;--yellow:#f1c40f;
+  --text:#ccd9e8;--muted:#4a6070;--hi:#121e2c;--fmla:#090e18;
+  --mono:'Courier New',monospace;--ui:'Segoe UI',system-ui,sans-serif;
+  --r:7px;
+}
+*{box-sizing:border-box;margin:0;padding:0;}
+body{background:var(--bg);color:var(--text);font-family:var(--ui);height:100vh;overflow:hidden;}
+/* HEADER */
+header{
+  background:var(--panel);border-bottom:1px solid var(--border);
+  padding:9px 18px;display:flex;align-items:center;gap:12px;
+  position:sticky;top:0;z-index:100;height:44px;
+}
+header h1{font-size:0.95rem;font-weight:700;letter-spacing:.06em;color:var(--accent);}
+.badge{font-size:.68rem;color:var(--muted);border:1px solid var(--border);border-radius:4px;padding:2px 7px;}
+/* LAYOUT */
+.layout{display:grid;grid-template-columns:258px 1fr 288px;height:calc(100vh - 44px);}
+/* PANELS */
+.lpanel,.rpanel{overflow-y:auto;padding:12px;display:flex;flex-direction:column;gap:9px;}
+.lpanel{background:var(--panel);border-right:1px solid var(--border);}
+.rpanel{background:var(--panel);border-left:1px solid var(--border);}
+/* SECTION TITLE */
+.sec{font-size:.62rem;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);
+     margin-bottom:5px;display:flex;align-items:center;gap:5px;}
+.sec::after{content:'';flex:1;height:1px;background:var(--border);}
+/* SLIDER */
+.sli{background:var(--hi);border:1px solid var(--border);border-radius:var(--r);padding:9px;transition:border-color .3s;}
+.sli.flash{border-color:var(--accent);animation:fl .5s;}
+@keyframes fl{0%{background:rgba(0,200,255,.14)}100%{background:var(--hi)}}
+.sli-hd{display:flex;justify-content:space-between;margin-bottom:5px;}
+.sli-lbl{font-size:.78rem;font-family:var(--mono);}
+.sli-lbl .s{color:var(--accent);font-style:italic;}
+.sli-val{font-size:.8rem;font-family:var(--mono);color:var(--yellow);font-weight:700;}
+input[type=range]{width:100%;height:4px;appearance:none;background:var(--border);border-radius:2px;outline:none;cursor:pointer;}
+input[type=range]::-webkit-slider-thumb{appearance:none;width:13px;height:13px;border-radius:50%;background:var(--accent);border:2px solid #000;cursor:pointer;}
+.wlrow{display:flex;align-items:center;gap:5px;margin-top:4px;}
+.wlsw{display:inline-block;width:10px;height:10px;border-radius:50%;border:1px solid rgba(255,255,255,.2);}
+/* CHECKBOX */
+.chkg{display:flex;flex-direction:column;gap:5px;}
+.chki{display:flex;align-items:center;gap:7px;cursor:pointer;font-size:.77rem;color:var(--text);}
+.chki input{accent-color:var(--accent);width:12px;height:12px;}
+/* MODE BTNS */
+.mbtns{display:flex;gap:5px;}
+.mbtn{flex:1;background:var(--hi);border:1px solid var(--border);color:var(--muted);
+      padding:5px;border-radius:4px;cursor:pointer;font-size:.71rem;text-align:center;transition:all .2s;}
+.mbtn.active{border-color:var(--accent2);color:var(--accent2);background:rgba(255,107,53,.1);}
+/* CENTER */
+.cpanel{display:flex;flex-direction:column;overflow:hidden;}
+.vtabs{display:flex;background:var(--panel);border-bottom:1px solid var(--border);padding:0 10px;}
+.vt{padding:9px 13px;cursor:pointer;font-size:.74rem;font-weight:600;letter-spacing:.04em;
+    color:var(--muted);border-bottom:2px solid transparent;transition:all .2s;white-space:nowrap;}
+.vt.active{color:var(--accent);border-bottom-color:var(--accent);}
+.vt:hover:not(.active){color:var(--text);}
+.cwrap{flex:1;position:relative;background:#04070e;overflow:hidden;}
+.cwrap canvas{position:absolute;top:0;left:0;width:100%;height:100%;cursor:crosshair;}
+/* ZOOM CONTROLS */
+.zctrl{position:absolute;bottom:10px;right:10px;display:flex;gap:3px;z-index:10;}
+.zbtn{background:rgba(15,21,32,.92);border:1px solid var(--border);color:var(--text);
+      width:27px;height:27px;border-radius:4px;cursor:pointer;font-size:.95rem;
+      display:flex;align-items:center;justify-content:center;transition:border-color .2s;}
+.zbtn:hover{border-color:var(--accent);color:var(--accent);}
+.zlbl{background:rgba(15,21,32,.92);border:1px solid var(--border);color:var(--muted);
+      padding:0 7px;border-radius:4px;font-size:.68rem;font-family:var(--mono);display:flex;align-items:center;}
+/* WAVE CONTROLS */
+.wavebar{position:absolute;top:10px;left:50%;transform:translateX(-50%);
+         z-index:10;display:none;flex-direction:column;align-items:center;gap:4px;}
+.wavebtn{background:rgba(0,200,255,.14);border:1px solid var(--accent);color:var(--accent);
+         padding:5px 16px;border-radius:4px;cursor:pointer;font-size:.76rem;font-weight:700;transition:all .2s;}
+.wavebtn:hover{background:rgba(0,200,255,.26);}
+.wavebtn.run{background:rgba(231,76,60,.14);border-color:var(--red);color:var(--red);}
+.wavenote{font-size:.66rem;color:var(--muted);}
+/* RIGHT PANEL ELEMENTS */
+.fbox{background:var(--fmla);border:1px solid var(--border);border-radius:var(--r);
+      padding:10px;font-family:var(--mono);font-size:.74rem;line-height:1.78;}
+.fl{color:var(--muted);font-size:.62rem;letter-spacing:.08em;text-transform:uppercase;margin-bottom:2px;display:block;}
+.feq{color:var(--text);}
+.fval{color:var(--yellow);}
+.fsym{color:var(--accent);font-style:italic;}
+.fres{color:var(--green);font-weight:700;}
+.fwarn{color:var(--accent2);font-size:.68rem;}
+/* MEASURE */
+.mbox{background:var(--fmla);border:1px solid var(--accent);border-radius:var(--r);padding:10px;display:none;}
+.mbox.on{display:block;}
+.mtitle{color:var(--accent);font-size:.66rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;margin-bottom:6px;}
+.mrow{display:flex;justify-content:space-between;padding:2px 0;border-bottom:1px solid var(--border);
+      font-size:.74rem;font-family:var(--mono);}
+.mrow:last-child{border-bottom:none;}
+.mk{color:var(--muted);}
+.mv{color:var(--yellow);font-weight:700;}
+.minterp{margin-top:6px;font-size:.73rem;padding:5px 7px;border-radius:4px;font-family:var(--mono);line-height:1.5;}
+.minterp.max{background:rgba(46,204,113,.1);border:1px solid var(--green);color:var(--green);}
+.minterp.min{background:rgba(231,76,60,.1);border:1px solid var(--red);color:var(--red);}
+.minterp.mid{background:var(--hi);border:1px solid var(--border);color:var(--text);}
+.clue{font-size:.7rem;color:var(--muted);text-align:center;padding:5px 0;}
+/* LEARN */
+.lbox{background:var(--fmla);border:1px solid var(--border);border-radius:var(--r);padding:10px;display:none;}
+.lbox.on{display:block;}
+.lstep{display:none;font-size:.78rem;line-height:1.62;}
+.lstep.on{display:block;}
+.lstep h4{color:var(--accent);font-size:.74rem;font-weight:700;margin-bottom:5px;}
+.lnav{display:flex;gap:5px;margin-top:8px;}
+.lnav button{flex:1;background:var(--hi);border:1px solid var(--border);color:var(--text);
+             padding:4px;border-radius:4px;cursor:pointer;font-size:.72rem;transition:all .2s;}
+.lnav button:hover{border-color:var(--accent);color:var(--accent);}
+.lctr{text-align:center;font-size:.68rem;color:var(--muted);font-family:var(--mono);padding:3px 0;}
+/* TASK */
+.tbox{background:var(--fmla);border:1px solid var(--yellow);border-radius:var(--r);padding:10px;display:none;}
+.tbox.on{display:block;}
+.ttitle{color:var(--yellow);font-size:.66rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;margin-bottom:6px;}
+.tq{font-size:.78rem;line-height:1.6;margin-bottom:5px;}
+.thinttxt{font-size:.68rem;color:var(--muted);margin-bottom:4px;}
+.tinprow{display:flex;gap:5px;}
+.tinprow input{flex:1;background:var(--hi);border:1px solid var(--border);color:var(--yellow);
+               padding:4px 7px;border-radius:4px;font-family:var(--mono);font-size:.78rem;}
+.tinprow button{background:var(--yellow);border:none;color:#000;padding:4px 9px;
+                border-radius:4px;cursor:pointer;font-weight:700;font-size:.74rem;}
+.tfb{margin-top:5px;font-size:.74rem;font-family:var(--mono);display:none;}
+.tfb.ok{color:var(--green);display:block;}
+.tfb.err{color:var(--red);display:block;}
+.tnew{margin-top:6px;width:100%;background:transparent;border:1px solid var(--border);
+      color:var(--muted);padding:4px;border-radius:4px;cursor:pointer;font-size:.71rem;transition:all .2s;}
+.tnew:hover{border-color:var(--yellow);color:var(--yellow);}
+/* SCROLLBAR */
+::-webkit-scrollbar{width:4px;}
+::-webkit-scrollbar-track{background:transparent;}
+::-webkit-scrollbar-thumb{background:var(--border);border-radius:2px;}
+</style>
+</head>
+<body>
+<header>
+  <h1>⟨ψ| Doppelspalt-Experiment</h1>
+  <span class="badge">Physik Sek. II</span>
+</header>
+
+<div class="layout">
+<!-- ═══ LEFT PANEL ═══ -->
+<div class="lpanel">
+  <div class="sec">Parameter</div>
+  <div style="display:flex;flex-direction:column;gap:7px">
+    <div class="sli" id="sl-lambda">
+      <div class="sli-hd">
+        <span class="sli-lbl"><span class="s">λ</span> Wellenlänge</span>
+        <span class="sli-val" id="vl">550 nm</span>
+      </div>
+      <input type="range" id="sl_lambda" min="380" max="780" value="550" step="1">
+      <div class="wlrow"><span class="wlsw" id="wlsw"></span><span style="font-size:.68rem;color:var(--muted)" id="wlname">Grün</span></div>
+    </div>
+    <div class="sli" id="sl-d">
+      <div class="sli-hd">
+        <span class="sli-lbl"><span class="s">d</span> Spaltabstand</span>
+        <span class="sli-val" id="vd">0.40 mm</span>
+      </div>
+      <input type="range" id="sl_d" min="50" max="2000" value="400" step="10">
+    </div>
+    <div class="sli" id="sl-b">
+      <div class="sli-hd">
+        <span class="sli-lbl"><span class="s">b</span> Spaltbreite</span>
+        <span class="sli-val" id="vb">0.08 mm</span>
+      </div>
+      <input type="range" id="sl_b" min="10" max="500" value="80" step="5">
+    </div>
+    <div class="sli" id="sl-e">
+      <div class="sli-hd">
+        <span class="sli-lbl"><span class="s">e</span> Schirmabstand</span>
+        <span class="sli-val" id="ve">1.00 m</span>
+      </div>
+      <input type="range" id="sl_e" min="200" max="5000" value="1000" step="50">
+    </div>
+  </div>
+
+  <div class="sec">Optionen</div>
+  <div class="chkg">
+    <label class="chki"><input type="checkbox" id="ck_max" checked> Maxima anzeigen</label>
+    <label class="chki"><input type="checkbox" id="ck_min"> Minima anzeigen</label>
+    <label class="chki"><input type="checkbox" id="ck_delta"> Gangunterschied (Strahlen)</label>
+    <label class="chki"><input type="checkbox" id="ck_beug" checked> Einzelspalt-Hülle</label>
+    <label class="chki"><input type="checkbox" id="ck_form" checked> Formeln anzeigen</label>
+  </div>
+
+  <div class="sec">Modus</div>
+  <div class="mbtns">
+    <button class="mbtn" id="mb_learn" onclick="toggleMode('learn')">📖 Lernmodus</button>
+    <button class="mbtn" id="mb_task"  onclick="toggleMode('task')">⚗ Aufgaben</button>
+  </div>
+</div>
+
+<!-- ═══ CENTER ═══ -->
+<div class="cpanel">
+  <div class="vtabs">
+    <div class="vt active" id="tab_setup"     onclick="setView('setup')">Versuchsaufbau</div>
+    <div class="vt"        id="tab_wave"      onclick="setView('wave')">Wellenansicht</div>
+    <div class="vt"        id="tab_ray"       onclick="setView('ray')">Strahlenansicht</div>
+    <div class="vt"        id="tab_intensity" onclick="setView('intensity')">Intensitätsdiagramm</div>
+  </div>
+  <div class="cwrap" id="cwrap">
+    <canvas id="cv"></canvas>
+    <div class="zctrl">
+      <button class="zbtn" onclick="doZoom(1.25)" title="Einzoomen">+</button>
+      <span class="zlbl" id="zlbl">100%</span>
+      <button class="zbtn" onclick="doZoom(0.8)" title="Auszoomen">−</button>
+      <button class="zbtn" onclick="doZoom(0)" title="Zurücksetzen">↺</button>
+    </div>
+    <div class="wavebar" id="wavebar">
+      <button class="wavebtn" id="wavebtn" onclick="toggleWave()">▶ Wellen generieren</button>
+      <span class="wavenote">Statische Vorschau geladen · Animation startet auf Klick</span>
+    </div>
+  </div>
+</div>
+
+<!-- ═══ RIGHT PANEL ═══ -->
+<div class="rpanel">
+  <div class="sec">Formeln</div>
+  <div class="fbox" id="fpanel"></div>
+
+  <div class="sec">Messpunkt</div>
+  <div class="mbox" id="mbox">
+    <div class="mtitle">📍 Gewählter Punkt</div>
+    <div id="mrows"></div>
+    <div class="minterp" id="minterp"></div>
+  </div>
+  <div class="clue" id="clue">Klicke auf den Schirm (Aufbau/Strahlen)<br>oder auf das Intensitätsdiagramm</div>
+
+  <!-- LEARN -->
+  <div class="lbox" id="learn_box">
+    <div class="sec" style="margin-bottom:5px">Lernmodus</div>
+    <div class="lstep on">
+      <h4>Schritt 1 – Licht trifft Doppelspalt</h4>
+      <p>Monochromatisches Licht der Wellenlänge <em style="color:var(--accent)">λ = <span class="lsλ"></span> nm</em> fällt senkrecht auf eine undurchlässige Platte mit <strong>zwei schmalen Öffnungen</strong> im Abstand <em style="color:var(--accent)">d = <span class="lsd"></span> mm</em>. Das Licht kann nur durch diese zwei Spalte hindurch.</p>
+    </div>
+    <div class="lstep">
+      <h4>Schritt 2 – Kohärente Quellen</h4>
+      <p>Aus jedem der beiden Spalte breiten sich <strong style="color:var(--green)">Kreiswellen</strong> aus. Da das Licht aus derselben Quelle stammt, schwingen beide Wellen in einer <em>festen Phasenbeziehung</em> – sie sind <strong>kohärent</strong>. Das ist die Voraussetzung für ein stabiles Interferenzmuster.</p>
+    </div>
+    <div class="lstep">
+      <h4>Schritt 3 – Wellenausbreitung</h4>
+      <p>Die Kreiswellen beider Spalte überlagern sich im Raum. Treffen zwei <strong style="color:var(--green)">Wellenberge</strong> zusammen, addieren sich die Amplituden (<em>konstruktive Interferenz</em>). Trifft ein Berg auf ein Tal, löschen sie sich aus (<em style="color:var(--red)">destruktive Interferenz</em>).</p>
+    </div>
+    <div class="lstep">
+      <h4>Schritt 4 – Gangunterschied Δs</h4>
+      <p>An einem Punkt P auf dem Schirm legen die Wellen beider Spalte unterschiedliche Wege zurück:</p>
+      <p style="font-family:var(--mono);color:var(--accent);margin:5px 0">Δs = s₂ − s₁ = d · sin(θ)</p>
+      <p>Der Gangunterschied entscheidet allein darüber, ob Verstärkung oder Auslöschung eintritt.</p>
+    </div>
+    <div class="lstep">
+      <h4>Schritt 5 – Konstruktive Interferenz</h4>
+      <p>Ist der Gangunterschied ein <strong style="color:var(--green)">ganzzahliges Vielfaches</strong> der Wellenlänge:</p>
+      <p style="font-family:var(--mono);color:var(--green);margin:5px 0">Δs = k · λ,  k = 0, 1, 2, 3, …</p>
+      <p>erscheint ein <strong>heller Streifen</strong> (Maximum k-ter Ordnung).</p>
+    </div>
+    <div class="lstep">
+      <h4>Schritt 6 – Destruktive Interferenz</h4>
+      <p>Ist der Gangunterschied ein <strong style="color:var(--red)">halbzahliges Vielfaches</strong>:</p>
+      <p style="font-family:var(--mono);color:var(--red);margin:5px 0">Δs = (k + ½) · λ</p>
+      <p>erscheint ein <strong>dunkler Streifen</strong> (Minimum). Die Wellen löschen sich exakt aus.</p>
+    </div>
+    <div class="lstep">
+      <h4>Schritt 7 – Interferenzmuster</h4>
+      <p>Das Muster heller und dunkler Streifen entsteht durch alle Positionen, an denen jeweils Verstärkung oder Auslöschung gilt. Mit <em style="color:var(--accent)">λ = <span class="lsλ"></span> nm</em>, <em style="color:var(--accent)">d = <span class="lsd"></span> mm</em>, <em style="color:var(--accent)">e = <span class="lse"></span> m</em> liegt das 1. Maximum bei:</p>
+      <p style="font-family:var(--mono);color:var(--yellow);margin:5px 0">a₁ ≈ λ·e/d ≈ <span id="lsa1"></span> mm</p>
+    </div>
+    <div class="lctr"><span id="lcur">1</span> / 7</div>
+    <div class="lnav">
+      <button onclick="lPrev()">← Zurück</button>
+      <button onclick="lNext()">Weiter →</button>
+    </div>
+  </div>
+
+  <!-- TASK -->
+  <div class="tbox" id="task_box">
+    <div class="ttitle">⚗ Aufgabe</div>
+    <div class="tq" id="tq"></div>
+    <div class="thinttxt" id="thint"></div>
+    <div class="tinprow">
+      <input type="number" id="tinp" placeholder="Antwort …">
+      <button onclick="checkTask()">✓</button>
+    </div>
+    <div class="tfb" id="tfb"></div>
+    <button class="tnew" onclick="newTask()">Neue Aufgabe</button>
+  </div>
+</div>
+</div>
+
+<script>
+// ══════════════════════════════════════════════
+// STATE
+// ══════════════════════════════════════════════
+const S={
+  lambda:550, d:400, b:80, e:1000,
+  showMax:true, showMin:false, showDelta:false, showBeug:true, showForm:true,
+  view:'setup', zoom:1.0, selX:null,
+  mode:null, lstep:0,
+  waveOn:false, waveT:0
+};
+let task=null, wRAF=null;
+
+// ══════════════════════════════════════════════
+// PHYSICS
+// ══════════════════════════════════════════════
+function wlRGB(nm){
+  let r=0,g=0,b=0;
+  if(nm>=380&&nm<440){r=(440-nm)/60;g=0;b=1;}
+  else if(nm>=440&&nm<490){r=0;g=(nm-440)/50;b=1;}
+  else if(nm>=490&&nm<510){r=0;g=1;b=(510-nm)/20;}
+  else if(nm>=510&&nm<580){r=(nm-510)/70;g=1;b=0;}
+  else if(nm>=580&&nm<645){r=1;g=(645-nm)/65;b=0;}
+  else if(nm>=645&&nm<=780){r=1;g=0;b=0;}
+  let a=1;
+  if(nm<420)a=0.3+(nm-380)/40*0.7;
+  if(nm>700)a=0.3+(780-nm)/80*0.7;
+  return{r:Math.round(r*255),g:Math.round(g*255),b:Math.round(b*255),a};
+}
+function wlName(nm){
+  if(nm<420)return'Violett';if(nm<450)return'Blauviolett';if(nm<490)return'Blau';
+  if(nm<510)return'Blaugrün';if(nm<560)return'Grün';if(nm<590)return'Gelb';
+  if(nm<625)return'Orange';return'Rot';
+}
+// intensity(x_mm, lambda_nm, d_µm, b_µm, e_mm, withBeugung) → 0..1
+function intensity(x,lam,d,b,e,wb){
+  const lm=lam*1e-9,dm=d*1e-6,bm=b*1e-6,em=e*1e-3,xm=x*1e-3;
+  const r=Math.sqrt(em*em+xm*xm),sinT=xm/r;
+  const phi=Math.PI*dm*sinT/lm;
+  let I=Math.cos(phi)**2;
+  if(wb&&bm>0){
+    const al=Math.PI*bm*sinT/lm;
+    I*=(Math.abs(al)<1e-14)?1:(Math.sin(al)/al)**2;
+  }
+  return Math.max(0,Math.min(1,I));
+}
+// gangunterschied in nm
+function gU(x,d,e){
+  const xm=x*1e-3,em=e*1e-3,dm=d*1e-6;
+  return dm*xm/Math.sqrt(em*em+xm*xm)*1e9;
+}
+function theta_deg(x,e){return Math.atan2(x,e)*180/Math.PI;}
+function s1s2(x,d,e){
+  const xm=x*1e-3,em=e*1e-3,dm=d*1e-6;
+  const s1=Math.sqrt(em*em+(xm+dm/2)**2)*1e3;
+  const s2=Math.sqrt(em*em+(xm-dm/2)**2)*1e3;
+  return{s1,s2,ds:s2-s1};
+}
+function physRange(){
+  // display range in mm (half-width), zoom-adjusted
+  return Math.max(S.lambda*1e-3*S.e/S.d*5,2)/S.zoom;
+}
+function findMaxima(){
+  const range=physRange()*1.6,N=4000,dx=range*2/N;
+  const pts=[];
+  const xi=i=>-range+i*dx;
+  let p=intensity(xi(0),S.lambda,S.d,S.b,S.e,S.showBeug),c=p,nx;
+  for(let i=1;i<N-1;i++){
+    nx=intensity(xi(i+1),S.lambda,S.d,S.b,S.e,S.showBeug);
+    if(c>=p&&c>=nx&&c>0.005) pts.push({x:xi(i),I:c});
+    p=c;c=nx;
+  }
+  return pts;
+}
+function findMinima(){
+  const range=physRange()*1.6,N=4000,dx=range*2/N;
+  const pts=[];
+  const xi=i=>-range+i*dx;
+  let p=1,c=intensity(xi(0),S.lambda,S.d,S.b,S.e,S.showBeug),nx;
+  for(let i=1;i<N-1;i++){
+    nx=intensity(xi(i+1),S.lambda,S.d,S.b,S.e,S.showBeug);
+    if(c<=p&&c<=nx&&c<0.02) pts.push({x:xi(i),I:c});
+    p=c;c=nx;
+  }
+  return pts;
+}
+// snap x to nearest max or min (for intensity view)
+function snap(x){
+  const all=[...findMaxima(),...findMinima()];
+  if(!all.length)return x;
+  let best=all[0],bd=Math.abs(all[0].x-x);
+  for(const p of all){const dd=Math.abs(p.x-x);if(dd<bd){bd=dd;best=p;}}
+  return bd<physRange()*0.18?best.x:x;
+}
+
+// ══════════════════════════════════════════════
+// CANVAS
+// ══════════════════════════════════════════════
+const cv=document.getElementById('cv');
+const cx=cv.getContext('2d');
+function resize(){
+  const r=cv.parentElement.getBoundingClientRect();
+  cv.width=r.width*devicePixelRatio;
+  cv.height=r.height*devicePixelRatio;
+  cx.scale(devicePixelRatio,devicePixelRatio);
+}
+window.addEventListener('resize',resize);
+resize();
+const W=()=>cv.width/devicePixelRatio;
+const H=()=>cv.height/devicePixelRatio;
+
+// ── label with mandatory dark background (FIX #9) ──
+function lbl(txt,x,y,{col='#8aaccc',sz=11,al='left',bg=true,bgc='rgba(4,7,14,.82)'}={}){
+  cx.save();
+  cx.font=`${sz}px Courier New`;
+  cx.textAlign=al;
+  if(bg){
+    const m=cx.measureText(txt),pw=m.width+6,ph=sz+4;
+    const bx=al==='center'?x-pw/2:al==='right'?x-pw:x-2;
+    cx.fillStyle=bgc;
+    cx.fillRect(bx,y-ph+2,pw,ph);
+  }
+  cx.fillStyle=col;cx.fillText(txt,x,y);
+  cx.restore();
+}
+function rndRect(x,y,w,h,r){
+  cx.beginPath();
+  cx.moveTo(x+r,y);cx.lineTo(x+w-r,y);cx.quadraticCurveTo(x+w,y,x+w,y+r);
+  cx.lineTo(x+w,y+h-r);cx.quadraticCurveTo(x+w,y+h,x+w-r,y+h);
+  cx.lineTo(x+r,y+h);cx.quadraticCurveTo(x,y+h,x,y+h-r);
+  cx.lineTo(x,y+r);cx.quadraticCurveTo(x,y,x+r,y);
+  cx.closePath();
+}
+
+// ══════════════════════════════════════════════
+// VIEW: SETUP
+// ══════════════════════════════════════════════
+function drawSetup(){
+  const w=W(),h=H();
+  cx.clearRect(0,0,w,h);
+  cx.fillStyle='#04070e';cx.fillRect(0,0,w,h);
+  const c=wlRGB(S.lambda),lc=`rgb(${c.r},${c.g},${c.b})`,bc=`rgba(${c.r},${c.g},${c.b},`;
+  const laserX=58,slitX=w*0.30,screenX=w-70,midY=h/2;
+  const screenH=h*0.70*S.zoom,sT=midY-screenH/2,sB=midY+screenH/2;
+  const maxXmm=physRange();
+  const xScale=screenH/2/maxXmm;
+
+  // optical bench
+  cx.strokeStyle='#131e2e';cx.lineWidth=2;cx.setLineDash([6,4]);
+  cx.beginPath();cx.moveTo(laserX,midY);cx.lineTo(screenX,midY);cx.stroke();
+  cx.setLineDash([]);
+
+  // LASER
+  const lg=cx.createLinearGradient(laserX-40,midY-13,laserX-40,midY+13);
+  lg.addColorStop(0,'#243344');lg.addColorStop(1,'#182030');
+  cx.fillStyle=lg;cx.strokeStyle='#304860';cx.lineWidth=1;
+  rndRect(laserX-40,midY-13,40,26,4);cx.fill();cx.stroke();
+  cx.fillStyle='#0a0f18';rndRect(laserX-4,midY-7,6,14,2);cx.fill();
+  cx.fillStyle=lc;cx.font='7px Courier New';
+  cx.fillText('λ='+S.lambda,laserX-38,midY+3);
+
+  // incoming beam
+  const g1=cx.createLinearGradient(laserX,0,slitX,0);
+  g1.addColorStop(0,bc+'0.55)');g1.addColorStop(1,bc+'0.12)');
+  cx.fillStyle=g1;cx.fillRect(laserX,midY-3.5,slitX-laserX,7);
+
+  // DOUBLE SLIT (FIX #1 – two separate narrow slits)
+  const dPx=Math.min(Math.max(S.d/400*32,9),90)*S.zoom;
+  const bPx=Math.min(Math.max(S.b/80*3.5,2.5),18)*S.zoom;
+  drawDblSlit(slitX,midY,dPx,bPx,h*0.4*S.zoom);
+
+  // diffracted fan
+  for(let k=-6;k<=6;k+=0.4){
+    const xmm=k*(S.lambda*1e-3*S.e/S.d);
+    const yPx=midY-xmm*xScale;
+    if(yPx<sT||yPx>sB)continue;
+    const I=intensity(xmm,S.lambda,S.d,S.b,S.e,S.showBeug);
+    if(I<0.04)continue;
+    cx.strokeStyle=bc+(I*.2)+')';cx.lineWidth=1;
+    cx.beginPath();
+    cx.moveTo(slitX,midY-dPx/2);cx.lineTo(screenX,yPx);
+    cx.moveTo(slitX,midY+dPx/2);cx.lineTo(screenX,yPx);
+    cx.stroke();
+  }
+
+  // SCREEN
+  cx.strokeStyle='#253d5c';cx.lineWidth=5;
+  cx.beginPath();cx.moveTo(screenX,sT);cx.lineTo(screenX,sB);cx.stroke();
+
+  // interference pattern on screen
+  const patW=26;
+  for(let py=sT;py<sB;py+=1){
+    const xmm=(midY-py)/xScale;
+    const I=intensity(xmm,S.lambda,S.d,S.b,S.e,S.showBeug);
+    cx.fillStyle=`rgba(${c.r},${c.g},${c.b},${I*c.a})`;
+    cx.fillRect(screenX+5,py,patW,1);
+  }
+
+  // MAXIMA markers on screen
+  const maxs=findMaxima();
+  if(S.showMax){
+    maxs.forEach(m=>{
+      const py=midY-m.x*xScale;
+      if(py<sT+2||py>sB-2)return;
+      cx.fillStyle='rgba(255,240,100,.85)';cx.fillRect(screenX+33,py-1,7,2);
+      const k=Math.round(gU(m.x,S.d,S.e)/S.lambda);
+      lbl(`k=${k}`,screenX+43,py+4,{col:'#f1c40f',sz:10});
+    });
+  }
+  if(S.showMin){
+    findMinima().forEach(m=>{
+      const py=midY-m.x*xScale;
+      if(py<sT||py>sB)return;
+      cx.fillStyle='rgba(231,76,60,.55)';cx.fillRect(screenX+33,py-1,7,2);
+    });
+  }
+
+  // selected point
+  if(S.selX!==null){
+    const selY=midY-S.selX*xScale;
+    if(selY>=sT&&selY<=sB){
+      cx.fillStyle='#fff';cx.beginPath();cx.arc(screenX+5+patW/2,selY,4.5,0,Math.PI*2);cx.fill();
+      if(S.showDelta){
+        cx.strokeStyle='#4499ff';cx.lineWidth=1.8;
+        cx.beginPath();cx.moveTo(slitX,midY-dPx/2);cx.lineTo(screenX,selY);cx.stroke();
+        cx.strokeStyle='#ff4444';cx.lineWidth=1.8;
+        cx.beginPath();cx.moveTo(slitX,midY+dPx/2);cx.lineTo(screenX,selY);cx.stroke();
+      }
+    }
+  }
+
+  // Labels
+  lbl('Laser',laserX-20,midY-28,{col:'#4a6888',sz:10});
+  lbl('Doppelspalt',slitX,midY-h*0.4*S.zoom-12,{col:'#4a6888',sz:10,al:'center'});
+  lbl('Schirm',screenX+5,sT-10,{col:'#4a6888',sz:10});
+
+  // distance arrow
+  const ay=sB+24;
+  cx.strokeStyle='#1d3852';cx.lineWidth=1;
+  cx.beginPath();cx.moveTo(slitX,ay);cx.lineTo(screenX,ay);cx.stroke();
+  for(const ax of[slitX,screenX]){
+    const dir=ax===slitX?1:-1;
+    cx.beginPath();cx.moveTo(ax,ay);cx.lineTo(ax+dir*6,ay-3);cx.lineTo(ax+dir*6,ay+3);
+    cx.closePath();cx.fillStyle='#1d3852';cx.fill();
+  }
+  const eStr=S.e>=1000?(S.e/1000).toFixed(2)+' m':S.e+' mm';
+  lbl('e = '+eStr,(slitX+screenX)/2,ay+15,{col:'#4a80b0',sz:12,al:'center',bgc:'rgba(4,7,14,.9)'});
+
+  // scale bar
+  const sbMm=Math.max(1,Math.floor(xScale/30));
+  const sbW=sbMm*xScale;
+  cx.strokeStyle='rgba(255,255,255,.35)';cx.lineWidth=1;
+  cx.beginPath();cx.moveTo(screenX+5,sT-20);cx.lineTo(screenX+5+sbW,sT-20);cx.stroke();
+  lbl(sbMm+' mm',screenX+5+sbW/2,sT-27,{col:'rgba(255,255,255,.45)',sz:9,al:'center'});
+}
+
+// correct two-slit geometry (FIX #1)
+function drawDblSlit(x,my,dPx,bPx,halfH){
+  // ensure bPx < dPx/2
+  bPx=Math.min(bPx,dPx/2-1);
+  const t1=my-dPx/2-bPx/2,b1=my-dPx/2+bPx/2; // upper slit
+  const t2=my+dPx/2-bPx/2,b2=my+dPx/2+bPx/2; // lower slit
+  const bw=9;
+  cx.fillStyle='#1e2e40';cx.strokeStyle='#3a5a78';cx.lineWidth=1;
+  // top solid
+  cx.fillRect(x-bw/2,my-halfH,bw,halfH-dPx/2-bPx/2);
+  cx.strokeRect(x-bw/2,my-halfH,bw,halfH-dPx/2-bPx/2);
+  // middle solid
+  cx.fillRect(x-bw/2,b1,bw,t2-b1);
+  cx.strokeRect(x-bw/2,b1,bw,t2-b1);
+  // bottom solid
+  cx.fillRect(x-bw/2,b2,bw,halfH-dPx/2-bPx/2);
+  cx.strokeRect(x-bw/2,b2,bw,halfH-dPx/2-bPx/2);
+  // faint slit glow (open areas)
+  cx.fillStyle='rgba(80,160,255,.06)';
+  cx.fillRect(x-bw/2,t1,bw,bPx);
+  cx.fillRect(x-bw/2,t2,bw,bPx);
+  // slit edge lines
+  cx.strokeStyle='rgba(100,180,255,.35)';cx.lineWidth=.5;
+  for(const sy of[t1,b1,t2,b2]){
+    cx.beginPath();cx.moveTo(x-bw/2,sy);cx.lineTo(x+bw/2,sy);cx.stroke();
+  }
+}
+
+// ══════════════════════════════════════════════
+// VIEW: WAVE (FIX #5 – generate button, no crash)
+// ══════════════════════════════════════════════
+function toggleWave(){
+  if(S.waveOn){
+    S.waveOn=false;
+    cancelAnimationFrame(wRAF);
+    const btn=document.getElementById('wavebtn');
+    btn.textContent='▶ Wellen generieren';btn.classList.remove('run');
+    drawWaveStatic();
+  } else {
+    S.waveOn=true;S.waveT=0;
+    const btn=document.getElementById('wavebtn');
+    btn.textContent='■ Stopp';btn.classList.add('run');
+    let last=0;
+    function wloop(ts){
+      if(!S.waveOn)return;
+      S.waveT+=(ts-last)*0.001;last=ts;
+      drawWaveAnim();
+      wRAF=requestAnimationFrame(wloop);
+    }
+    wRAF=requestAnimationFrame(t=>{last=t;wloop(t);});
+  }
+}
+
+function waveBase(){
+  // shared geometry
+  const w=W(),h=H();
+  cx.clearRect(0,0,w,h);cx.fillStyle='#04070e';cx.fillRect(0,0,w,h);
+  const c=wlRGB(S.lambda),my=h/2;
+  const slitX=Math.min(w*0.22,160);
+  const dPx=Math.min(Math.max(S.d/400*38,10),100)*S.zoom;
+  const bPx=Math.min(Math.max(S.b/80*3,2),14)*S.zoom;
+  const bw=8;
+  const s1y=my-dPx/2,s2y=my+dPx/2;
+  // barriers
+  cx.fillStyle='#182230';
+  cx.fillRect(slitX-bw/2,0,bw,s1y-3);
+  cx.fillRect(slitX-bw/2,s1y+3,bw,s2y-s1y-6);
+  cx.fillRect(slitX-bw/2,s2y+3,bw,h-s2y-3);
+  return{w,h,c,slitX,s1y,s2y,dPx};
+}
+
+function drawWaveStatic(){
+  const{w,h,c,slitX,s1y,s2y}=waveBase();
+  // physical-scale wavelength px: ~40px per wave period at 1x zoom
+  const wPx=Math.max(20,Math.min(65,S.lambda/11))*S.zoom;
+
+  // interference intensity field (coarse 4px grid for performance)
+  for(let py=0;py<h;py+=4){
+    for(let px=slitX;px<w;px+=4){
+      const r1=Math.sqrt((px-slitX)**2+(py-s1y)**2);
+      const r2=Math.sqrt((px-slitX)**2+(py-s2y)**2);
+      const phase=2*Math.PI*(r2-r1)/wPx;
+      const I=(1+Math.cos(phase))/2;
+      const fade=Math.max(0,1-(px-slitX)/(w-slitX)*0.7);
+      const al=I*0.55*fade;
+      if(al<0.05)continue;
+      cx.fillStyle=`rgba(${c.r},${c.g},${c.b},${al})`;
+      cx.fillRect(px,py,4,4);
+    }
+  }
+  // nodal (destructive) dashed lines
+  cx.strokeStyle='rgba(231,76,60,.18)';cx.lineWidth=1;cx.setLineDash([3,5]);
+  for(let k=-5;k<=5;k++){
+    if(k===0)continue;
+    const target=(k+0.5)*wPx;
+    cx.beginPath();let first=true;
+    for(let px=slitX;px<w;px+=5){
+      const est=s1y+(s2y-s1y)/2+target*(px-slitX)/Math.max(1,(s2y-s1y));
+      let yy=est;
+      for(let it=0;it<3;it++){
+        const rr1=Math.sqrt((px-slitX)**2+(yy-s1y)**2);
+        const rr2=Math.sqrt((px-slitX)**2+(yy-s2y)**2);
+        yy+=(target-(rr2-rr1))*0.4;
+      }
+      if(yy<0||yy>h){first=true;continue;}
+      if(first){cx.moveTo(px,yy);first=false;}else cx.lineTo(px,yy);
+    }
+    cx.stroke();
+  }
+  cx.setLineDash([]);
+  lbl('Spalt 1',slitX+12,s1y-5,{col:'#8aaccc',sz:11});
+  lbl('Spalt 2',slitX+12,s2y+14,{col:'#8aaccc',sz:11});
+  lbl('Konstruktive Interferenz →',w*0.62,h/2-5,{col:'rgba(46,204,113,.75)',sz:10,al:'center',bgc:'rgba(4,7,14,.75)'});
+  lbl('- - - Destruktive Interferenz (Minimalinien)',w*0.65,h-14,{col:'rgba(231,76,60,.6)',sz:9,al:'center'});
+}
+
+function drawWaveAnim(){
+  const{w,h,c,slitX,s1y,s2y}=waveBase();
+  const wPx=Math.max(20,Math.min(65,S.lambda/11))*S.zoom;
+  const speed=S.waveT*wPx*1.4;
+  const maxR=Math.sqrt(w*w+h*h);
+
+  // animated rings per slit (right half arcs only)
+  for(let src=0;src<2;src++){
+    const sy=src===0?s1y:s2y;
+    for(let rm=(speed%wPx);rm<maxR;rm+=wPx){
+      if(rm<2)continue;
+      const al=Math.max(0,0.52-rm/maxR)*0.7;
+      cx.strokeStyle=`rgba(${c.r},${c.g},${c.b},${al})`;
+      cx.lineWidth=1.5;
+      cx.beginPath();cx.arc(slitX,sy,rm,-Math.PI*0.5,Math.PI*0.5);cx.stroke();
+    }
+  }
+  // coarse interference overlay
+  for(let py=0;py<h;py+=5){
+    for(let px=slitX;px<w;px+=5){
+      const r1=Math.sqrt((px-slitX)**2+(py-s1y)**2);
+      const r2=Math.sqrt((px-slitX)**2+(py-s2y)**2);
+      const phase=2*Math.PI*(r2-r1)/wPx;
+      const I=(1+Math.cos(phase))/2;
+      const fade=Math.max(0,.75-(px-slitX)/(w-slitX)*.6);
+      const al=I*.18*fade;
+      if(al<0.04)continue;
+      cx.fillStyle=`rgba(${c.r},${c.g},${c.b},${al})`;
+      cx.fillRect(px,py,5,5);
+    }
+  }
+  lbl('Spalt 1',slitX+12,s1y-5,{col:'#8aaccc',sz:11});
+  lbl('Spalt 2',slitX+12,s2y+14,{col:'#8aaccc',sz:11});
+}
+
+// ══════════════════════════════════════════════
+// VIEW: RAY (FIX #7 – reacts to all params)
+// ══════════════════════════════════════════════
+function drawRay(){
+  const w=W(),h=H();
+  cx.clearRect(0,0,w,h);cx.fillStyle='#04070e';cx.fillRect(0,0,w,h);
+  const c=wlRGB(S.lambda);
+  const slitX=w*0.22,screenX=w-65,my=h/2;
+  const dPx=Math.min(Math.max(S.d/400*32,8),100)*S.zoom;
+  const bPx=Math.min(Math.max(S.b/80*3.5,2),18)*S.zoom;
+  const halfH=h*0.43;
+  const s1y=my-dPx/2,s2y=my+dPx/2;
+
+  drawDblSlit(slitX,my,dPx,bPx,halfH);
+
+  // SCREEN
+  cx.strokeStyle='#253d5c';cx.lineWidth=4;
+  cx.beginPath();cx.moveTo(screenX,35);cx.lineTo(screenX,h-35);cx.stroke();
+
+  // x-scale (FIX #7: computed from current S.* every frame)
+  const maxXmm=physRange();
+  const xScale=(h/2-45)/maxXmm;
+
+  // interference pattern on screen
+  for(let py=35;py<h-35;py+=1){
+    const xmm=(my-py)/xScale;
+    const I=intensity(xmm,S.lambda,S.d,S.b,S.e,S.showBeug);
+    cx.fillStyle=`rgba(${c.r},${c.g},${c.b},${I*c.a*.9})`;
+    cx.fillRect(screenX+3,py,24,1);
+  }
+
+  // y-axis scale ticks (FIX #9 – background labels)
+  const tickMm=maxXmm>10?5:maxXmm>4?2:maxXmm>1.5?1:0.5;
+  for(let t=-Math.ceil(maxXmm/tickMm)*tickMm;t<=maxXmm;t+=tickMm){
+    const py=my-t*xScale;
+    if(py<35||py>h-35)continue;
+    cx.strokeStyle='rgba(80,120,170,.4)';cx.lineWidth=0.5;
+    cx.beginPath();cx.moveTo(screenX-5,py);cx.lineTo(screenX+2,py);cx.stroke();
+    if(Math.abs(t)>0.001)
+      lbl(t.toFixed(Math.abs(t)<1?1:0)+' mm',screenX-8,py+4,{col:'#6090b8',sz:10,al:'right'});
+  }
+  lbl('x',screenX-8,38,{col:'#6090b8',sz:10,al:'right'});
+  lbl('(mm)',screenX-8,50,{col:'#3a5070',sz:9,al:'right'});
+
+  // MAXIMA/MINIMA
+  if(S.showMax){
+    findMaxima().forEach(m=>{
+      const py=my-m.x*xScale;if(py<35||py>h-35)return;
+      cx.fillStyle='rgba(241,196,15,.8)';cx.fillRect(screenX+29,py-1,8,2);
+      const k=Math.round(gU(m.x,S.d,S.e)/S.lambda);
+      lbl(`k=${k}`,screenX+40,py+4,{col:'#f1c40f',sz:10});
+    });
+  }
+  if(S.showMin){
+    findMinima().forEach(m=>{
+      const py=my-m.x*xScale;if(py<35||py>h-35)return;
+      cx.fillStyle='rgba(231,76,60,.55)';cx.fillRect(screenX+29,py-1,8,2);
+    });
+  }
+
+  // SELECTED RAYS (FIX #7: uses live S.selX)
+  if(S.selX!==null){
+    const selY=my-S.selX*xScale;
+    if(selY>=35&&selY<=h-35){
+      cx.strokeStyle='#4499ff';cx.lineWidth=2;
+      cx.beginPath();cx.moveTo(slitX,s1y);cx.lineTo(screenX,selY);cx.stroke();
+      cx.strokeStyle='#ff4444';cx.lineWidth=2;
+      cx.beginPath();cx.moveTo(slitX,s2y);cx.lineTo(screenX,selY);cx.stroke();
+
+      const ms=s1s2(S.selX,S.d,S.e);
+      lbl(`s₁ = ${ms.s1.toFixed(3)} mm`,(slitX+screenX)/2,(s1y+selY)/2-8,{col:'#88aaff',sz:10,al:'center'});
+      lbl(`s₂ = ${ms.s2.toFixed(3)} mm`,(slitX+screenX)/2,(s2y+selY)/2+14,{col:'#ff8888',sz:10,al:'center'});
+
+      cx.fillStyle='#fff';cx.beginPath();cx.arc(screenX+3,selY,4.5,0,Math.PI*2);cx.fill();
+      const ds=gU(S.selX,S.d,S.e);
+      lbl(`Δs = ${ds.toFixed(1)} nm`,screenX+30,selY-11,{col:'#f1c40f',sz:12,bgc:'rgba(4,7,14,.9)'});
+    }
+  }
+
+  lbl('Spalt 1',slitX,s1y-8,{col:'#607898',sz:10,al:'center'});
+  lbl('Spalt 2',slitX,s2y+16,{col:'#607898',sz:10,al:'center'});
+  lbl('Schirm',screenX+3,28,{col:'#607898',sz:10});
+  lbl('← klicke auf Schirm',screenX-3,h-10,{col:'#2a4060',sz:9,al:'right',bg:false});
+}
+
+// ══════════════════════════════════════════════
+// VIEW: INTENSITY (FIX #8 + #9)
+// ══════════════════════════════════════════════
+function drawIntensity(){
+  const w=W(),h=H();
+  cx.clearRect(0,0,w,h);cx.fillStyle='#04070e';cx.fillRect(0,0,w,h);
+  const c=wlRGB(S.lambda),withB=S.showBeug;
+  const pL=72,pR=52,pT=46,pB=62;
+  const pw=w-pL-pR,ph=h-pT-pB;
+  const maxXmm=physRange();
+
+  // ── Y GRID + labels ──
+  for(let i=0;i<=4;i++){
+    const yv=i*.25,gy=pT+ph-yv*ph;
+    cx.strokeStyle=i===4?'rgba(100,160,220,.35)':'rgba(40,70,110,.28)';
+    cx.lineWidth=i===4?1.5:.5;
+    cx.beginPath();cx.moveTo(pL,gy);cx.lineTo(pL+pw,gy);cx.stroke();
+    lbl(yv.toFixed(2),pL-10,gy+4,{col:'#7aaccf',sz:12,al:'right',bgc:'rgba(4,7,14,.88)'});
+  }
+
+  // ── X GRID + labels (nice step) ──
+  const rawStep=maxXmm/4;
+  const mag=10**Math.floor(Math.log10(rawStep||1));
+  const niceVals=[.1,.2,.25,.5,1,2,2.5,5,10,20,25,50].map(f=>f*mag);
+  const tickStep=niceVals.find(v=>rawStep/v<=2.5&&rawStep/v>=0.35)||rawStep;
+  const startX=-Math.ceil(maxXmm/tickStep)*tickStep;
+
+  for(let xt=startX;xt<=maxXmm+tickStep*.01;xt+=tickStep){
+    const gx=pL+pw/2+xt/maxXmm*(pw/2);
+    if(gx<pL-2||gx>pL+pw+2)continue;
+    cx.strokeStyle=Math.abs(xt)<tickStep*.05?'rgba(100,160,220,.4)':'rgba(40,70,110,.22)';
+    cx.lineWidth=.5;cx.beginPath();cx.moveTo(gx,pT);cx.lineTo(gx,pT+ph);cx.stroke();
+    // tick line below axis
+    cx.strokeStyle='rgba(80,120,170,.5)';cx.lineWidth=1;
+    cx.beginPath();cx.moveTo(gx,pT+ph);cx.lineTo(gx,pT+ph+5);cx.stroke();
+    lbl(xt.toFixed(Math.abs(xt)<.5?2:Math.abs(xt)<5?1:0),gx,pT+ph+18,
+        {col:'#7aaccf',sz:11,al:'center',bgc:'rgba(4,7,14,.88)'});
+  }
+
+  // ── AXES ──
+  cx.strokeStyle='rgba(80,140,210,.6)';cx.lineWidth=1.5;
+  cx.beginPath();cx.moveTo(pL,pT);cx.lineTo(pL,pT+ph);cx.lineTo(pL+pw,pT+ph);cx.stroke();
+
+  // Axis labels (bold, visible)
+  lbl('I / I₀',pL-58,pT+ph/2,{col:'#90c0e0',sz:13,al:'center',bgc:'rgba(4,7,14,.85)'});
+  lbl('Position x auf dem Schirm (mm)',pL+pw/2,pT+ph+40,{col:'#90c0e0',sz:12,al:'center',bgc:'rgba(4,7,14,.85)'});
+
+  // ── SINGLE SLIT ENVELOPE ──
+  if(withB){
+    cx.strokeStyle='rgba(255,107,53,.55)';cx.lineWidth=1.5;cx.setLineDash([5,4]);
+    cx.beginPath();let fe=true;
+    for(let px=0;px<=pw;px+=1){
+      const xmm=(px-pw/2)/pw*maxXmm*2;
+      const lm=S.lambda*1e-9,bm=S.b*1e-6,em=S.e*1e-3,xm=xmm*1e-3;
+      const sinT=xm/Math.sqrt(em*em+xm*xm);
+      const al=Math.PI*bm*sinT/lm;
+      const Ib=Math.abs(al)<1e-14?1:(Math.sin(al)/al)**2;
+      const gy=pT+ph-Ib*ph;
+      if(fe){cx.moveTo(pL+px,gy);fe=false;}else cx.lineTo(pL+px,gy);
+    }
+    cx.stroke();cx.setLineDash([]);
+    lbl('— Einzelspalt-Hülle',pL+8,pT+16,{col:'rgba(255,107,53,.8)',sz:10});
+  }
+
+  // ── MAIN INTENSITY CURVE ──
+  // fill
+  cx.beginPath();let fc=true;
+  for(let px=0;px<=pw;px+=1){
+    const xmm=(px-pw/2)/pw*maxXmm*2;
+    const I=intensity(xmm,S.lambda,S.d,S.b,S.e,withB);
+    const gy=pT+ph-I*ph;
+    if(fc){cx.moveTo(pL+px,gy);fc=false;}else cx.lineTo(pL+px,gy);
+  }
+  cx.lineTo(pL+pw,pT+ph);cx.lineTo(pL,pT+ph);cx.closePath();
+  cx.fillStyle=`rgba(${c.r},${c.g},${c.b},.08)`;cx.fill();
+  // stroke
+  cx.beginPath();fc=true;
+  for(let px=0;px<=pw;px+=1){
+    const xmm=(px-pw/2)/pw*maxXmm*2;
+    const I=intensity(xmm,S.lambda,S.d,S.b,S.e,withB);
+    const gy=pT+ph-I*ph;
+    if(fc){cx.moveTo(pL+px,gy);fc=false;}else cx.lineTo(pL+px,gy);
+  }
+  cx.strokeStyle=`rgb(${c.r},${c.g},${c.b})`;cx.lineWidth=2.2;cx.stroke();
+
+  // ── MAXIMA labels ──
+  const maxs=findMaxima();
+  if(S.showMax){
+    maxs.forEach(m=>{
+      const gx=pL+pw/2+m.x/maxXmm*(pw/2);
+      if(gx<pL||gx>pL+pw)return;
+      const gy=pT+ph-m.I*ph;
+      cx.strokeStyle=`rgba(${c.r},${c.g},${c.b},.45)`;cx.lineWidth=1;cx.setLineDash([3,3]);
+      cx.beginPath();cx.moveTo(gx,pT+ph);cx.lineTo(gx,gy);cx.stroke();cx.setLineDash([]);
+      const k=Math.round(gU(m.x,S.d,S.e)/S.lambda);
+      lbl(`k=${k}`,gx,gy-9,{col:'rgba(255,240,130,.95)',sz:10,al:'center'});
+    });
+  }
+  if(S.showMin){
+    findMinima().forEach(m=>{
+      const gx=pL+pw/2+m.x/maxXmm*(pw/2);
+      if(gx<pL||gx>pL+pw)return;
+      const gy=pT+ph-m.I*ph;
+      cx.fillStyle='rgba(231,76,60,.7)';
+      cx.beginPath();cx.arc(gx,gy,3.5,0,Math.PI*2);cx.fill();
+    });
+  }
+
+  // ── SELECTED POINT (snapped to nearest max/min) (FIX #8) ──
+  if(S.selX!==null){
+    const gx=pL+pw/2+S.selX/maxXmm*(pw/2);
+    if(gx>=pL&&gx<=pL+pw){
+      const I=intensity(S.selX,S.lambda,S.d,S.b,S.e,withB);
+      const gy=pT+ph-I*ph;
+      // crosshair
+      cx.strokeStyle='rgba(255,255,255,.65)';cx.lineWidth=1.2;cx.setLineDash([3,3]);
+      cx.beginPath();cx.moveTo(gx,pT);cx.lineTo(gx,pT+ph);cx.stroke();
+      cx.beginPath();cx.moveTo(pL,gy);cx.lineTo(pL+pw,gy);cx.stroke();
+      cx.setLineDash([]);
+      // dot
+      cx.fillStyle='#fff';cx.strokeStyle='#000';cx.lineWidth=1.5;
+      cx.beginPath();cx.arc(gx,gy,5.5,0,Math.PI*2);cx.fill();cx.stroke();
+      // readout labels (large, with strong bg)
+      lbl(S.selX.toFixed(3)+' mm',gx,pT+ph+32,{col:'#fff',sz:11,al:'center',bgc:'rgba(0,200,255,.18)'});
+      lbl((I*100).toFixed(1)+'%',pL-12,gy+4,{col:'#fff',sz:11,al:'right',bgc:'rgba(0,200,255,.18)'});
+    }
+  }
+
+  lbl('← klicke: springt zu nächstem Max/Min',pL+pw/2,pT+ph+52,
+      {col:'#2a4060',sz:9,al:'center',bg:false});
+}
+
+// ══════════════════════════════════════════════
+// RENDER LOOP
+// ══════════════════════════════════════════════
+function draw(){
+  if(S.view==='setup')drawSetup();
+  else if(S.view==='ray')drawRay();
+  else if(S.view==='intensity')drawIntensity();
+  // wave view only draws when static (animation handled by toggleWave loop)
+  requestAnimationFrame(draw);
+}
+
+// ══════════════════════════════════════════════
+// FORMULAS (FIX: always visible, Stufe 3 content)
+// ══════════════════════════════════════════════
+function updateFormulas(){
+  if(!S.showForm){document.getElementById('fpanel').innerHTML='';return;}
+  const a1=(S.lambda*1e-9*S.e*1e-3/(S.d*1e-6)*1e3).toFixed(2);
+  const small=Math.abs(theta_deg(parseFloat(a1),S.e))<5;
+  let ds_s='–',th_s='–',phi_s='–',I_s='–',k_s='–';
+  if(S.selX!==null){
+    const ds=gU(S.selX,S.d,S.e);
+    const th=theta_deg(S.selX,S.e);
+    const phi=2*Math.PI*ds/S.lambda;
+    const I=intensity(S.selX,S.lambda,S.d,S.b,S.e,S.showBeug);
+    const k_raw=ds/S.lambda;
+    const k_near=Math.round(k_raw);
+    ds_s=ds.toFixed(1)+' nm'; th_s=th.toFixed(3)+'°';
+    phi_s=(phi/Math.PI).toFixed(3)+'·π'; I_s=(I*100).toFixed(1)+' %';
+    k_s=k_raw.toFixed(3)+' ≈ k='+k_near;
+  }
+  document.getElementById('fpanel').innerHTML=`
+<span class="fl">Gangunterschied</span>
+<div class="feq"><span class="fsym">Δs</span> = <span class="fsym">d</span>·sin(<span class="fsym">θ</span>) = <span class="fval">${ds_s}</span></div><br>
+<span class="fl">Maxima (konstruktiv)</span>
+<div class="feq"><span class="fsym">Δs</span> = <span class="fsym">k</span>·<span class="fsym">λ</span>  →  k = 0, 1, 2, …</div><br>
+<span class="fl">Minima (destruktiv)</span>
+<div class="feq"><span class="fsym">Δs</span> = (<span class="fsym">k</span>+½)·<span class="fsym">λ</span></div><br>
+<span class="fl">1. Maximum (Näherung)</span>
+<div class="feq"><span class="fsym">a₁</span> ≈ <span class="fsym">λ·e</span>/<span class="fsym">d</span> = <span class="fval">${a1} mm</span></div>
+${!small?'<div class="fwarn">⚠ Kleinwinkelnäherung ungenau (θ&gt;5°)</div>':''}<br>
+<span class="fl">Intensität (Doppelspalt + Beugung)</span>
+<div class="feq"><span class="fsym">I</span> = cos²(<span class="fsym">δ</span>)·sinc²(<span class="fsym">α</span>)</div>
+<div class="feq"><span class="fsym">δ</span> = π<span class="fsym">d</span>·sin<span class="fsym">θ</span>/<span class="fsym">λ</span>,  <span class="fsym">α</span> = π<span class="fsym">b</span>·sin<span class="fsym">θ</span>/<span class="fsym">λ</span></div><br>
+<span class="fl">Am Messpunkt</span>
+<div class="feq"><span class="fsym">Δs</span>/<span class="fsym">λ</span> = <span class="fval">${k_s}</span></div>
+<div class="feq"><span class="fsym">θ</span> = <span class="fval">${th_s}</span></div>
+<div class="feq"><span class="fsym">φ</span> = <span class="fval">${phi_s}</span></div>
+<div class="feq"><span class="fsym">I</span> = <span class="fres">${I_s}</span></div>`;
+}
+
+// ══════════════════════════════════════════════
+// MEASURE BOX
+// ══════════════════════════════════════════════
+function updateMeasure(){
+  const box=document.getElementById('mbox'),clue=document.getElementById('clue');
+  if(S.selX===null){box.classList.remove('on');clue.style.display='';return;}
+  box.classList.add('on');clue.style.display='none';
+  const ms=s1s2(S.selX,S.d,S.e);
+  const ds_nm=Math.abs(ms.ds)*1e6;
+  const th=theta_deg(S.selX,S.e);
+  const phi=2*Math.PI*ds_nm/S.lambda;
+  const I=intensity(S.selX,S.lambda,S.d,S.b,S.e,S.showBeug);
+  const k_raw=ds_nm/S.lambda,k_near=Math.round(k_raw);
+  const isMax=Math.abs(k_raw-k_near)<0.09;
+  const k_half=k_raw-Math.floor(k_raw);
+  const isMin=Math.abs(k_half-.5)<0.09;
+
+  const rows=[
+    ['x',S.selX.toFixed(3)+' mm'],
+    ['s₁',ms.s1.toFixed(4)+' mm'],
+    ['s₂',ms.s2.toFixed(4)+' mm'],
+    ['Δs = s₂−s₁',ds_nm.toFixed(2)+' nm'],
+    ['Δs / λ',(ds_nm/S.lambda).toFixed(4)],
+    ['θ',th.toFixed(3)+'°'],
+    ['φ',(phi/Math.PI).toFixed(3)+'·π'],
+    ['I / I₀',(I*100).toFixed(1)+' %'],
+  ];
+  document.getElementById('mrows').innerHTML=rows.map(([k,v])=>
+    `<div class="mrow"><span class="mk">${k}</span><span class="mv">${v}</span></div>`).join('');
+
+  let cls='mid',txt='';
+  if(isMax){cls='max';txt=`✓ Δs = ${k_near}·λ\n→ Konstruktive Interferenz\n→ Maximum ${k_near}. Ordnung`;}
+  else if(isMin){const km=Math.floor(k_raw);cls='min';txt=`✗ Δs = ${km}.5·λ\n→ Destruktive Interferenz\n→ Minimum`;}
+  else{const kf=Math.floor(k_raw);txt=`Δs = ${k_raw.toFixed(2)}·λ\n→ Teilweise Interferenz\n  (zwischen k=${kf} und k=${kf+1})`;}
+  const el=document.getElementById('minterp');
+  el.className='minterp '+cls;el.textContent=txt;
+}
+
+// ══════════════════════════════════════════════
+// CANVAS CLICK
+// ══════════════════════════════════════════════
+cv.addEventListener('click',e=>{
+  const r=cv.getBoundingClientRect();
+  const cx2=(e.clientX-r.left),cy=(e.clientY-r.top);
+  const w=W(),h=H(),my=h/2;
+  let xmm=null;
+
+  if(S.view==='setup'){
+    const screenX=w-70;
+    const maxXmm=physRange();
+    const screenH=h*.70*S.zoom;
+    const xScale=screenH/2/maxXmm;
+    if(Math.abs(cx2-screenX-5-13)<30){xmm=(my-cy)/xScale;}
+  } else if(S.view==='ray'){
+    const screenX=w-65;
+    const maxXmm=physRange();
+    const xScale=(h/2-45)/maxXmm;
+    if(Math.abs(cx2-screenX-3)<35){xmm=(my-cy)/xScale;}
+  } else if(S.view==='intensity'){
+    const pL=72,pR=52,pT=46,pB=62;
+    const pw=w-pL-pR,ph=h-pT-pB;
+    const maxXmm=physRange();
+    if(cy>pT&&cy<pT+ph&&cx2>pL&&cx2<pL+pw){
+      const raw=(cx2-pL-pw/2)/(pw/2)*maxXmm;
+      xmm=snap(raw);// FIX #8: snap to nearest feature
+    }
+  }
+
+  if(xmm!==null){
+    S.selX=xmm;
+    updateFormulas();updateMeasure();
+  }
+});
+
+// ══════════════════════════════════════════════
+// ZOOM
+// ══════════════════════════════════════════════
+function doZoom(f){
+  if(f===0){S.zoom=1;}else{S.zoom=Math.min(8,Math.max(.2,S.zoom*f));}
+  document.getElementById('zlbl').textContent=Math.round(S.zoom*100)+'%';
+  S.selX=null;updateMeasure();
+  if(S.view==='wave'&&!S.waveOn)drawWaveStatic();
+}
+
+// ══════════════════════════════════════════════
+// VIEW SWITCH
+// ══════════════════════════════════════════════
+function setView(v){
+  if(S.waveOn){S.waveOn=false;cancelAnimationFrame(wRAF);
+    const btn=document.getElementById('wavebtn');
+    btn.textContent='▶ Wellen generieren';btn.classList.remove('run');
+  }
+  S.view=v;
+  document.querySelectorAll('.vt').forEach(t=>t.classList.remove('active'));
+  document.getElementById('tab_'+v).classList.add('active');
+  document.getElementById('wavebar').style.display=v==='wave'?'flex':'none';
+  S.selX=null;updateMeasure();
+  if(v==='wave')drawWaveStatic();
+}
+
+// ══════════════════════════════════════════════
+// SLIDERS
+// ══════════════════════════════════════════════
+function initSliders(){
+  document.getElementById('sl_lambda').addEventListener('input',function(){
+    S.lambda=+this.value;
+    document.getElementById('vl').textContent=S.lambda+' nm';
+    const c=wlRGB(S.lambda);
+    document.getElementById('wlsw').style.background=`rgb(${c.r},${c.g},${c.b})`;
+    document.getElementById('wlname').textContent=wlName(S.lambda);
+    flash('sl-lambda');updateFormulas();updateMeasure();updateLT();
+    if(S.view==='wave'&&!S.waveOn)drawWaveStatic();
+  });
+  document.getElementById('sl_d').addEventListener('input',function(){
+    S.d=+this.value;
+    document.getElementById('vd').textContent=(S.d/1000).toFixed(2)+' mm';
+    flash('sl-d');updateFormulas();updateMeasure();updateLT();
+    if(S.view==='wave'&&!S.waveOn)drawWaveStatic();
+  });
+  document.getElementById('sl_b').addEventListener('input',function(){
+    S.b=+this.value;
+    document.getElementById('vb').textContent=(S.b/1000).toFixed(2)+' mm';
+    flash('sl-b');updateFormulas();updateMeasure();
+  });
+  document.getElementById('sl_e').addEventListener('input',function(){
+    S.e=+this.value;
+    document.getElementById('ve').textContent=S.e>=1000?(S.e/1000).toFixed(2)+' m':S.e+' mm';
+    flash('sl-e');updateFormulas();updateMeasure();updateLT();
+    if(S.view==='wave'&&!S.waveOn)drawWaveStatic();
+  });
+  document.getElementById('ck_max').addEventListener('change',e=>{S.showMax=e.target.checked;});
+  document.getElementById('ck_min').addEventListener('change',e=>{S.showMin=e.target.checked;});
+  document.getElementById('ck_delta').addEventListener('change',e=>{S.showDelta=e.target.checked;});
+  document.getElementById('ck_beug').addEventListener('change',e=>{S.showBeug=e.target.checked;updateFormulas();});
+  document.getElementById('ck_form').addEventListener('change',e=>{S.showForm=e.target.checked;updateFormulas();});
+  const c0=wlRGB(550);
+  document.getElementById('wlsw').style.background=`rgb(${c0.r},${c0.g},${c0.b})`;
+}
+function flash(id){
+  const el=document.getElementById(id);
+  if(!el)return;
+  el.classList.remove('flash');void el.offsetWidth;el.classList.add('flash');
+}
+
+// ══════════════════════════════════════════════
+// MODE TOGGLE
+// ══════════════════════════════════════════════
+function toggleMode(m){
+  if(S.mode===m){
+    S.mode=null;
+    document.getElementById('mb_'+m).classList.remove('active');
+    document.getElementById(m==='learn'?'learn_box':'task_box').classList.remove('on');
+  } else {
+    if(S.mode){
+      document.getElementById('mb_'+S.mode).classList.remove('active');
+      document.getElementById(S.mode==='learn'?'learn_box':'task_box').classList.remove('on');
+    }
+    S.mode=m;
+    document.getElementById('mb_'+m).classList.add('active');
+    document.getElementById(m==='learn'?'learn_box':'task_box').classList.add('on');
+    if(m==='task')newTask();
+    if(m==='learn'){S.lstep=0;updateLS();}
+  }
+}
+
+// ══════════════════════════════════════════════
+// LEARN MODE
+// ══════════════════════════════════════════════
+function updateLT(){
+  document.querySelectorAll('.lsλ').forEach(e=>e.textContent=S.lambda);
+  document.querySelectorAll('.lsd').forEach(e=>e.textContent=(S.d/1000).toFixed(2));
+  document.querySelectorAll('.lse').forEach(e=>e.textContent=(S.e/1000).toFixed(2));
+  const a1=(S.lambda*1e-9*S.e*1e-3/(S.d*1e-6)*1e3).toFixed(2);
+  const el=document.getElementById('lsa1');if(el)el.textContent=a1;
+}
+function updateLS(){
+  document.querySelectorAll('.lstep').forEach((e,i)=>e.classList.toggle('on',i===S.lstep));
+  document.getElementById('lcur').textContent=S.lstep+1;
+  updateLT();
+}
+function lNext(){if(S.lstep<6){S.lstep++;updateLS();}}
+function lPrev(){if(S.lstep>0){S.lstep--;updateLS();}}
+
+// ══════════════════════════════════════════════
+// TASK MODE (FIX #4 – values stay in slider range)
+// λ: 380–780 nm  d: 50–2000 µm  e: 200–5000 mm
+// ══════════════════════════════════════════════
+function newTask(){
+  const lams=[420,450,488,500,532,550,589,600,632,650,700];
+  const ds=[100,150,200,250,300,400,500,600,800,1000,1200,1500];
+  const es=[400,500,800,1000,1500,2000,3000];// mm; all in 200-5000 range
+  const ks=[1,2,3];
+  const types=['λ','d','e','k','a1'];
+  const type=types[Math.floor(Math.random()*types.length)];
+  const lam=lams[Math.floor(Math.random()*lams.length)];
+  const d=ds[Math.floor(Math.random()*ds.length)];
+  const eVal=es[Math.floor(Math.random()*es.length)];
+  const k=ks[Math.floor(Math.random()*ks.length)];
+  const a_k=lam*1e-9*eVal*1e-3/(d*1e-6)*k*1e3;// mm
+
+  // check that a_k is within displayable range (<30mm & physically valid)
+  if(a_k>28||a_k<0.05){newTask();return;}
+
+  const eStr=(eVal/1000).toFixed(1);
+  let q,hint,answer,unit,tol;
+
+  if(type==='λ'){
+    q=`Ein Doppelspalt mit <b>d = ${d} µm</b> und Schirmabstand <b>e = ${eStr} m</b> erzeugt das <b>${k}. Maximum</b> bei <b>x = ${a_k.toFixed(2)} mm</b>. Bestimme die Wellenlänge <b>λ</b> in nm.`;
+    hint='λ ≈ x · d / (k · e)';
+    answer=Math.round(lam);unit='nm';tol=6;
+  } else if(type==='d'){
+    q=`Monochromatisches Licht (<b>λ = ${lam} nm</b>), Schirmabstand <b>e = ${eStr} m</b>. Das <b>${k}. Maximum</b> liegt bei <b>x = ${a_k.toFixed(2)} mm</b>. Bestimme den Spaltabstand <b>d</b> in µm.`;
+    hint='d ≈ k · λ · e / x';
+    answer=Math.round(d);unit='µm';tol=Math.max(5,d*.06);
+  } else if(type==='e'){
+    q=`Doppelspalt mit <b>d = ${d} µm</b>, Licht mit <b>λ = ${lam} nm</b>. Das <b>${k}. Maximum</b> liegt bei <b>x = ${a_k.toFixed(2)} mm</b>. Bestimme den Schirmabstand <b>e</b> in m.`;
+    hint='e ≈ x · d / (k · λ)';
+    answer=parseFloat(eStr);unit='m';tol=.12;
+  } else if(type==='k'){
+    q=`<b>λ = ${lam} nm</b>, <b>d = ${d} µm</b>, <b>e = ${eStr} m</b>. Ein heller Streifen liegt bei <b>x = ${a_k.toFixed(2)} mm</b>. Welche Ordnung <b>k</b> liegt vor?`;
+    hint='k = x · d / (λ · e)';
+    answer=k;unit='';tol=.4;
+  } else {
+    q=`<b>λ = ${lam} nm</b>, <b>d = ${d} µm</b>, <b>e = ${eStr} m</b>. An welcher Position <b>x</b> (in mm) liegt das Maximum <b>1. Ordnung</b>?`;
+    hint='x₁ ≈ λ · e / d';
+    answer=parseFloat((lam*1e-9*eVal*1e-3/(d*1e-6)*1e3).toFixed(2));unit='mm';tol=.35;
+  }
+  task={answer,tol,unit};
+  document.getElementById('tq').innerHTML=q;
+  document.getElementById('thint').textContent='Hinweis: '+hint;
+  document.getElementById('tinp').value='';
+  document.getElementById('tfb').className='tfb';
+}
+function checkTask(){
+  if(!task)return;
+  const v=parseFloat(document.getElementById('tinp').value);
+  const fb=document.getElementById('tfb');
+  if(isNaN(v)){fb.textContent='Bitte eine Zahl eingeben.';fb.className='tfb err';return;}
+  if(Math.abs(v-task.answer)<=task.tol){
+    fb.textContent='✓ Richtig! ('+task.answer+(task.unit?' '+task.unit:'')+')';fb.className='tfb ok';
+  } else {
+    fb.textContent='✗ Falsch. Lösung: '+task.answer+(task.unit?' '+task.unit:'');fb.className='tfb err';
+  }
+}
+
+// ══════════════════════════════════════════════
+// INIT
+// ══════════════════════════════════════════════
+initSliders();
+updateFormulas();
+updateLT();
+requestAnimationFrame(draw);
+</script>
+</body>
+</html>
