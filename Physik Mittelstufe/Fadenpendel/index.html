@@ -1,0 +1,1165 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <style>
+      body {
+        margin: auto;
+        background-color: #222222;
+        background-attachment: fixed;
+      }
+
+      .card {
+        display: block;
+        padding: 5%;
+        margin: 5% 10%;
+        background-color: #111111;
+        background-image: repeating-radial-gradient(
+          circle at -100px -100px,
+          #000000,
+          #222222 150px,
+          #000000 300px
+        );
+        font-size: 32px;
+        line-height: 2em;
+        color: #ffffff;
+        text-align: center;
+        border-style: solid;
+        border-width: 3px;
+        border-radius: 3vw;
+        border-color: #666666;
+      }
+
+      .card .widget {
+        display: block;
+        min-width: 40%;
+        padding: 40px;
+        background-color: #222233;
+        background-image: linear-gradient(
+          to bottom right,
+          #440044,
+          #000000,
+          #000044
+        );
+        margin: 5% 0;
+        border-style: solid;
+        border-width: 3px;
+        border-radius: 3vw;
+        border-color: #666666;
+      }
+
+      .card span.box {
+        display: inline-block;
+        line-height: 1;
+        padding: 10px;
+        border-style: solid;
+        border-width: 2px;
+        border-radius: 10px;
+        border-color: #ffffff;
+        box-shadow: 0 0 25px white;
+      }
+
+      .card p,
+      .card h1,
+      .card h2,
+      .card h3 {
+        font-family: Arial;
+      }
+
+      .card p {
+        text-align: left;
+        margin: 0.5em 0;
+      }
+
+      .card p::after {
+        content: "";
+        display: table;
+        clear: both;
+      }
+
+      .card h2 {
+        margin-top: 0;
+      }
+
+      .card div {
+        padding: 10px;
+      }
+
+      .card * {
+        box-sizing: border-box;
+      }
+
+      /* formula box */
+      .formel {
+        display: inline-block;
+        background: rgba(100, 50, 120, 0.25);
+        border: 1px solid #aa66cc;
+        border-radius: 8px;
+        padding: 8px 20px;
+        font-family: "Courier New", monospace;
+        font-size: 0.75em;
+        color: #ddaaff;
+        margin: 6px 4px;
+        line-height: 1.5;
+      }
+
+      .formel-grid {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 10px;
+        justify-content: center;
+        margin: 14px 0;
+      }
+
+      /* tables */
+      table.info-table {
+        width: 100%;
+        border-collapse: collapse;
+        font-size: 0.7em;
+        margin: 10px 0;
+        font-family: Arial;
+        text-align: left;
+      }
+      table.info-table th {
+        background: rgba(100, 50, 120, 0.3);
+        color: #cc99ff;
+        padding: 8px 12px;
+        border-bottom: 1px solid #555;
+      }
+      table.info-table td {
+        padding: 7px 12px;
+        border-bottom: 1px solid #333;
+        color: #ddd;
+        vertical-align: top;
+      }
+      table.info-table tr:last-child td {
+        border-bottom: none;
+      }
+
+      /* canvas */
+      canvas {
+        display: block;
+        margin: 0 auto;
+        border-radius: 8px;
+        border: 2px solid #444;
+        background-color: #111122;
+        width: 500px;
+        height: 420px;
+      }
+
+      /* buttons / controls */
+      .btn {
+        background: #440044;
+        color: #fff;
+        border: 1px solid #666;
+        padding: 9px 16px;
+        border-radius: 5px;
+        cursor: pointer;
+        font-size: 16px;
+        font-family: Arial;
+      }
+      .btn:hover {
+        background: #660066;
+      }
+      .btn.active {
+        background: #7700aa;
+        border-color: #cc88ff;
+      }
+
+      .controls {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 12px;
+        font-size: 18px;
+        font-family: Arial;
+        margin-top: 14px;
+      }
+      .slider-row {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        width: 100%;
+        max-width: 460px;
+        justify-content: space-between;
+      }
+      .slider-row label {
+        min-width: 130px;
+        text-align: left;
+        color: #ccc;
+      }
+      .slider-row input[type="range"] {
+        width: 55%;
+        accent-color: #aa44aa;
+      }
+      .slider-row span {
+        min-width: 70px;
+        text-align: right;
+        color: #cc88cc;
+        font-family: monospace;
+      }
+
+      /* tab buttons */
+      .tab-bar {
+        display: flex;
+        gap: 10px;
+        justify-content: center;
+        margin-bottom: 16px;
+        flex-wrap: wrap;
+      }
+      .tab-btn {
+        background: #222;
+        color: #888;
+        border: 1px solid #444;
+        padding: 9px 18px;
+        border-radius: 5px;
+        cursor: pointer;
+        font-size: 15px;
+        font-family: Arial;
+      }
+      .tab-btn.active {
+        background: #440044;
+        color: #fff;
+        border-color: #666;
+      }
+
+      /* highlight box */
+      .highlight {
+        background: rgba(80, 40, 100, 0.3);
+        border-left: 4px solid #aa44cc;
+        padding: 12px 18px;
+        margin: 10px 0;
+        border-radius: 0 8px 8px 0;
+        font-size: 0.75em;
+        font-family: Arial;
+        text-align: left;
+        color: #eee;
+        line-height: 1.6;
+      }
+
+      nav {
+        position: fixed;
+        width: 100%;
+        top: 0;
+        background-color: #444444;
+        margin: 0;
+        padding: 0;
+        display: flex;
+        flex-direction: row;
+        z-index: 100;
+      }
+      nav .element {
+        padding: 1% 2%;
+        border-right: 2px solid #222222;
+        color: white;
+        cursor: pointer;
+        text-align: center;
+        font-family: Arial;
+        font-size: 18px;
+      }
+      nav .element:hover {
+        background-color: #333333;
+      }
+      nav .no-border {
+        border-style: none;
+      }
+
+      .dropdown {
+        position: relative;
+      }
+      .dropdown:hover .dropdown-content {
+        display: block;
+      }
+      .dropdown-content {
+        display: none;
+        position: absolute;
+        color: black;
+        background-color: #f9f9f9;
+        top: 100%;
+        left: -80%;
+      }
+      .dropdown-content:hover {
+        display: block;
+      }
+      .dropdown-content button {
+        border-style: none;
+        background-color: #ffffff;
+        display: block;
+        min-width: 220px;
+        padding: 16px 20px;
+        font-family: Arial;
+        font-size: 16px;
+        cursor: pointer;
+        text-align: left;
+      }
+      .dropdown-content button:hover {
+        background-color: #eeeeee;
+      }
+    </style>
+  </head>
+  <body>
+    <nav>
+      <div
+        class="element"
+        onclick="document.getElementById('s-grundlagen').scrollIntoView({behavior:'smooth'})"
+      >
+        Grundlagen
+      </div>
+      <div
+        class="element"
+        onclick="document.getElementById('s-pendel').scrollIntoView({behavior:'smooth'})"
+      >
+        Fadenpendel
+      </div>
+      <div
+        class="element"
+        onclick="document.getElementById('s-sim').scrollIntoView({behavior:'smooth'})"
+      >
+        Simulation
+      </div>
+      <div class="element no-border dropdown">
+        Mehr
+        <div class="dropdown-content">
+          <button
+            onclick="document.getElementById('s-daempfung').scrollIntoView({behavior:'smooth'})"
+          >
+            Dämpfung
+          </button>
+          <button
+            onclick="document.getElementById('s-formeln').scrollIntoView({behavior:'smooth'})"
+          >
+            Alle Formeln
+          </button>
+        </div>
+      </div>
+    </nav>
+
+    <div class="card" style="margin-top: 80px">
+      <h1>Mechanische Schwingungen</h1>
+      <h2 style="color: #cc88ff; margin-top: -10px; font-size: 0.75em">
+        Schwerpunkt: Fadenpendel
+      </h2>
+
+      <!-- ① GRUNDLAGEN -->
+      <div class="widget" id="s-grundlagen">
+        <h2>Grundlagen: Periodische Bewegungen &amp; Schwingungen</h2>
+
+        <p>
+          Eine <strong>periodische Bewegung</strong> liegt vor, wenn ein Körper
+          nach gleichlangen Zeitabschnitten immer wieder denselben
+          Bewegungszustand – gleicher Ort, gleiche Geschwindigkeit, gleiche
+          Beschleunigung – besitzt.
+        </p>
+
+        <p>
+          Von einer <strong>Schwingung</strong> spricht man bei einer besonderen
+          Form der periodischen Bewegung: Das System besitzt eine stabile
+          <em>Gleichgewichtslage (Ruhelage)</em>, aus der es ausgelenkt werden
+          kann. Bei der Auslenkung tritt stets eine
+          <strong>Rückstellkraft</strong> auf, die zur Ruhelage hin zeigt.
+        </p>
+
+        <div class="highlight">
+          <strong>Wichtige Begriffe</strong><br />
+          <strong>T</strong> – Periodendauer / Schwingungsdauer [s]<br />
+          <strong>f = 1/T</strong> – Frequenz [Hz]<br />
+          <strong>ŷ</strong> – Amplitude: Betrag der maximalen Auslenkung aus
+          der Ruhelage<br />
+          <strong>y(t)</strong> – Elongation: momentane Auslenkung zum Zeitpunkt
+          t<br />
+          <strong>Umkehrpunkte</strong>: Orte, an denen der Körper kurz ruht (v
+          = 0) und die Richtung umkehrt
+        </div>
+
+        <p>
+          Eine <strong>harmonische Schwingung</strong> liegt vor, wenn die
+          Rückstellkraft proportional und entgegengesetzt zur Auslenkung ist:
+          <span class="formel">F<sub>rück</sub> = −k · y</span> (lineares
+          Kraftgesetz). Die Bewegung lässt sich dann durch eine Sinus- oder
+          Kosinusfunktion beschreiben:
+        </p>
+
+        <div class="formel-grid">
+          <span class="formel">y(t) = ŷ · sin(ω · t)</span>
+          <span class="formel">y(t) = ŷ · cos(ω · t)</span>
+          <span class="formel">ω = 2π / T = 2π · f</span>
+        </div>
+
+        <p>
+          Für die drei Bewegungsgesetze der harmonischen Schwingung gilt
+          (Anfangsbedingung y₀ = 0, Cosinus-Start):
+        </p>
+        <div class="formel-grid">
+          <span class="formel">y(t) = ŷ · cos(ω·t)</span>
+          <span class="formel">v(t) = −v̂ · sin(ω·t)</span>
+          <span class="formel">a(t) = −â · cos(ω·t)</span>
+        </div>
+      </div>
+
+      <!-- ② FADENPENDEL -->
+      <div class="widget" id="s-pendel">
+        <h2>Das Fadenpendel</h2>
+
+        <p>
+          Ein <strong>Fadenpendel</strong> (auch Mathematisches Pendel) besteht
+          aus einem Pendelkörper der Masse <em>m</em>, der mit einem masselosen
+          Faden der Länge <em>l</em> an einer Befestigung aufgehängt ist. Die
+          Fadenlänge reicht immer vom Aufhängungspunkt bis zum Schwerpunkt des
+          Pendelkörpers.
+        </p>
+
+        <p>
+          Der Pendelkörper wird eine <em>kleine</em> Strecke aus der
+          Gleichgewichtslage ausgelenkt und losgelassen. Für kleine
+          Auslenkwinkel (≤ 10°) gilt das Fadenpendel als harmonischer
+          Oszillator.
+        </p>
+
+        <div class="highlight">
+          <strong>Rückstellkraft beim Fadenpendel:</strong><br />
+          Die Gewichtskraft F<sub>G</sub> wird in zwei Komponenten zerlegt: eine
+          senkrecht zur Bahn (vom Faden kompensiert) und eine tangential zur
+          Bahn. Letztere wirkt als Rückstellkraft:<br /><br />
+          <strong>F<sub>rück</sub> = −(g/l) · m · x</strong><br /><br />
+          Für kleine Winkel gilt: sin(φ) ≈ φ = x/l. Die Rückstellkraft ist
+          proportional und entgegengesetzt zur Auslenkung → das Fadenpendel
+          schwingt harmonisch.
+        </div>
+
+        <p><strong>Bewegungsgleichung</strong> (nach Newton: F = m · a):</p>
+        <div class="formel-grid">
+          <span class="formel">ẍ(t) + (g/l) · x(t) = 0</span>
+        </div>
+
+        <p><strong>Lösung</strong> (Anfangsbedingungen x(0) = x₀, v(0) = 0):</p>
+        <div class="formel-grid">
+          <span class="formel">x(t) = x̂ · cos(ω₀ · t)</span>
+          <span class="formel">ω₀ = √(g / l)</span>
+          <span class="formel">T = 2π · √(l / g)</span>
+        </div>
+
+        <table class="info-table">
+          <tr>
+            <th>Größe</th>
+            <th>Symbol</th>
+            <th>Einheit</th>
+            <th>Einfluss auf T?</th>
+          </tr>
+          <tr>
+            <td>Fadenlänge</td>
+            <td>l</td>
+            <td>m</td>
+            <td>✓ Ja — T wächst mit √l</td>
+          </tr>
+          <tr>
+            <td>Ortsfaktor</td>
+            <td>g</td>
+            <td>N/kg</td>
+            <td>✓ Ja — T sinkt mit √(1/g)</td>
+          </tr>
+          <tr>
+            <td>Amplitude</td>
+            <td>x̂</td>
+            <td>m</td>
+            <td>✗ Nein (bei kleinen Winkeln)</td>
+          </tr>
+          <tr>
+            <td>Pendelmasse</td>
+            <td>m</td>
+            <td>kg</td>
+            <td>✗ Nein</td>
+          </tr>
+        </table>
+
+        <div class="highlight">
+          <strong>Merke:</strong> Die Schwingungsdauer des Fadenpendels hängt
+          <em>nur</em> von der Fadenlänge l und dem Ortsfaktor g ab – nicht von
+          der Amplitude und nicht von der Pendelmasse. Vergrößert man die
+          Auslenkung, so steigt zwar die Rückstellkraft, aber auch der
+          zurückzulegende Weg – beide Effekte gleichen sich exakt aus.
+        </div>
+
+        <p>
+          <strong>Hinweis zur Kleinwinkelnäherung:</strong> Bei einem
+          Auslenkwinkel von 10° beträgt der Fehler ca. 0,5 %, bei 30° ca. 5,0 %
+          und bei 45° ca. 10,0 %. Das Fadenpendel schwingt daher nur für kleine
+          Auslenkwinkel harmonisch.
+        </p>
+      </div>
+
+      <!-- ③ SIMULATION -->
+      <div class="widget" id="s-sim">
+        <h2>Simulation</h2>
+
+        <div class="tab-bar">
+          <button
+            class="tab-btn active"
+            id="tPendel"
+            onclick="setSimTab('pendel')"
+          >
+            Fadenpendel
+          </button>
+          <button class="tab-btn" id="tGraph" onclick="setSimTab('graph')">
+            t-x-Diagramm
+          </button>
+        </div>
+
+        <!-- Tab: Pendel -->
+        <div id="simPendel">
+          <p style="font-size: 0.7em; color: #aaa; margin-bottom: 8px">
+            Auslenkung einstellen, dann starten. Beobachte Rückstellkraft und
+            Energie.
+          </p>
+          <canvas id="cPendel" width="500" height="420"></canvas>
+          <div class="controls">
+            <div class="slider-row">
+              <label>Fadenlänge l</label>
+              <input
+                type="range"
+                id="slL"
+                min="0.5"
+                max="3.0"
+                value="1.5"
+                step="0.05"
+              />
+              <span id="vL">1.50 m</span>
+            </div>
+            <div class="slider-row">
+              <label>Ortsfaktor g</label>
+              <input
+                type="range"
+                id="slG"
+                min="1.0"
+                max="25.0"
+                value="9.81"
+                step="0.1"
+              />
+              <span id="vG">9.81 N/kg</span>
+            </div>
+            <div class="slider-row">
+              <label>Auslenkung x₀</label>
+              <input
+                type="range"
+                id="slX0"
+                min="0.02"
+                max="0.45"
+                value="0.20"
+                step="0.01"
+              />
+              <span id="vX0">0.20 m</span>
+            </div>
+            <div
+              style="
+                display: flex;
+                gap: 10px;
+                flex-wrap: wrap;
+                justify-content: center;
+              "
+            >
+              <button class="btn" id="btnStart" onclick="toggleSim()">
+                ▶ Start
+              </button>
+              <button class="btn" onclick="resetSim()">↺ Reset</button>
+            </div>
+            <div
+              id="simInfo"
+              style="
+                font-family: monospace;
+                font-size: 0.6em;
+                color: #cc88cc;
+                text-align: center;
+                line-height: 1.8;
+              "
+            ></div>
+          </div>
+        </div>
+
+        <!-- Tab: Graph -->
+        <div id="simGraph" style="display: none">
+          <p style="font-size: 0.7em; color: #aaa; margin-bottom: 8px">
+            Zeitlicher Verlauf von Ort x(t), Geschwindigkeit v(t) und
+            Beschleunigung a(t).
+          </p>
+          <canvas id="cGraph" width="500" height="420"></canvas>
+          <div class="controls">
+            <div
+              style="
+                display: flex;
+                gap: 8px;
+                flex-wrap: wrap;
+                justify-content: center;
+                font-size: 0.65em;
+                font-family: Arial;
+              "
+            >
+              <label style="color: #ff6666"
+                ><input type="checkbox" id="chkX" checked /> x(t)</label
+              >
+              <label style="color: #44ddff"
+                ><input type="checkbox" id="chkV" checked /> v(t)</label
+              >
+              <label style="color: #ffcc44"
+                ><input type="checkbox" id="chkA" checked /> a(t)</label
+              >
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ④ DÄMPFUNG (Kurzabschnitt) -->
+      <div class="widget" id="s-daempfung">
+        <h2>Gedämpfte Schwingung</h2>
+
+        <p>
+          In der Realität verliert das Fadenpendel durch Luftwiderstand und
+          Reibung im Aufhängungspunkt kontinuierlich Energie. Die Amplitude
+          nimmt dabei ab.
+        </p>
+
+        <p>
+          Beim <strong>gedämpften Pendel</strong> wirkt neben der Rückstellkraft
+          zusätzlich eine viskose Reibungskraft, die der Bewegung
+          entgegengerichtet ist. Die Bewegungsgleichung lautet dann:
+        </p>
+
+        <div class="formel-grid">
+          <span class="formel">ẍ(t) + (k/m) · ẋ(t) + (g/l) · x(t) = 0</span>
+        </div>
+
+        <p>
+          Für den <strong>Schwingfall</strong> (schwache Dämpfung) ergibt sich
+          die Lösung:
+        </p>
+        <div class="formel-grid">
+          <span class="formel">x(t) = x̂ · cos(ω · t) · e<sup>−δ·t</sup></span>
+          <span class="formel">δ = k / (2m)</span>
+        </div>
+
+        <p>
+          Die Schwingung klingt also mit einer Exponentialfunktion ab. Je größer
+          die Dämpfungskonstante k, desto schneller verliert das Pendel seine
+          Energie. In der Simulation oben (Tab „Fadenpendel") ist eine leichte
+          Dämpfung eingebaut, die nach längerer Beobachtung sichtbar wird.
+        </p>
+      </div>
+
+      <!-- ⑤ ALLE FORMELN -->
+      <div class="widget" id="s-formeln">
+        <h2>Formelübersicht: Fadenpendel</h2>
+
+        <table class="info-table">
+          <tr>
+            <th>Größe</th>
+            <th>Formel</th>
+            <th>Bedeutung</th>
+          </tr>
+          <tr>
+            <td>Kreisfrequenz</td>
+            <td><code>ω₀ = √(g/l)</code></td>
+            <td>Eigenfrequenz des Fadenpendels</td>
+          </tr>
+          <tr>
+            <td>Schwingungsdauer</td>
+            <td><code>T = 2π · √(l/g)</code></td>
+            <td>Dauer einer vollständigen Schwingung</td>
+          </tr>
+          <tr>
+            <td>Frequenz</td>
+            <td><code>f = 1/T</code></td>
+            <td>Schwingungen pro Sekunde [Hz]</td>
+          </tr>
+          <tr>
+            <td>Rückstellkraft</td>
+            <td>
+              <code>F<sub>rück</sub> = −(mg/l)·x</code>
+            </td>
+            <td>Lineares Kraftgesetz (kl. Winkel)</td>
+          </tr>
+          <tr>
+            <td>Ort</td>
+            <td><code>x(t) = x̂ · cos(ω₀·t)</code></td>
+            <td>Zeit-Ort-Gesetz</td>
+          </tr>
+          <tr>
+            <td>Geschwindigkeit</td>
+            <td><code>v(t) = −v̂ · sin(ω₀·t)</code></td>
+            <td>v̂ = x̂ · ω₀</td>
+          </tr>
+          <tr>
+            <td>Beschleunigung</td>
+            <td><code>a(t) = −â · cos(ω₀·t)</code></td>
+            <td>â = x̂ · ω₀²</td>
+          </tr>
+        </table>
+      </div>
+    </div>
+    <!-- end .card -->
+
+    <script>
+      "use strict";
+
+      /* ── TAB SWITCHING ── */
+      function setSimTab(t) {
+        document.getElementById("simPendel").style.display =
+          t === "pendel" ? "" : "none";
+        document.getElementById("simGraph").style.display =
+          t === "graph" ? "" : "none";
+        document.getElementById("tPendel").className =
+          "tab-btn" + (t === "pendel" ? " active" : "");
+        document.getElementById("tGraph").className =
+          "tab-btn" + (t === "graph" ? "  active" : "");
+      }
+
+      /* ── PHYSICS STATE ── */
+      let l = 1.5,
+        g = 9.81,
+        x0 = 0.2;
+      let theta = 0,
+        dtheta = 0,
+        simT = 0;
+      let running = false;
+      let lastTs = null;
+
+      // graph history
+      const MAX_HIST = 400;
+      let histX = [],
+        histV = [],
+        histA = [],
+        histT = [];
+
+      function omega() {
+        return Math.sqrt(g / l);
+      }
+      function period() {
+        return (2 * Math.PI) / omega();
+      }
+
+      /* ── CONTROLS ── */
+      function syncSliders() {
+        l = +document.getElementById("slL").value;
+        g = +document.getElementById("slG").value;
+        x0 = +document.getElementById("slX0").value;
+        document.getElementById("vL").textContent = l.toFixed(2) + " m";
+        document.getElementById("vG").textContent = g.toFixed(2) + " N/kg";
+        document.getElementById("vX0").textContent = x0.toFixed(2) + " m";
+      }
+      ["slL", "slG", "slX0"].forEach((id) => {
+        document.getElementById(id).addEventListener("input", () => {
+          syncSliders();
+          if (!running) resetState();
+        });
+      });
+      syncSliders();
+
+      function resetState() {
+        const thetaMax = Math.asin(Math.min(x0 / l, 0.99));
+        theta = thetaMax;
+        dtheta = 0;
+        simT = 0;
+        histX = [];
+        histV = [];
+        histA = [];
+        histT = [];
+      }
+      resetState();
+
+      function resetSim() {
+        running = false;
+        document.getElementById("btnStart").textContent = "▶ Start";
+        resetState();
+      }
+
+      function toggleSim() {
+        running = !running;
+        document.getElementById("btnStart").textContent = running
+          ? "⏸ Pause"
+          : "▶ Start";
+        if (running) {
+          lastTs = null;
+          requestAnimationFrame(loop);
+        }
+      }
+
+      /* ── PHYSICS STEP ── */
+      const DAMPING = 0.003; // small realistic damping
+      function step(dt) {
+        if (dt > 0.05) dt = 0.05; // cap
+        const steps = 10;
+        const h = dt / steps;
+        for (let i = 0; i < steps; i++) {
+          const alpha = -(g / l) * Math.sin(theta) - DAMPING * dtheta;
+          dtheta += alpha * h;
+          theta += dtheta * h;
+        }
+        simT += dt;
+      }
+
+      /* ── CANVAS PENDEL ── */
+      const cP = document.getElementById("cPendel");
+      cP.width = 500;
+      cP.height = 420;
+      const ctP = cP.getContext("2d");
+      const W = 500,
+        H = 420;
+
+      function drawPendel() {
+        ctP.clearRect(0, 0, W, H);
+
+        // grid
+        ctP.strokeStyle = "rgba(255,255,255,0.04)";
+        ctP.lineWidth = 1;
+        for (let x = 0; x < W; x += 40) {
+          ctP.beginPath();
+          ctP.moveTo(x, 0);
+          ctP.lineTo(x, H);
+          ctP.stroke();
+        }
+        for (let y = 0; y < H; y += 40) {
+          ctP.beginPath();
+          ctP.moveTo(0, y);
+          ctP.lineTo(W, y);
+          ctP.stroke();
+        }
+
+        const pivot = { x: W / 2, y: 50 };
+        const scale = Math.min(160, (H - 100) / (l + 0.2));
+        const pxLen = l * scale;
+
+        const bx = pivot.x + Math.sin(theta) * pxLen;
+        const by = pivot.y + Math.cos(theta) * pxLen;
+
+        // equilibrium dashed line
+        ctP.setLineDash([6, 6]);
+        ctP.strokeStyle = "rgba(150,150,200,0.3)";
+        ctP.lineWidth = 1;
+        ctP.beginPath();
+        ctP.moveTo(pivot.x, pivot.y);
+        ctP.lineTo(pivot.x, pivot.y + pxLen + 20);
+        ctP.stroke();
+        ctP.setLineDash([]);
+
+        // rückstellkraft arrow (tangential component)
+        const x_cart = Math.sin(theta) * l; // horizontal displacement
+        const F_rück = -(g / l) * x_cart; // F/m actually (acceleration contribution)
+        const arrowScale = scale * 0.4;
+        const arrowLen = Math.min(60, Math.abs(F_rück) * arrowScale);
+        const arrowDir = F_rück > 0 ? 1 : -1;
+        if (running && Math.abs(F_rück) > 0.01) {
+          ctP.strokeStyle = "#ff8844";
+          ctP.fillStyle = "#ff8844";
+          ctP.lineWidth = 2.5;
+          const ax = bx,
+            ay = by + 18;
+          const ex = ax + arrowLen * arrowDir;
+          ctP.beginPath();
+          ctP.moveTo(ax, ay);
+          ctP.lineTo(ex, ay);
+          ctP.stroke();
+          ctP.beginPath();
+          ctP.moveTo(ex, ay);
+          ctP.lineTo(ex - 9 * arrowDir, ay - 5);
+          ctP.lineTo(ex - 9 * arrowDir, ay + 5);
+          ctP.closePath();
+          ctP.fill();
+          ctP.font = "11px Arial";
+          ctP.fillStyle = "#ff8844";
+          ctP.textAlign = "center";
+          ctP.fillText("F_rück", (ax + ex) / 2, ay - 8);
+        }
+
+        // velocity arrow
+        const v_cart = dtheta * l * Math.cos(theta);
+        const vLen = Math.min(50, Math.abs(v_cart) * scale * 0.8);
+        const vDir = v_cart > 0 ? 1 : -1;
+        if (running && Math.abs(v_cart) > 0.01) {
+          ctP.strokeStyle = "#44ddff";
+          ctP.fillStyle = "#44ddff";
+          ctP.lineWidth = 2;
+          const vx = bx,
+            vy = by - 18;
+          const ex = vx + vLen * vDir;
+          ctP.beginPath();
+          ctP.moveTo(vx, vy);
+          ctP.lineTo(ex, vy);
+          ctP.stroke();
+          ctP.beginPath();
+          ctP.moveTo(ex, vy);
+          ctP.lineTo(ex - 8 * vDir, vy - 4);
+          ctP.lineTo(ex - 8 * vDir, vy + 4);
+          ctP.closePath();
+          ctP.fill();
+          ctP.font = "11px Arial";
+          ctP.fillStyle = "#44ddff";
+          ctP.textAlign = "center";
+          ctP.fillText("v", (vx + ex) / 2, vy - 7);
+        }
+
+        // gravity arrow
+        const gLen = 28;
+        ctP.strokeStyle = "#aaaaaa";
+        ctP.fillStyle = "#aaaaaa";
+        ctP.lineWidth = 1.5;
+        ctP.beginPath();
+        ctP.moveTo(bx, by);
+        ctP.lineTo(bx, by + gLen);
+        ctP.stroke();
+        ctP.beginPath();
+        ctP.moveTo(bx, by + gLen);
+        ctP.lineTo(bx - 5, by + gLen - 8);
+        ctP.lineTo(bx + 5, by + gLen - 8);
+        ctP.closePath();
+        ctP.fill();
+        ctP.font = "11px Arial";
+        ctP.fillStyle = "#aaaaaa";
+        ctP.textAlign = "left";
+        ctP.fillText("F_G", bx + 6, by + gLen - 2);
+
+        // string
+        ctP.strokeStyle = "#aaaacc";
+        ctP.lineWidth = 2;
+        ctP.beginPath();
+        ctP.moveTo(pivot.x, pivot.y);
+        ctP.lineTo(bx, by);
+        ctP.stroke();
+
+        // pivot
+        ctP.fillStyle = "#888";
+        ctP.beginPath();
+        ctP.arc(pivot.x, pivot.y, 6, 0, Math.PI * 2);
+        ctP.fill();
+        // ceiling
+        ctP.fillStyle = "#555";
+        ctP.fillRect(pivot.x - 25, pivot.y - 10, 50, 10);
+
+        // bob — color by energy
+        const Ekin = 0.5 * (dtheta * l) ** 2;
+        const Epot = g * l * (1 - Math.cos(theta));
+        const Emax = g * l * (1 - Math.cos(Math.asin(Math.min(x0 / l, 0.99))));
+        const kinFrac = Emax > 0 ? Ekin / Emax : 0;
+        const r = Math.round(80 + 175 * kinFrac);
+        const b = Math.round(220 - 180 * kinFrac);
+        ctP.shadowBlur = 18;
+        ctP.shadowColor = `rgba(${r},80,${b},0.6)`;
+        ctP.fillStyle = `rgb(${r},80,${b})`;
+        ctP.beginPath();
+        ctP.arc(bx, by, 16, 0, Math.PI * 2);
+        ctP.fill();
+        ctP.shadowBlur = 0;
+        ctP.strokeStyle = "#ddd";
+        ctP.lineWidth = 1.5;
+        ctP.beginPath();
+        ctP.arc(bx, by, 16, 0, Math.PI * 2);
+        ctP.stroke();
+
+        // angle arc
+        if (Math.abs(theta) > 0.01) {
+          ctP.strokeStyle = "rgba(180,140,220,0.5)";
+          ctP.lineWidth = 1.5;
+          ctP.beginPath();
+          ctP.arc(
+            pivot.x,
+            pivot.y,
+            38,
+            Math.PI / 2,
+            Math.PI / 2 + theta,
+            theta < 0
+          );
+          ctP.stroke();
+          const midA = Math.PI / 2 + theta / 2;
+          ctP.font = "12px Arial";
+          ctP.fillStyle = "#bb99ee";
+          ctP.textAlign = "center";
+          ctP.fillText(
+            "φ",
+            pivot.x + 48 * Math.cos(midA),
+            pivot.y + 48 * Math.sin(midA)
+          );
+        }
+
+        // energy bar
+        const barX = 14,
+          barY = H - 70,
+          barW = 18,
+          barMaxH = 60;
+        ctP.fillStyle = "#333";
+        ctP.fillRect(barX, barY, barW, barMaxH);
+        const kinH = Emax > 0 ? (Ekin / Emax) * barMaxH : 0;
+        const potH = Emax > 0 ? (Epot / Emax) * barMaxH : 0;
+        ctP.fillStyle = "#44ddff";
+        ctP.fillRect(barX, barY + barMaxH - kinH, barW, kinH);
+        ctP.fillStyle = "#ffcc44";
+        ctP.fillRect(barX + barW + 4, barY + barMaxH - potH, barW, potH);
+        ctP.font = "10px Arial";
+        ctP.fillStyle = "#aaa";
+        ctP.textAlign = "center";
+        ctP.fillText("E_kin", barX + barW / 2, barY + barMaxH + 12);
+        ctP.fillText("E_pot", barX + barW + 4 + barW / 2, barY + barMaxH + 12);
+        ctP.strokeStyle = "#555";
+        ctP.lineWidth = 1;
+        ctP.strokeRect(barX, barY, barW, barMaxH);
+        ctP.strokeRect(barX + barW + 4, barY, barW, barMaxH);
+
+        // legend
+        ctP.font = "11px Arial";
+        ctP.textAlign = "left";
+        ctP.fillStyle = "#44ddff";
+        ctP.fillText("━ v(Geschwindigkeit)", 10, H - 100);
+        ctP.fillStyle = "#ff8844";
+        ctP.fillText("━ F_rück (Rückstellkraft)", 10, H - 84);
+
+        // info
+        const T = period();
+        const x_now = Math.sin(theta) * l;
+        const v_now = dtheta * l * Math.cos(theta);
+        document.getElementById("simInfo").innerHTML =
+          `T = ${T.toFixed(3)} s &nbsp;|&nbsp; f = ${(1 / T).toFixed(
+            3
+          )} Hz &nbsp;|&nbsp; ω₀ = ${omega().toFixed(3)} rad/s<br>` +
+          `x = ${x_now.toFixed(3)} m &nbsp;|&nbsp; v = ${v_now.toFixed(
+            3
+          )} m/s &nbsp;|&nbsp; t = ${simT.toFixed(2)} s`;
+      }
+
+      /* ── CANVAS GRAPH ── */
+      const cG = document.getElementById("cGraph");
+      cG.width = 500;
+      cG.height = 420;
+      const ctG = cG.getContext("2d");
+
+      function drawGraph() {
+        ctG.clearRect(0, 0, 500, 420);
+        const GW = 500,
+          GH = 420;
+        const PL = 55,
+          PR = 15,
+          PT = 20,
+          PB = 30;
+        const pw = GW - PL - PR,
+          ph = GH - PT - PB;
+
+        ctG.strokeStyle = "rgba(255,255,255,0.05)";
+        ctG.lineWidth = 1;
+        for (let i = 0; i <= 10; i++) {
+          const y = PT + (ph / 10) * i;
+          ctG.beginPath();
+          ctG.moveTo(PL, y);
+          ctG.lineTo(PL + pw, y);
+          ctG.stroke();
+        }
+
+        // axes
+        ctG.strokeStyle = "#555";
+        ctG.lineWidth = 1.5;
+        ctG.beginPath();
+        ctG.moveTo(PL, PT);
+        ctG.lineTo(PL, PT + ph);
+        ctG.stroke();
+        ctG.beginPath();
+        ctG.moveTo(PL, PT + ph / 2);
+        ctG.lineTo(PL + pw, PT + ph / 2);
+        ctG.stroke();
+        ctG.font = "11px Arial";
+        ctG.fillStyle = "#777";
+        ctG.textAlign = "right";
+        ctG.fillText("+x̂", PL - 3, PT + 6);
+        ctG.fillText("0", PL - 3, PT + ph / 2 + 4);
+        ctG.fillText("−x̂", PL - 3, PT + ph - 2);
+        ctG.font = "11px Arial";
+        ctG.fillStyle = "#555";
+        ctG.textAlign = "right";
+        ctG.fillText("t", PL + pw, PT + ph / 2 - 4);
+
+        const n = histX.length;
+        if (n < 2) {
+          ctG.font = "15px Arial";
+          ctG.fillStyle = "#666";
+          ctG.textAlign = "center";
+          ctG.fillText(
+            "Simulation starten, um Graphen zu sehen",
+            GW / 2,
+            GH / 2
+          );
+          return;
+        }
+
+        const tMin = histT[0],
+          tMax = histT[n - 1];
+        const tSpan = Math.max(tMax - tMin, 0.01);
+
+        // find max values for scaling
+        const xMax = Math.max(...histX.map(Math.abs), 0.001);
+        const vMax = Math.max(...histV.map(Math.abs), 0.001);
+        const aMax = Math.max(...histA.map(Math.abs), 0.001);
+
+        function plotSeries(data, maxVal, col, check) {
+          if (!document.getElementById(check).checked) return;
+          ctG.strokeStyle = col;
+          ctG.lineWidth = 2;
+          ctG.beginPath();
+          let started = false;
+          for (let i = 0; i < n; i++) {
+            const tx = PL + ((histT[i] - tMin) / tSpan) * pw;
+            const ty = PT + ph / 2 - (data[i] / maxVal) * (ph * 0.45);
+            if (!started) {
+              ctG.moveTo(tx, ty);
+              started = true;
+            } else ctG.lineTo(tx, ty);
+          }
+          ctG.stroke();
+        }
+
+        plotSeries(histX, xMax, "#ff6666", "chkX");
+        plotSeries(histV, vMax, "#44ddff", "chkV");
+        plotSeries(histA, aMax, "#ffcc44", "chkA");
+
+        // legend
+        ctG.font = "11px Arial";
+        ctG.textAlign = "left";
+        if (document.getElementById("chkX").checked) {
+          ctG.fillStyle = "#ff6666";
+          ctG.fillText("x(t)", PL + 4, PT + 14);
+        }
+        if (document.getElementById("chkV").checked) {
+          ctG.fillStyle = "#44ddff";
+          ctG.fillText("v(t)", PL + 44, PT + 14);
+        }
+        if (document.getElementById("chkA").checked) {
+          ctG.fillStyle = "#ffcc44";
+          ctG.fillText("a(t)", PL + 84, PT + 14);
+        }
+      }
+
+      /* ── MAIN LOOP ── */
+      function loop(ts) {
+        if (!running) return;
+        if (lastTs !== null) {
+          const dt = (ts - lastTs) / 1000;
+          step(dt);
+
+          // record for graph
+          const x_c = Math.sin(theta) * l;
+          const v_c = dtheta * l * Math.cos(theta);
+          const a_c = -(g / l) * x_c;
+          histX.push(x_c);
+          histV.push(v_c);
+          histA.push(a_c);
+          histT.push(simT);
+          if (histX.length > MAX_HIST) {
+            histX.shift();
+            histV.shift();
+            histA.shift();
+            histT.shift();
+          }
+        }
+        lastTs = ts;
+        drawPendel();
+        drawGraph();
+        requestAnimationFrame(loop);
+      }
+
+      // initial draw
+      drawPendel();
+      drawGraph();
+    </script>
+  </body>
+</html>
