@@ -3,8 +3,8 @@
 <head>
 
   <meta charset="UTF-8">
-  <link rel="stylesheet" href="test.css">
   <link rel="stylesheet" href="Schwingungen_Startseite.css">
+  <link rel="stylesheet" href="test.css">
 
 </head>
 <body>
@@ -24,17 +24,94 @@
   </nav>
 
 <div class="card">
+  <h1>Schwingungen und Wellen</h1>
 <div class="widget">
-<h1>Simulation: Grundlagen einer Schwingung</h1>
-<p align="left">
-Eine Schwingung ist eine periodische Bewegung um eine Ruhelage, die durch das Zusammenspiel von Rückstellkraft und Trägheit entsteht.
-</p>
+  <h2>Grundlagen einer Schwingung</h2>
+  <p>
+    Eine Schwingung ist eine periodische Bewegung um eine Ruhelage, die durch das Zusammenspiel von Rückstellkraft und Trägheit entsteht. Immer wenn etwas aus der Ruhe gebracht wird, es aber eine Kraft gibt, die es wieder in den Ruhezustand bringen will, beginnt es zu schwingen.
+  <br>
+    Anschauliche Beispiele für Schwingungen sind Fadenpendel und Federpendel. Beide schwingen harmonisch, also mit einer Rückstellkraft, die proportional zur Auslenkung ist. 
+  </p>
 <span class="box" align="center">
   <p>
     <b>Jello
   </p>
 </span>
 <canvas id="pendelCanvas"></canvas>
+  <p>
+  Beim Fadenpendel wird ein Gewicht an einen Faden Gehängt und ausgelenkt. Die Rückstellkraft entsteht hierbei durch die Gravitationskraft, die auf das Objekt wirkt und die Normalkraft, die durch den Faden wirkt.
+  <br>
+  Beim Federpendel wird ein Gewicht an eine Hook'sche Feder gehangen und noch obern oder unten ausgelengt. Die Rückstellkraft besteht hier aus Gravitationskraft und der Federkraft. 
+  <br>
+  <br>
+  Messabre Größen dabei sind:
+  </p>
+<table border="1" cellspacing="0" cellpadding="5" align="center">
+  <thead>
+    <tr>
+      <th>Größe</th>
+      <th>Formelzeichen</th>
+      <th>Formel</th>
+      <th>Einheit</th>
+      <th>Erklärung der Variablen und Konstanten</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Schwingungsdauer</td>
+      <td>T</td>
+      <td>–</td>
+      <td>s</td>
+      <td>Keine Variablen — reine Zeitdauer einer vollständigen Schwingung</td>
+    </tr>
+
+    <tr>
+      <td>Frequenz</td>
+      <td>f</td>
+      <td>f = 1 / T</td>
+      <td>Hz</td>
+      <td>
+        T – Schwingungsdauer (Zeit für eine Schwingung)
+      </td>
+    </tr>
+
+    <tr>
+      <td>Kreisfrequenz</td>
+      <td>ω</td>
+      <td>ω = 2πf = 2π / T</td>
+      <td>rad/s</td>
+      <td>
+        π – Kreiszahl (≈ 3,14159)<br>
+        f – Frequenz<br>
+        T – Schwingungsdauer
+      </td>
+    </tr>
+
+    <tr>
+      <td>Amplitude</td>
+      <td>A</td>
+      <td>–</td>
+      <td>m</td>
+      <td>
+        Keine Variablen — maximale Auslenkung aus der Ruhelage
+      </td>
+    </tr>
+
+    <tr>
+      <td>Elongation</td>
+      <td>y(t)</td>
+      <td>y(t) = A · sin(ωt + φ)</td>
+      <td>m</td>
+      <td>
+        A – Amplitude<br>
+        ω – Kreisfrequenz<br>
+        t – Zeit<br>
+        φ – Anfangsphase
+      </td>
+    </tr>
+  </tbody>
+</table>
+
 
 <script>
 (function() {
