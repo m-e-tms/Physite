@@ -11,7 +11,7 @@ local source_file = io.open(arg[1], "r")
 local css_string = source_file:read("a"):match(css_pattern)--:gsub("[^\n]-\n", "  %0")
 source_file:close()
 
-css_string = "<link rel=\"stylesheet\" href=\"..\\..\\Physite\\scripts\\test.css\">"
+css_string = "<link rel=\"stylesheet\" href=\"../../scripts/test.css\">"
 
 local destination_file = io.open(arg[2], "r")
 local content = destination_file:read("a")
