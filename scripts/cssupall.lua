@@ -5,7 +5,7 @@ if (#arg ~= 1) then
     os.exit(1)
 end
 
-local result = io.popen("find Oberstufenthemen -name \"*.html\"", "r")
+local result = io.popen("find \"Physik Mittelstufe\" -name \"*.html\"", "r")
 
 for line in result:lines() do
     arg[2] = line
