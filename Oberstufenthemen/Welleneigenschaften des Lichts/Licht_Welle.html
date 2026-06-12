@@ -145,7 +145,325 @@ Das ist ein Beweis daf&uuml;r, dass Licht nicht ausschlie&szlig;lich in Teilchen
     Diese Bilder wurden einmal ohne, und einmal mit Polfilter
     erstellt:</p>
 
-    <p><img class="left" width="100%" src="https://www.f-zwo-acht.de/wp-content/uploads/polfilter-550x498.jpg"</p>
+ 
+
+
+
+  <style>
+    /* =====================================================
+       POLFILTER IMAGE COMPARISON SLIDER
+       Einfach diesen gesamten Code in deine Website einf&Atilde;&frac14;gen.
+       Die zwei Bildpfade findest du weiter unten im HTML-Teil.
+    ===================================================== */
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: system-ui, -apple-system, sans-serif;
+      background: #f5f5f5;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
+      padding: 2rem 1rem;
+    }
+
+    /* ---- &Atilde;„u&Atilde;Ÿere Wrapper ---- */
+    .comparison-wrapper {
+      width: 100%;
+      max-width: 800px;
+    }
+
+    .comparison-wrapper h2 {
+      text-align: center;
+      font-size: 1.4rem;
+      font-weight: 600;
+      color: #222;
+      margin-bottom: 0.5rem;
+    }
+
+    .comparison-wrapper p.subtitle {
+      text-align: center;
+      font-size: 0.875rem;
+      color: #666;
+      margin-bottom: 1.25rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+    }
+
+    /* ---- Slider-Container ---- */
+    .comparison-slider {
+      position: relative;
+      width: 100%;
+      overflow: hidden;
+      border-radius: 12px;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+      cursor: col-resize;
+
+      /* Verhindert ungewollte Textauswahl beim Ziehen */
+      user-select: none;
+      -webkit-user-select: none;
+
+      /* Verhindert Scroll-Konflikte auf Touch-Ger&Atilde;&curren;ten */
+      touch-action: none;
+    }
+
+    /* ---- Basisbild (ohne Polfilter, liegt "unten") ---- */
+    .img-without-filter {
+      display: block;
+      width: 100%;
+      height: auto;
+      max-height: 520px;
+      object-fit: cover;
+    }
+
+    /* ---- Vergleichsbild (mit Polfilter, liegt "oben", wird per clip-path beschnitten) ---- */
+    .img-with-filter {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+
+      /* clip-path startet bei 50 % &acirc;&euro;“ wird per JS live angepasst */
+      clip-path: inset(0 50% 0 0);
+
+      /* Kein Flackern auf iOS Safari */
+      -webkit-clip-path: inset(0 50% 0 0);
+    }
+
+    /* ---- Vertikale Trennlinie ---- */
+    .divider-line {
+      position: absolute;
+      top: 0;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 2px;
+      height: 100%;
+      background: #ffffff;
+      box-shadow: 0 0 6px rgba(0, 0, 0, 0.4);
+      pointer-events: none;
+    }
+
+    /* ---- Zieh-Handle (runder Button in der Mitte der Linie) ---- */
+    .drag-handle {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 48px;
+      height: 48px;
+      border-radius: 50%;
+      background: #ffffff;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.35);
+      cursor: col-resize;
+      z-index: 10;
+
+      /* Sieht schicker aus auf Touch-Ger&Atilde;&curren;ten */
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    .drag-handle svg {
+      width: 24px;
+      height: 14px;
+      pointer-events: none;
+    }
+
+    /* ---- Beschriftungs-Badges ---- */
+    .label {
+      position: absolute;
+      top: 14px;
+      background: rgba(0, 0, 0, 0.55);
+      color: #fff;
+      font-size: 0.75rem;
+      font-weight: 600;
+      padding: 4px 12px;
+      border-radius: 20px;
+      pointer-events: none;
+      letter-spacing: 0.03em;
+      backdrop-filter: blur(4px);
+      -webkit-backdrop-filter: blur(4px);
+    }
+
+    .label-left  { left: 14px; }
+    .label-right { right: 14px; }
+
+    /* ---- Responsivit&Atilde;&curren;t ---- */
+    @media (max-width: 480px) {
+      .drag-handle {
+        width: 40px;
+        height: 40px;
+      }
+
+      .drag-handle svg {
+        width: 20px;
+        height: 12px;
+      }
+
+      .label {
+        font-size: 0.7rem;
+        padding: 3px 9px;
+      }
+    }
+  </style>
+</head>
+<body>
+
+ <div class="comparison-wrapper">
+
+    <h2>Polfilter-Effekt im Vergleich</h2>
+    <p class="subtitle">
+      <!-- Pfeil-Icon -->
+      <svg width="15" height="15" viewBox="0 0 24 24" fill="none"
+           stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+           aria-hidden="true">
+        <path d="M5 12H19M5 12L9 8M5 12L9 16M19 12L15 8M19 12L15 16"/>
+      </svg>
+      Slider ziehen oder klicken zum Vergleichen
+    </p>
+
+    <!-- ================================================
+         SLIDER-CONTAINER
+         ================================================ -->
+    <div class="comparison-slider" id="comparisonSlider">
+
+      <!-- =====================================================
+           BILD 1: OHNE POLFILTER
+           â†’ src="..." durch den Pfad/URL deines Bildes ersetzen
+           ===================================================== -->
+      <img
+        class="img-without-filter"
+        src=  "pictures/Bild_ohne_Pol.jpeg"
+        alt="Foto ohne Polfilter"
+      >
+
+      <!-- =====================================================
+           BILD 2: MIT POLFILTER
+           â†’ src="..." durch den Pfad/URL deines Bildes ersetzen
+           Beide Bilder mÃ¼ssen exakt dieselbe Szene zeigen!
+           ===================================================== -->
+      <img
+        class="img-with-filter"
+        id="imgWithFilter"
+        src=  "pictures/Bild_mit_Pol.jpeg"
+        alt="Foto mit Polfilter"
+      >
+
+      <!-- Trennlinie -->
+      <div class="divider-line" id="dividerLine"></div>
+
+      <!-- Zieh-Handle -->
+      <div class="drag-handle" id="dragHandle" role="slider"
+           aria-label="Slider zum Vergleichen der Bilder"
+           aria-valuemin="0" aria-valuemax="100" aria-valuenow="50">
+        <!-- Doppelpfeil-Icon -->
+        <svg viewBox="0 0 22 14" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M1 7H21M1 7L5 3M1 7L5 11M21 7L17 3M21 7L17 11"
+                stroke="#333" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </div>
+
+      <!-- Labels -->
+      <div class="label label-left">Mit Polfilter</div>
+      <div class="label label-right">Ohne Polfilter</div>
+
+    </div><!-- /.comparison-slider -->
+
+  </div><!-- /.comparison-wrapper -->
+
+
+  <script>
+    (function () {
+      // ---- Elemente ----
+      const slider    = document.getElementById('comparisonSlider');
+      const imgFilter = document.getElementById('imgWithFilter');
+      const divLine   = document.getElementById('dividerLine');
+      const handle    = document.getElementById('dragHandle');
+
+      let isDragging = false;
+
+      // ---- Kernfunktion: Position in Prozent setzen ----
+      function setSliderPosition(clientX) {
+        const rect = slider.getBoundingClientRect();
+        let pct = (clientX - rect.left) / rect.width;
+        pct = Math.max(0, Math.min(1, pct));            // Wert zwischen 0 und 1 clampen
+
+        const pctStr      = (pct * 100).toFixed(2) + '%';
+        const remainingPct = ((1 - pct) * 100).toFixed(2) + '%';
+
+        // Polfilter-Bild auf der linken Seite anzeigen
+        imgFilter.style.clipPath         = `inset(0 ${remainingPct} 0 0)`;
+        imgFilter.style.webkitClipPath   = `inset(0 ${remainingPct} 0 0)`;
+
+        // Linie und Handle verschieben
+        divLine.style.left = pctStr;
+        handle.style.left  = pctStr;
+
+        // ARIA-Wert aktualisieren (Barrierefreiheit)
+        handle.setAttribute('aria-valuenow', Math.round(pct * 100));
+      }
+
+      // ---- Mouse-Events ----
+      handle.addEventListener('mousedown', function (e) {
+        isDragging = true;
+        e.preventDefault();
+      });
+
+      window.addEventListener('mousemove', function (e) {
+        if (isDragging) setSliderPosition(e.clientX);
+      });
+
+      window.addEventListener('mouseup', function () {
+        isDragging = false;
+      });
+
+      // ---- Touch-Events (Smartphones & Tablets) ----
+      handle.addEventListener('touchstart', function (e) {
+        isDragging = true;
+        e.preventDefault();         // Verhindert Scroll beim Ziehen
+      }, { passive: false });
+
+      window.addEventListener('touchmove', function (e) {
+        if (isDragging && e.touches.length > 0) {
+          setSliderPosition(e.touches[0].clientX);
+        }
+      }, { passive: true });
+
+      window.addEventListener('touchend', function () {
+        isDragging = false;
+      });
+
+      // ---- Klick direkt auf den Container ----
+      slider.addEventListener('click', function (e) {
+        setSliderPosition(e.clientX);
+      });
+
+      // ---- Tastatursteuerung (Barrierefreiheit) ----
+      handle.addEventListener('keydown', function (e) {
+        const rect = slider.getBoundingClientRect();
+        const currentPct = parseFloat(handle.getAttribute('aria-valuenow')) / 100;
+        let step = 0.02; // 2 % pro Tastendruck
+
+        if (e.key === 'ArrowLeft')  setSliderPosition(rect.left + (currentPct - step) * rect.width);
+        if (e.key === 'ArrowRight') setSliderPosition(rect.left + (currentPct + step) * rect.width);
+        if (e.key === 'Home')       setSliderPosition(rect.left);
+        if (e.key === 'End')        setSliderPosition(rect.right);
+      });
+
+    })();
+  </script>
+
 
  <!--  Da kommt noch ein anderes Bild:)-->
 
