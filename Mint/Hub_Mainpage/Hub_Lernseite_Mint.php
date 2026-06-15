@@ -64,6 +64,59 @@ $top_raetsel= getTop5($db, 'score_raetsel');
             <h3>Stochastik</h3>
             <p>Würfel & Glücksrad</p>
         </a>
+        <a class="game-card" href="../../Oberstufenthemen/Impuls/index.html">
+            <div class="icon">💥</div>
+            <h3>Impulse</h3>
+        </a>
+        <a class="game-card" href="../../Oberstufenthemen/Kreisbewegung/Gravitationsgesetz.html">
+            <div class="icon">☄️</div>
+            <h3>Gravitationsgesetz</h3>
+        </a>
+        <a class="game-card" href="../../Oberstufenthemen/Kreisbewegung/Zentripetalkraft.html">
+            <div class="icon">꩜</div>
+            <h3>Zentripetalkraft</h3>
+        </a>
+        <a class="game-card" href="../../Oberstufenthemen/Satellitenbahnen/index.html">
+            <div class="icon">🛰️</div>
+            <h3>Satelitenbahnen</h3>
+        </a>
+        <a class="game-card" href="../../Oberstufenthemen/Schwingungen_und_Wellen/Schwingungen_und_Wellen.html">
+            <div class="icon">🌊</div>
+            <h3>Schwingungen/Wellen</h3>
+        </a>
+        <a class="game-card" href="../../Oberstufenthemen/Simulation%20zum%20Doppelspaltexperiment/doppelspalt_v2%20(1).html">
+            <div class="icon">⏸</div>
+            <h3>Doppelspalt</h3>
+        </a>
+        <a class="game-card" href="../../Oberstufenthemen/Welleneigenschaften%20des%20Lichts/Licht_Welle.html">
+            <div class="icon">🔦</div>
+            <h3>Lichtwellen</h3>
+        </a>
+        <a class="game-card" href="../../Oberstufenthemen/Welleneigenschaften%20des%20Lichts/Doppelspalt.html">
+            <div class="icon">⏸</div>
+            <h3>Doppelspalt</h3>
+        </a>
+        <a class="game-card" href="../../Physik%20Mittelstufe/E-Lehre/E-Lehre.html">
+            <div class="icon">⚡</div>
+            <h3>E-Lehre</h3>
+        </a>
+        <a class="game-card" href="../../Physik%20Mittelstufe/Fadenpendel/index.html">
+            <div class="icon">🧵</div>
+            <h3>Fadenpendel</h3>
+        </a>
+        <a class="game-card" href="../../Physik%20Mittelstufe/Magnetismus/index.html">
+            <div class="icon">🧲</div>
+            <h3>Magnetismus</h3>
+        </a>
+        <a class="game-card" href="../../Oberstufenthemen/Wuerfe/wurf_simulation.html">
+            <div class="icon">⚽</div>
+            <h3>Wuerfe</h3>
+        </a>
+        <a class="game-card" href="../../Physik%20Mittelstufe/E-Lehre/lorentzkraft_2.html">
+            <div class="icon">👉</div>
+            <h3>Lorenzkraft</h3>
+        </a>
+
     </div>
 
     <!-- Leaderboard -->
