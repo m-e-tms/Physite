@@ -1,0 +1,492 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <link rel="stylesheet" href="test.css">
+</head>
+<body>
+
+  <nav>
+    <div class="element">Home</div>
+    <div class="element">Scoreboard</div>
+    <div class="element">News</div>
+    <div class="element no-border dropdown">
+      Themen
+      <div class="dropdown-content">
+        <button>Elektrisches Feld</button>
+        <button>Magnetisches Feld</button>
+        <button>Induktion</button>
+        <button>Lorentzkraft</button>
+      </div>
+    </div>
+  </nav>
+
+  <div class="card">
+
+    <h1>Kraft auf Stromleiter &amp; LORENTZ-Kraft</h1>
+
+    <div class="widget">
+      <h2>Kraft auf stromführende Leiter im Magnetfeld</h2>
+      <p>
+        Befindet sich ein stromdurchflossener Leiter im Magnetfeld, so erfährt der Leiter im Allgemeinen eine Kraft. Die Wirkung dieser Kraft ist am größten, wenn Stromrichtung und Magnetfeldrichtung <em>senkrecht</em> zueinander stehen, also einen Winkel von 90° bilden. Wenn Stromrichtung und Magnetfeldrichtung hingegen parallel oder antiparallel verlaufen, wirkt <em>keine</em> Kraft. Im Fall von senkrecht zueinander stehender Stromrichtung und Magnetfeldrichtung steht die wirkende Kraft senkrecht auf der durch Strom- und Magnetfeldrichtung aufgespannten Ebene.
+      </p>
+    </div>
+
+    <h2>Die Drei-Finger-Regel der rechten Hand</h2>
+
+    <p>
+      <img class="left" width="300px" height="195px" src="https://blog.berrybase.de/wp-content/uploads/2024/07/8fddd320-8e36-4cb2-aa9e-1c09cc2540e7-750x488.png.webp">
+      Zur Ermittlung der Kraftrichtung verwendet man die Drei-Finger-Regel der rechten Hand: Der <strong>Daumen</strong> zeigt in die <strong>Stromrichtung</strong> (von + nach −). Der <strong>Zeigefinger</strong> zeigt in die <strong>Magnetfeldrichtung</strong> (von Nord nach Süd). Der <strong>Mittelfinger</strong> gibt die <strong>Kraftrichtung</strong> an. Diese Regel wird auch als UVW-Regel bezeichnet: Ursache (Strom) – Vermittler (Magnetfeld) – Wirkung (Kraft). Bei negativen Ladungsträgern nutzt man die Drei-Finger-Regel der <em>linken</em> Hand, wobei der Daumen in die Bewegungsrichtung der negativen Ladungsträger zeigt.
+    </p>
+
+    <div class="widget">
+      <h2>Interpretation als LORENTZ-Kraft</h2>
+      <p>
+        Die Kraft auf ein Leiterstück ist die Summe der vielen kleinen Kräfte, die jeweils auf die einzelnen bewegten Ladungsträger im Magnetfeld wirken. Man nennt diese Kraft auf bewegte Ladungsträger nach ihrem Entdecker <strong>Hendrik Antoon LORENTZ</strong> (1853–1928) die <strong>LORENTZ-Kraft</strong>. Mit Hilfe der Drei-Finger-Regeln lässt sich die Kraftrichtung auch auf einzelne freie Ladungsträger anwenden – die Ladungsträger müssen dabei nicht in einem Leiter eingesperrt sein.
+      </p>
+    </div>
+
+    <div class="widget">
+      <h2>Die Formel der LORENTZ-Kraft</h2>
+      <p>
+        Für einen einzelnen Ladungsträger mit der Ladung q, der sich senkrecht zu den Feldlinien eines homogenen Magnetfeldes der Flussdichte B mit der Geschwindigkeit v bewegt, gilt:
+        <br><br>
+        <span class="box">F&#x2097; = q · B · v &nbsp;&nbsp; für &nbsp;&nbsp; v ⊥ B</span>
+        <br><br>
+        Bewegt sich ein geladenes Teilchen unter einem Winkel α zur Richtung der Feldlinien, gilt allgemein:
+        <br><br>
+        <span class="box">F&#x2097; = q · B · v · sin(α)</span>
+        <br><br>
+        Bei Bewegung parallel zu den Magnetfeldlinien (α = 0°) tritt <em>keine</em> LORENTZ-Kraft auf. Die magnetische Flussdichte B wird in Tesla (T) gemessen: <span class="box">1 T = 1 V·s/m²</span>.
+      </p>
+    </div>
+
+    <div class="widget">
+      <h2>Simulation: Kreisbahn eines geladenen Teilchens</h2>
+      <p><strong>Aufbau:</strong> Ein negativ geladenes Teilchen (blau) tritt von rechts in ein homogenes Magnetfeld ein, das senkrecht in die Zeichenebene zeigt (× = Feldlinien vom Betrachter weg). Die LORENTZ-Kraft wirkt stets senkrecht zur momentanen Bewegungsrichtung.</p>
+      <p><strong>Was passiert:</strong> Da die Kraft immer senkrecht zur Geschwindigkeit steht, bleibt der Geschwindigkeitsbetrag konstant – nur die Richtung ändert sich. Die LORENTZ-Kraft wirkt als Zentripetalkraft und zwingt das Teilchen auf eine <em>Kreisbahn</em>.</p>
+      <p><strong>Einfluss der Feldstärke:</strong> Je stärker das Magnetfeld B, desto größer die LORENTZ-Kraft und desto kleiner der Kreisradius. Bei schwachem Feld beschreibt das Teilchen eine große Kreisbahn, bei starkem Feld eine enge.</p>
+
+      <style>
+        .lsim-wrap { padding: 1rem 0 !important; display: flex !important; flex-direction: column !important; align-items: center !important; gap: 1.2rem !important; box-sizing: border-box !important; }
+        .lsim-canvas { display: block !important; border: 2px solid #334 !important; border-radius: 8px !important; padding: 0 !important; background: #080818 !important; }
+        .lsim-speed-row { display: flex !important; align-items: center !important; gap: 12px !important; width: 320px !important; padding: 0 !important; box-sizing: border-box !important; }
+        .lsim-speed-row label { font-size: 13px !important; color: #aaa !important; white-space: nowrap !important; }
+        .lsim-speed-row input[type=range] { flex: 1 !important; padding: 0 !important; }
+        .lsim-legend { display: flex !important; gap: 14px !important; font-size: 12px !important; color: #aaa !important; flex-wrap: wrap !important; justify-content: center !important; padding: 0 !important; }
+        .lsim-leg-dot  { width: 10px !important; height: 10px !important; border-radius: 50% !important; display: inline-block !important; margin-right: 4px !important; vertical-align: middle !important; padding: 0 !important; }
+        .lsim-leg-line { width: 18px !important; height: 3px !important; display: inline-block !important; margin-right: 4px !important; vertical-align: middle !important; border-radius: 2px !important; padding: 0 !important; }
+      </style>
+
+      <div class="lsim-wrap">
+        <canvas id="lsim-canvas" class="lsim-canvas" width="320" height="320"></canvas>
+
+        <div class="lsim-speed-row">
+          <label>Feldstärke B</label>
+          <input type="range" min="1" max="9" value="4" step="1" id="lsim-slider">
+          <span style="font-size:13px;color:#888;min-width:16px" id="lsim-spd-out">4</span>
+        </div>
+
+        <div class="lsim-legend">
+          <span><span class="lsim-leg-dot" style="background:radial-gradient(circle at 35% 35%,#88ccff,#1a6ab5)"></span>Elektron (e⁻)</span>
+          <span><span class="lsim-leg-line" style="background:#D85A30"></span>LORENTZ-Kraft F&#x2097;</span>
+          <span><span style="font-size:12px;margin-right:4px;color:#334466">×</span>Magnetfeld B (in die Ebene)</span>
+        </div>
+      </div>
+    </div>
+
+    <h2>Der Elektromotor – Anwendung der Lorentzkraft</h2>
+
+    <p>
+      Elektromotoren wandeln elektrische in mechanische Energie um. Ein Elektromotor besteht im Kern aus einem drehbaren Elektromagneten, dem <strong>Rotor</strong> (Anker), der sich in einem äußeren Magnetfeld der <strong>Statoren</strong> (Dauermagneten) befindet. Fließt Strom durch den Rotor, wird er zum Elektromagneten mit Nord- und Südpol. Die auftretende LORENTZ-Kraft auf die stromdurchflossenen Leiter des Rotors erzeugt ein Drehmoment.
+    </p>
+
+    <div class="widget">
+      <h2>Kommutator und kontinuierliche Drehbewegung</h2>
+      <p>
+        Damit sich der Rotor ständig weiterdreht, muss er mit einem <strong>Kommutator</strong> (Polwender) versehen werden. Der Rotor dreht sich zunächst eine Vierteldrehung, bis die entgegengesetzten Pole von Rotor und Stator nah beieinander sind – das ist der <em>Totpunkt</em>. Der Kommutator sorgt nun für die Umpolung des Rotors: Er vertauscht die beiden Pole des Elektromagneten. Dadurch liegen nun gleichnamige Pole beieinander, die sich abstoßen und den Rotor weiterdrehen lassen.
+      </p>
+    </div>
+
+    <div class="widget">
+      <h2>Simulation: Elektromotor</h2>
+      <p><strong>Aufbau:</strong> Eine rechteckige Leiterschleife (Rotor, orange) dreht sich zwischen zwei Dauermagneten (N links, S rechts). Das Magnetfeld B verläuft von Nord nach Süd (→). Der Strom fließt durch die Schleife; die LORENTZ-Kraft auf die horizontalen Leiter erzeugt das Drehmoment.</p>
+      <p><strong>Was passiert:</strong> Die LORENTZ-Kraft wirkt auf die obere und untere Seite der Schleife in entgegengesetzte Richtungen – das erzeugt ein Drehmoment. Am Totpunkt (Schleife senkrecht zu B) schaltet der Kommutator die Stromrichtung um, sodass der Rotor kontinuierlich dreht. Die seitlichen Leiter (parallel zu B) erfahren keine Kraft.</p>
+      <p><strong>Stromstärke:</strong> Mehr Strom → größere LORENTZ-Kraft → höheres Drehmoment → schnellere Drehung.</p>
+
+      <style>
+        .msim-wrap { padding: 1rem 0 !important; display: flex !important; flex-direction: column !important; align-items: center !important; gap: 1.2rem !important; box-sizing: border-box !important; }
+        .msim-canvas { display: block !important; border: 2px solid #334 !important; border-radius: 8px !important; padding: 0 !important; }
+        .msim-speed-row { display: flex !important; align-items: center !important; gap: 12px !important; width: 320px !important; padding: 0 !important; box-sizing: border-box !important; }
+        .msim-speed-row label { font-size: 13px !important; color: #aaa !important; white-space: nowrap !important; }
+        .msim-speed-row input[type=range] { flex: 1 !important; padding: 0 !important; }
+        .msim-legend { display: flex !important; gap: 14px !important; font-size: 12px !important; color: #aaa !important; flex-wrap: wrap !important; justify-content: center !important; padding: 0 !important; }
+        .msim-leg-dot  { width: 10px !important; height: 10px !important; border-radius: 50% !important; display: inline-block !important; margin-right: 4px !important; vertical-align: middle !important; padding: 0 !important; }
+        .msim-leg-line { width: 18px !important; height: 3px !important; display: inline-block !important; margin-right: 4px !important; vertical-align: middle !important; border-radius: 2px !important; padding: 0 !important; }
+      </style>
+
+      <div class="msim-wrap">
+        <canvas id="msim-canvas" class="msim-canvas" width="320" height="320"></canvas>
+
+        <div class="msim-speed-row">
+          <label>Stromstärke I</label>
+          <input type="range" min="1" max="9" value="4" step="1" id="msim-slider">
+          <span style="font-size:13px;color:#888;min-width:16px" id="msim-spd-out">4</span>
+        </div>
+
+        <div class="msim-legend">
+          <span><span class="msim-leg-dot" style="background:#D85A30"></span>Nordpol (N)</span>
+          <span><span class="msim-leg-dot" style="background:#378ADD"></span>Südpol (S)</span>
+          <span><span class="msim-leg-line" style="background:#E8A020"></span>Rotor (Schleife)</span>
+          <span><span class="msim-leg-line" style="background:#44DD88"></span>LORENTZ-Kraft F&#x2097;</span>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+<script>
+// ── SIMULATION 1: Kreisbahn im Magnetfeld ──────────────────────────────────────
+(function() {
+  var canvas = document.getElementById('lsim-canvas');
+  var ctx = canvas.getContext('2d');
+  var W = 320, H = 320;
+  var cx = W / 2, cy = H / 2;
+
+  // B-field slider: maps 1-9 → radius 140 down to 40px
+  var bLevel = 4;
+  function getRadius() { return 140 - bLevel * 11; }
+
+  var angle = 0;   // particle angle on circle (rad), starts at right
+  var speed = 0.03; // rad per frame
+
+  function drawArrow(ctx, x, y, dx, dy, color, len) {
+    var mag = Math.sqrt(dx*dx+dy*dy);
+    dx = dx/mag*len; dy = dy/mag*len;
+    ctx.beginPath();
+    ctx.moveTo(x, y);
+    ctx.lineTo(x+dx, y+dy);
+    ctx.strokeStyle = color;
+    ctx.lineWidth = 2.5;
+    ctx.stroke();
+    // arrowhead
+    var headLen = 8;
+    var ang = Math.atan2(dy, dx);
+    ctx.beginPath();
+    ctx.moveTo(x+dx, y+dy);
+    ctx.lineTo(x+dx - headLen*Math.cos(ang-0.4), y+dy - headLen*Math.sin(ang-0.4));
+    ctx.lineTo(x+dx - headLen*Math.cos(ang+0.4), y+dy - headLen*Math.sin(ang+0.4));
+    ctx.closePath();
+    ctx.fillStyle = color;
+    ctx.fill();
+  }
+
+  function drawX(ctx, x, y) {
+    ctx.font = '13px monospace';
+    ctx.fillStyle = '#2a3a5a';
+    ctx.textAlign = 'center';
+    ctx.textBaseline = 'middle';
+    ctx.fillText('×', x, y);
+  }
+
+  function render() {
+    ctx.clearRect(0, 0, W, H);
+
+    // background
+    ctx.fillStyle = '#080818';
+    ctx.fillRect(0, 0, W, H);
+
+    // B field dots (× into page)
+    for (var gx = 20; gx < W; gx += 40) {
+      for (var gy = 20; gy < H; gy += 40) {
+        drawX(ctx, gx, gy);
+      }
+    }
+
+    var r = getRadius();
+
+    // dashed orbit circle
+    ctx.beginPath();
+    ctx.arc(cx, cy, r, 0, 2*Math.PI);
+    ctx.setLineDash([4, 6]);
+    ctx.strokeStyle = '#1a2a3a';
+    ctx.lineWidth = 1.5;
+    ctx.stroke();
+    ctx.setLineDash([]);
+
+    // particle position: clockwise for negative charge in B-into-page
+    // negative charge: v to the right → F downward (left-hand rule), so clockwise
+    var px = cx + r * Math.cos(angle);
+    var py = cy + r * Math.sin(angle);
+
+    // velocity direction: tangent to circle, clockwise → (sin, -cos) ... 
+    // clockwise tangent at angle: (sin(angle), -cos(angle)) ... actually for clockwise:
+    // position: (cos θ, sin θ), clockwise means θ increases, tangent = (-sin θ, cos θ)... 
+    // Let's be explicit: clockwise tangent = (sin θ, -cos θ)  NO
+    // d/dt(cos θ, sin θ) with θ increasing = (-sin θ, cos θ) = CCW tangent
+    // For CW: negate = (sin θ, -cos θ)
+    var vx = Math.sin(angle);
+    var vy = -Math.cos(angle);
+
+    // Lorentz force: for negative charge, v × B (B = -z), F = q(v×B), q negative
+    // v × B_into_page (-z): (vx,vy,0)×(0,0,-1) = (vy*(-1)-0, 0-vx*(-1), 0) = (-vy, vx, 0)
+    // for negative charge q = -e: F = -e * (-vy, vx) = (e*vy, -e*vx)
+    // centripetal direction = toward center = (cx-px, cy-py) normalized
+    var fx = cx - px;
+    var fy = cy - py;
+
+    // velocity arrow (white)
+    drawArrow(ctx, px, py, vx, vy, '#ffffff', 38);
+    // force arrow (orange-red) pointing to center
+    drawArrow(ctx, px, py, fx, fy, '#D85A30', 38);
+
+    // particle
+    var grad = ctx.createRadialGradient(px-3, py-3, 1, px, py, 8);
+    grad.addColorStop(0, '#aaddff');
+    grad.addColorStop(1, '#1a5ab5');
+    ctx.beginPath();
+    ctx.arc(px, py, 8, 0, 2*Math.PI);
+    ctx.fillStyle = grad;
+    ctx.fill();
+    ctx.strokeStyle = '#88ccff';
+    ctx.lineWidth = 1;
+    ctx.stroke();
+
+    // labels
+    ctx.fillStyle = '#556677';
+    ctx.font = '11px Arial';
+    ctx.textAlign = 'left';
+    ctx.textBaseline = 'top';
+    ctx.fillText('B ×', 6, 6);
+    ctx.fillStyle = '#ffffff';
+    ctx.font = '10px Arial';
+    ctx.textAlign = 'right';
+    ctx.fillText('e⁻', W-6, H-16);
+
+    // legend: v arrow
+    ctx.fillStyle = '#aaa';
+    ctx.font = '11px Arial';
+    ctx.textAlign = 'left';
+    drawArrow(ctx, 10, H-22, 1, 0, '#ffffff', 22);
+    ctx.fillStyle = '#aaa';
+    ctx.fillText('v', 36, H-28);
+    drawArrow(ctx, 55, H-22, 1, 0, '#D85A30', 22);
+    ctx.fillText('F', 81, H-28);
+
+    angle += speed;
+    if (angle > 2*Math.PI) angle -= 2*Math.PI;
+    requestAnimationFrame(render);
+  }
+
+  render();
+
+  document.getElementById('lsim-slider').addEventListener('input', function() {
+    bLevel = parseInt(this.value);
+    document.getElementById('lsim-spd-out').textContent = bLevel;
+    speed = 0.008 + bLevel * 0.004;
+  });
+})();
+
+
+// ── SIMULATION 2: Elektromotor ─────────────────────────────────────────────────
+(function() {
+  var canvas = document.getElementById('msim-canvas');
+  var ctx = canvas.getContext('2d');
+  var W = 320, H = 320;
+  var cx = W / 2, cy = H / 2;
+
+  var rotorAngle = 0;
+  var motorSpeed = 0.025;
+
+  function drawArrow(ctx, x, y, dx, dy, color, len) {
+    var mag = Math.sqrt(dx*dx+dy*dy);
+    if (mag === 0) return;
+    dx = dx/mag*len; dy = dy/mag*len;
+    ctx.beginPath();
+    ctx.moveTo(x, y);
+    ctx.lineTo(x+dx, y+dy);
+    ctx.strokeStyle = color;
+    ctx.lineWidth = 2.5;
+    ctx.stroke();
+    var headLen = 8;
+    var ang = Math.atan2(dy, dx);
+    ctx.beginPath();
+    ctx.moveTo(x+dx, y+dy);
+    ctx.lineTo(x+dx - headLen*Math.cos(ang-0.4), y+dy - headLen*Math.sin(ang-0.4));
+    ctx.lineTo(x+dx - headLen*Math.cos(ang+0.4), y+dy - headLen*Math.sin(ang+0.4));
+    ctx.closePath();
+    ctx.fillStyle = color;
+    ctx.fill();
+  }
+
+  function render() {
+    ctx.clearRect(0, 0, W, H);
+
+    // background
+    ctx.fillStyle = '#080818';
+    ctx.fillRect(0, 0, W, H);
+
+    // ── Poles ──
+    // North pole (left, red)
+    var grad = ctx.createLinearGradient(0, 0, 55, 0);
+    grad.addColorStop(0, '#6a1010');
+    grad.addColorStop(1, '#C84030');
+    ctx.fillStyle = grad;
+    ctx.beginPath();
+    ctx.roundRect(0, 70, 55, 180, [0, 10, 10, 0]);
+    ctx.fill();
+    ctx.fillStyle = '#fff';
+    ctx.font = 'bold 28px Arial';
+    ctx.textAlign = 'center';
+    ctx.textBaseline = 'middle';
+    ctx.fillText('N', 27, 160);
+
+    // South pole (right, blue)
+    var grad2 = ctx.createLinearGradient(265, 0, 320, 0);
+    grad2.addColorStop(0, '#2060B0');
+    grad2.addColorStop(1, '#0a1a4a');
+    ctx.fillStyle = grad2;
+    ctx.beginPath();
+    ctx.roundRect(265, 70, 55, 180, [10, 0, 0, 10]);
+    ctx.fill();
+    ctx.fillStyle = '#fff';
+    ctx.fillText('S', 293, 160);
+
+    // ── B field arrows (horizontal, N→S = left→right) ──
+    ctx.fillStyle = '#1a2a4a';
+    ctx.font = '11px Arial';
+    ctx.textAlign = 'left';
+    ctx.textBaseline = 'top';
+    ctx.fillText('B', 62, 6);
+    for (var fy2 = 100; fy2 <= 220; fy2 += 40) {
+      drawArrow(ctx, 62, fy2, 1, 0, '#1e3a6a', 196);
+    }
+
+    // ── Commutator ring (decorative) ──
+    ctx.beginPath();
+    ctx.arc(cx, cy, 14, 0, 2*Math.PI);
+    ctx.strokeStyle = '#888';
+    ctx.lineWidth = 4;
+    ctx.stroke();
+    ctx.fillStyle = '#222';
+    ctx.fill();
+
+    // ── Rotor coil ──
+    // The coil is a rectangle rotated by rotorAngle
+    // Half-width (perpendicular to B) = 70px, half-height (along B) = 50px
+    var hw = 70; // half-width in coil plane
+    var hh = 50; // half-height
+
+    // Four corners in local frame (before rotation):
+    // top-left: (-hw, -hh), top-right: (hw, -hh)
+    // bot-left: (-hw,  hh), bot-right: (hw,  hh)
+    // Rotation maps local → screen
+    var cos_a = Math.cos(rotorAngle);
+    var sin_a = Math.sin(rotorAngle);
+
+    function rotPt(lx, ly) {
+      return {
+        x: cx + lx * cos_a - ly * sin_a,
+        y: cy + lx * sin_a + ly * cos_a
+      };
+    }
+
+    var tl = rotPt(-hw, -hh);
+    var tr = rotPt( hw, -hh);
+    var br = rotPt( hw,  hh);
+    var bl = rotPt(-hw,  hh);
+
+    // Draw coil
+    ctx.beginPath();
+    ctx.moveTo(tl.x, tl.y);
+    ctx.lineTo(tr.x, tr.y);
+    ctx.lineTo(br.x, br.y);
+    ctx.lineTo(bl.x, bl.y);
+    ctx.closePath();
+    ctx.strokeStyle = '#E8A020';
+    ctx.lineWidth = 4;
+    ctx.stroke();
+
+    // current direction arrows on top and bottom sides (the effective sides)
+    // Top side: current flows left→right (tl→tr), Bottom: right→left (br→bl)
+    // After commutator: at rotorAngle, the top side current direction flips every half turn
+    // We simulate this with sign based on cos(rotorAngle): normal operation
+    var topDir = { x: tr.x - tl.x, y: tr.y - tl.y };
+    var topMid = { x: (tl.x+tr.x)/2, y: (tl.y+tr.y)/2 };
+    drawArrow(ctx, topMid.x, topMid.y, topDir.x, topDir.y, '#fff', 22);
+
+    var botDir = { x: bl.x - br.x, y: bl.y - br.y };
+    var botMid = { x: (br.x+bl.x)/2, y: (br.y+bl.y)/2 };
+    drawArrow(ctx, botMid.x, botMid.y, botDir.x, botDir.y, '#fff', 22);
+
+    // ── LORENTZ force arrows ──
+    // B is in +x direction. Current in top side: topDir (normalized).
+    // F = I·L × B. B = (1,0,0). topDir in 2D = (cos_a, sin_a) (unit vec along rotated x-axis)
+    // Force on top wire: F = I(L × B). 
+    // In 2D screen: L × B where B is horizontal right:
+    // For top wire current direction (cos_a, sin_a, 0) × (1,0,0) = (0,0,-sin_a)-(0,0,0)... 
+    // cross product (vx,vy,0)×(1,0,0) = (vy*0-0*0, 0*1-vx*0, vx*0-vy*1) = (0, 0, -vy)
+    // So force is in z: but we want screen force. The 2D projection:
+    // Force perpendicular to both current and B. B is horizontal (x). 
+    // Current vector top: (cos_a, sin_a). F ∝ current × B → perpendicular to B in screen = vertical.
+    // F_top: proportional to -sin_a in y-direction... but let's use:
+    // F on top wire = I·l·(current_unit × B_unit) 
+    // = (cos_a, sin_a, 0) × (1, 0, 0) = (0,0, -sin_a), i.e. out of plane. That's wrong for 2D.
+    //
+    // Correct 2D physics: B is INTO the page for half the sim... 
+    // Actually in the motor: B goes LEFT→RIGHT (horizontal). 
+    // The coil rotates around vertical axis. The top/bottom wires are the ones that 
+    // experience force. The force on them is F = I·L × B.
+    // Top wire: current I in direction (cos_a, sin_a), B = (1,0) (horizontal)
+    // In 3D: L = (cos_a, sin_a, 0), B = (1, 0, 0)
+    // F = L × B = (sin_a*0 - 0*0, 0*1 - cos_a*0, cos_a*0 - sin_a*1) = (0, 0, -sin_a)
+    // Force is OUT OF SCREEN (z) proportional to -sin_a. That's perpendicular to screen.
+    //
+    // For a 2D top-down OR front view: let's show it as a front view where rotation axis is vertical.
+    // Force on top conductor = upward/downward (screen y direction).
+    // F_top ∝ cross(I_direction, B) → for top wire when angle=0 (horizontal coil):
+    //   top current goes right (+x), B goes right (+x) → F = 0. (parallel, no force)
+    // When angle=90° (vertical coil, top wire at top):
+    //   top current goes INTO page, B goes right → F = upward. Correct!
+    //
+    // So F_top (screen y) = -sin(rotorAngle) * scale (upward when coil is vertical)
+    // F_bot = +sin(rotorAngle) * scale (downward) → creates torque ✓
+    //
+    var fScale = 35;
+    var fy_top = -Math.sin(rotorAngle) * fScale;
+    var fy_bot =  Math.sin(rotorAngle) * fScale;
+
+    if (Math.abs(Math.sin(rotorAngle)) > 0.08) {
+      drawArrow(ctx, topMid.x, topMid.y, 0, fy_top, '#44DD88', 35);
+      drawArrow(ctx, botMid.x, botMid.y, 0, fy_bot, '#44DD88', 35);
+    }
+
+    // pivot dot
+    ctx.beginPath();
+    ctx.arc(cx, cy, 5, 0, 2*Math.PI);
+    ctx.fillStyle = '#ccc';
+    ctx.fill();
+
+    // labels
+    ctx.fillStyle = '#556677';
+    ctx.font = '11px Arial';
+    ctx.textAlign = 'left';
+    ctx.textBaseline = 'bottom';
+    ctx.fillText('Kommutator', cx - 36, cy + 28);
+
+    rotorAngle += motorSpeed;
+    if (rotorAngle > 2*Math.PI) rotorAngle -= 2*Math.PI;
+    requestAnimationFrame(render);
+  }
+
+  render();
+
+  document.getElementById('msim-slider').addEventListener('input', function() {
+    var val = parseInt(this.value);
+    document.getElementById('msim-spd-out').textContent = val;
+    motorSpeed = 0.008 + val * 0.006;
+  });
+})();
+</script>
+</body>
+</html>

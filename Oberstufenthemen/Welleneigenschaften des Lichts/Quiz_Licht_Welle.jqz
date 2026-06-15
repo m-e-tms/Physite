@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+
+<hotpot-jquiz-file>
+<rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:dc="http://purl.org/dc/elements/1.1/">
+  <rdf:Description rdf:about="">
+    <dc:creator>xx</dc:creator>
+    <dc:creator>Schnullerbacke</dc:creator>
+    <dc:creator>Greta</dc:creator>
+    <dc:title>Welleneigenschaften des Lichts</dc:title>
+  </rdf:Description>
+</rdf:RDF><version>6</version>
+
+<data>
+<title>Welleneigenschaften des Lichts</title>
+
+<timer><seconds>60</seconds><include-timer>0</include-timer></timer>
+
+<reading>
+<include-reading>0</include-reading>
+<reading-title></reading-title>
+<reading-text></reading-text>
+
+</reading>
+
+<questions><question-record><question>Was sind die Eigenschaften eines Photons?</question><clue></clue><category></category><weighting>100</weighting><fixed>0</fixed><question-type>1</question-type><answers><answer><text>Es liegt ausschlie&amp;#x00DF;lich in Teilchenform vor und kann sich bedingt schneller als Lichtgeschwindigkeit fortbewegen.</text><feedback>Ein Photon besitzt nicht nur Teilchen-, sondern auch Welleneigenschaften, was sich mithilfe der oben erw&amp;#x00E4;hnten Versuche zur Interferenz des Lichts nachweisen l&amp;#x00E4;sst. Damit ist es auch kein Teilchen, sondern ein Quantenobjekt.</feedback><correct>0</correct><percent-correct>0</percent-correct><include-in-mc-options>1</include-in-mc-options></answer><answer><text>Es kommt ausschlie&amp;#x00DF;lich im Weltall vor.</text><feedback>Photonen sind sowohl im Weltall als auch auf der Erde vorhanden, und das nicht nur in Form von Licht, sondern auch als Mikrowellen, Radiowellen, Gammastrahlung usw.</feedback><correct>0</correct><percent-correct>0</percent-correct><include-in-mc-options>1</include-in-mc-options></answer><answer><text>Es besitzt sowohl Teilchen- als auch Welleneigenschaften, trotzdem erf&amp;#x00FC;llt es nicht alle Anforderungen, die Teilchen bzw. Wellen erf&amp;#x00FC;llen.</text><feedback></feedback><correct>1</correct><percent-correct>100</percent-correct><include-in-mc-options>1</include-in-mc-options></answer><answer><text>Es entsteht erst ab Lichtgeschwindigkeit. Bei kinetischer Energie, die hier&amp;#x00FC;ber hinausgeht, steigt nicht mehr die Geschwindigkeit an, sondern seine Gr&amp;#x00F6;&amp;#x00DF;e.</text><feedback></feedback><correct>1</correct><percent-correct>100</percent-correct><include-in-mc-options>1</include-in-mc-options></answer></answers></question-record><question-record><question>Was bedeutet der Begriff &quot;Beugung&quot;?</question><clue></clue><category></category><weighting>100</weighting><fixed>0</fixed><question-type>1</question-type><answers><answer><text>Eine Welle verschwindet vollst&amp;#x00E4;ndig, sobald sie auf ein Hindernis trifft.</text><feedback>Eine Welle verschwindet beim Aufprall auf ein Hindernis nicht, sondern wird reflektiert oder gebrochen.</feedback><correct>0</correct><percent-correct>0</percent-correct><include-in-mc-options>1</include-in-mc-options></answer><answer><text>Wenn eine Welle auf ein Hindernis trifft, wird sie reflektiert.</text><feedback>Die Aussage stimmt zwar teilweise,  beschreibt aber nicht durch den Begriff &quot;Beugung&quot;.</feedback><correct>0</correct><percent-correct>0</percent-correct><include-in-mc-options>1</include-in-mc-options></answer><answer><text>Beugung tritt nur bei Licht der Wellenl&amp;#x00E4;nge 425 nm bis 672 nm auf.</text><feedback>Beugung tritt bei jeder Wellenl&amp;#x00E4;nge auf und betrifft nicht nur Licht, sondern jegliche Form von Wellen.</feedback><correct>0</correct><percent-correct>0</percent-correct><include-in-mc-options>1</include-in-mc-options></answer><answer><text>Sie tritt auf, wenn Wellen auf &amp;#x00D6;ffnungen oder Kanten treffen und sich ihre Ausbreitungsrichtung ver&amp;#x00E4;ndert.</text><feedback></feedback><correct>1</correct><percent-correct>100</percent-correct><include-in-mc-options>1</include-in-mc-options></answer></answers></question-record><question-record><question>was geschieht an Stellen negativer Interferenz?</question><clue></clue><category></category><weighting>100</weighting><fixed>0</fixed><question-type>1</question-type><answers><answer><text>Ein Wellental und ein Wellenberg treffen aufeinander und l&amp;#x00F6;schen sich gegenseitig an einem Punkt aus.</text><feedback></feedback><correct>1</correct><percent-correct>100</percent-correct><include-in-mc-options>1</include-in-mc-options></answer><answer><text>Auf einem Schirm ist an Stellen negativer Interferenz kein Licht zu sehen.</text><feedback></feedback><correct>1</correct><percent-correct>100</percent-correct><include-in-mc-options>1</include-in-mc-options></answer><answer><text>Zwei Wellent&amp;#x00E4;ler treffen aufeinander, sodass ein noch tieferes Wellental entsteht.</text><feedback>Bei diesem Ph&amp;#x00E4;nomen handelt es sich um positive Interferenz.</feedback><correct>0</correct><percent-correct>0</percent-correct><include-in-mc-options>1</include-in-mc-options></answer><answer><text>Zwei Wellenberge treffen aufeinander, sodass sie sich verst&amp;#x00E4;rken.</text><feedback>Bei diesem Ph&amp;#x00E4;nomen handelt es sich um positive Interferenz.</feedback><correct>0</correct><percent-correct>0</percent-correct><include-in-mc-options>1</include-in-mc-options></answer></answers></question-record><question-record><question>Welche Aussage(n) ist/sind wahr?</question><clue></clue><category></category><weighting>100</weighting><fixed>0</fixed><question-type>1</question-type><answers><answer><text>Negative Interferenz entsteht an Stellen, wo genau n+1/2 Wellenl&amp;#x00E4;ngen miteinander interferieren.</text><feedback></feedback><correct>1</correct><percent-correct>100</percent-correct><include-in-mc-options>1</include-in-mc-options></answer><answer><text>Der Unterschied zwischen der Interferenz beim Doppelspalt und der Interferenz beim Gitter liegt darin, dass die Maxima beim Gitter weniger Abstand zueinander besitzen als die beim Doppelspaltexperiment.</text><feedback>Die Maxima besitzen beim Gitter einen gr&amp;#x00F6;&amp;#x00DF;eren Abstand zueinander als bei der Verwendung eines Doppelspalts.</feedback><correct>0</correct><percent-correct>0</percent-correct><include-in-mc-options>1</include-in-mc-options></answer><answer><text>Ultraviolett ist die energiereichste Farbe des Lichts, weil seine Wellenl&amp;#x00E4;nge am k&amp;#x00FC;rzesten ist.</text><feedback></feedback><correct>1</correct><percent-correct>100</percent-correct><include-in-mc-options>1</include-in-mc-options></answer><answer><text>Je k&amp;#x00FC;rzer die Wellenl&amp;#x00E4;nge einer Farbe des Lichtspektrums, desto weiter sind die Maxima vom Maximum 0. Ordnung entfernt.</text><feedback>Je l&amp;#x00E4;nger die Wellenl&amp;#x00E4;nge, desto weiter sind die Maxima vom Maximum 0. Ordnung entfernt.</feedback><correct>0</correct><percent-correct>0</percent-correct><include-in-mc-options>1</include-in-mc-options></answer></answers></question-record><question-record><question>Bei welchen Alltagsph&amp;#x00E4;nomenen kommen Quantenobjekte zum Einsatz?</question><clue></clue><category></category><weighting>100</weighting><fixed>0</fixed><question-type>1</question-type><answers><answer><text>Essen erhitzen in der Mikrowelle</text><feedback>Hierbei kommen Mikrowellen (Wellenl&amp;#x00E4;nge:12,24cm) zum Einsatz, die die Wassermolek&amp;#x00FC;le im Essen anregen. Durch deren Reibung bei st&amp;#x00E4;ndiger Neuausrichtung, entsteht thermische Energie, sodass das Essen erhitzt wird.</feedback><correct>1</correct><percent-correct>100</percent-correct><include-in-mc-options>1</include-in-mc-options></answer><answer><text>Beim H&amp;#x00F6;ren von Musik</text><feedback>Es handelt sich hier um Schallwellen, die ins Ohr gelangen und das Trommelfell in Vibration versetzen.</feedback><correct>1</correct><percent-correct>100</percent-correct><include-in-mc-options>1</include-in-mc-options></answer><answer><text>Beim Absurfen einer gro&amp;#x00DF;en Welle am Meer</text><feedback>Das hat zwar etwas mit Wellen zu tun, aber nicht mit Quantenobjekten. Die Wellen bestehen daher auch nicht aus Photonen, sondern aus Wassermolek&amp;#x00FC;len.</feedback><correct>0</correct><percent-correct>0</percent-correct><include-in-mc-options>1</include-in-mc-options></answer><answer><text>Beim Verbinden des mobilen Entger&amp;#x00E4;ts mit dem WLAN</text><feedback>Hier kommen elektromagnetische Wellen zum Einsatz mit einer Wellenl&amp;#x00E4;nge von ca. 5cm bis 12 cm.</feedback><correct>1</correct><percent-correct>100</percent-correct><include-in-mc-options>1</include-in-mc-options></answer></answers></question-record><question-record><question>Welche Eigenschaft zeigt, dass Licht eine Welle ist?</question><clue></clue><category></category><weighting>100</weighting><fixed>0</fixed><question-type>1</question-type><answers><answer><text>Masse</text><feedback></feedback><correct>1</correct><percent-correct>100</percent-correct><include-in-mc-options>1</include-in-mc-options></answer><answer><text>Beugung</text><feedback>Super, das ist genau richtig:)</feedback><correct>1</correct><percent-correct>100</percent-correct><include-in-mc-options>1</include-in-mc-options></answer><answer><text>Ladung</text><feedback></feedback><correct>0</correct><percent-correct>0</percent-correct><include-in-mc-options>1</include-in-mc-options></answer><answer><text>Temperatur</text><feedback></feedback><correct>0</correct><percent-correct>0</percent-correct><include-in-mc-options>1</include-in-mc-options></answer></answers></question-record><question-record><question>Was ist das Huygens&apos;sche Prinzip?</question><clue></clue><category></category><weighting>100</weighting><fixed>0</fixed><question-type>1</question-type><answers><answer><text>Licht besteht aus Teilchen.</text><feedback></feedback><correct>0</correct><percent-correct>0</percent-correct><include-in-mc-options>1</include-in-mc-options></answer><answer><text>Jeder Punkt einer Wellenfront kann als Ausgangspunkt einer neuen Elementarwelle betrachtet werden.</text><feedback>Super, das ist genau richtig:)</feedback><correct>1</correct><percent-correct>100</percent-correct><include-in-mc-options>1</include-in-mc-options></answer><answer><text>Licht breitet sich gradlinig aus.</text><feedback></feedback><correct>0</correct><percent-correct>0</percent-correct><include-in-mc-options>1</include-in-mc-options></answer><answer><text>Licht kann nicht gebeugt werden, da Licht auch Teilcheneigenschaften besitzt.</text><feedback></feedback><correct>0</correct><percent-correct>0</percent-correct><include-in-mc-options>1</include-in-mc-options></answer></answers></question-record><question-record><question>Expertenfrage: Welche Farbe des sichtbaren Lichts besitzt die gr&amp;#x00F6;&amp;#x00DF;te Wellenl&amp;#x00E4;nge? </question><clue></clue><category></category><weighting>100</weighting><fixed>0</fixed><question-type>1</question-type><answers><answer><text>Blau</text><feedback></feedback><correct>0</correct><percent-correct>0</percent-correct><include-in-mc-options>1</include-in-mc-options></answer><answer><text>Gr&amp;#x00FC;n</text><feedback></feedback><correct>0</correct><percent-correct>0</percent-correct><include-in-mc-options>1</include-in-mc-options></answer><answer><text>Rot</text><feedback>Super, das ist genau richtig:)</feedback><correct>1</correct><percent-correct>100</percent-correct><include-in-mc-options>1</include-in-mc-options></answer><answer><text>Violett</text><feedback></feedback><correct>0</correct><percent-correct>0</percent-correct><include-in-mc-options>1</include-in-mc-options></answer></answers></question-record></questions>
+</data>
+
+<hotpot-config-file>
+<jquiz>
+<exercise-subtitle>Quiz</exercise-subtitle>
+<instructions></instructions>
+<guess-correct>Correct!</guess-correct>
+<guess-incorrect>Schade. Versuche es nochmal!</guess-incorrect>
+<partly-incorrect>Deine L&amp;#x00F6;sung ist teilweise falsch.</partly-incorrect>
+<enter-a-guess>Bitte eine L&amp;#x00F6;sung eingeben.</enter-a-guess>
+<next-correct-letter>N&amp;#x00E4;chster richtiger L&amp;#x00F6;sungs-Buchstabe</next-correct-letter>
+<correct-answers>Richtige L&amp;#x00F6;sungen</correct-answers>
+<show-answer-caption>L&amp;#x00F6;sung zeigen</show-answer-caption>
+<include-hint>1</include-hint>
+<include-show-answer>1</include-show-answer>
+<next-ex-url>nextpage.htm</next-ex-url>
+<send-email>0</send-email>
+<continuous-scoring>1</continuous-scoring>
+<show-correct-first-time>1</show-correct-first-time>
+<shuffle-questions>1</shuffle-questions>
+<shuffle-answers>0</shuffle-answers>
+<show-limited-questions>0</show-limited-questions>
+<questions-to-show>2</questions-to-show>
+<short-answer-tries-on-hybrid-q>2</short-answer-tries-on-hybrid-q>
+<separate-javascript-file>0</separate-javascript-file>
+<case-sensitive>0</case-sensitive>
+<include-keypad>0</include-keypad>
+</jquiz>
+
+<global>
+<your-score-is>Dein Ergebnis:</your-score-is>
+<correct-indicator>:-)</correct-indicator>
+<incorrect-indicator>X</incorrect-indicator>
+<correct-first-time>Beim ersten Mal richtig gel&amp;#x00F6;ste Fragen</correct-first-time>
+<completed-so-far>Bis jetzt beantwortete Fragen</completed-so-far>
+<exercise-completed>Die &amp;#x00DC;bung ist beendet.</exercise-completed>
+<keypad-characters></keypad-characters>
+<times-up>Your time is over!</times-up>
+<next-ex-caption>=&amp;#x003E;</next-ex-caption>
+<back-caption>&amp;#x003C;=</back-caption>
+<contents-caption>Index</contents-caption>
+<include-next-ex>1</include-next-ex>
+<include-contents>1</include-contents>
+<include-back>0</include-back>
+<contents-url>contents.htm</contents-url>
+<graphic-url></graphic-url>
+<font-face>Geneva,Arial,sans-serif</font-face>
+<font-size>small</font-size>
+<page-bg-color>#C0C0C0</page-bg-color>
+<title-color>#000000</title-color>
+<ex-bg-color>#FFFFFF</ex-bg-color>
+<text-color>#000000</text-color>
+<link-color>#004080</link-color>
+<vlink-color>#0000CC</vlink-color>
+<nav-bar-color>#000000</nav-bar-color>
+<formmail-url>http://yourserver.com/cgi-bin/FormMail.pl</formmail-url>
+<email>you@yourserver.com</email>
+<name-please>Please enter your name:</name-please>
+<user-string-1>one</user-string-1>
+<user-string-2>two</user-string-2>
+<user-string-3>three</user-string-3>
+<header-code></header-code>
+<correct-first-time>Beim ersten Mal richtig gel&amp;#x00F6;ste Fragen</correct-first-time>
+<check-caption>&amp;#x00DC;berpr&amp;#x00FC;fe L&amp;#x00F6;sung</check-caption>
+<ok-caption>OK</ok-caption>
+<next-q-caption>=&amp;#x003E;</next-q-caption>
+<last-q-caption>&amp;#x003C;=</last-q-caption>
+<hint-caption>Hinweis</hint-caption>
+<show-all-questions-caption>Alle Fragen anzeigen</show-all-questions-caption>
+<show-one-by-one-caption>Fragen einzeln anzeigen</show-one-by-one-caption>
+<show-also-correct>1</show-also-correct>
+<process-for-rtl>0</process-for-rtl>
+<include-scorm-12>0</include-scorm-12>
+</global>
+</hotpot-config-file>
+</hotpot-jquiz-file>
