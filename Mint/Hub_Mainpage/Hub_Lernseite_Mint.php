@@ -40,7 +40,7 @@ $top_raetsel= getTop5($db, 'score_raetsel');
             <span class="user-badge">👤 <?= htmlspecialchars($username) ?></span>
             <a class="logout-btn" href="../logout.php">Abmelden</a>
         <?php else: ?>
-            <a class="logout-btn" href="../Anmeldeseite/Anmeldeseite.php">Anmelden</a>
+            <a class="logout-btn" href="../index.php">Anmelden</a>
         <?php endif; ?>
     </div>
 
