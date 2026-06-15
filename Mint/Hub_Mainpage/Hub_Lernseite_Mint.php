@@ -59,7 +59,7 @@ $top_raetsel= getTop5($db, 'score_raetsel');
             <h3>Rätsel</h3>
             <p>Quizgeschichten lösen</p>
         </a>
-        <a class="game-card" href="../Stochastik_Glücksspiel/startseite.html">
+        <a class="game-card" href="../Stochastik_Glücksspiel/STOCHASTIK_FERTIGGGGGGG.php">
             <div class="icon">🎲</div>
             <h3>Stochastik</h3>
             <p>Würfel & Glücksrad</p>
@@ -115,6 +115,18 @@ $top_raetsel= getTop5($db, 'score_raetsel');
         <a class="game-card" href="../../Physik%20Mittelstufe/E-Lehre/lorentzkraft_2.html">
             <div class="icon">👉</div>
             <h3>Lorenzkraft</h3>
+        </a>
+        <a class="game-card" href="../../Oberstufenthemen/Kreisbewegung/BahnWinkelgeschwindigkeit.php">
+            <div class="icon">📐</div>
+            <h3>Winkelgeschwingigkeit</h3>
+        </a>
+        <a class="game-card" href="../../Physik%20Mittelstufe/Bewegungen/bewegung.html">
+            <div class="icon">🏃</div>
+            <h3>Bewegung</h3>
+        </a>
+        <a class="game-card" href="../../Oberstufenthemen/Mechanik/Bungee.html">
+            <div class="icon">🤸</div>
+            <h3>Bungee</h3>
         </a>
 
     </div>

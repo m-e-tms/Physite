@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <title>Bewegungen</title>
+    <link rel="stylesheet" href="test.css">
+</head>
+<body>
+
+<div class="card">
+    <h1>Bewegungen</h1>
+
+    <p>
+        Du kannst die Variablen so ändern, wie du möchtest mit Hilfe der Reglern. Schiebe die Regler und sieh, was passiert, vielleicht findest du ja schon einen Zusammenhang.
+    </p>
+
+    <!-- ===== BEIDE CANVAS IN EINEM WIDGET ===== -->
+    <div class="widget">
+        <h3>Diagramme</h3>
+
+        <div style="display: flex; flex-wrap: wrap; justify-content: center; gap: 20px;">
+            
+            <div>
+                <h4>Geschwindichkeit-Zeit-Diagramm</h4>
+                <canvas id="canvasVT" width="900" height="500"></canvas>
+            </div>
+
+            <div>
+                <h4>Weg-Zeit-Diagramm</h4>
+                <canvas id="canvasST" width="900" height="500"></canvas>
+            </div>
+
+        </div>
+    </div>
+
+    <!-- ===== REGLER ===== -->
+    <div class="widget">
+        <h3>Parameter</h3>
+
+        <div>
+            Zeit t:
+            <input type="range" id="t" min="0" max="10" step="0.1" value="2"><br>
+
+            Anfangsgeschwindigkeit v:
+            <input type="range" id="v" min="0" max="50" step="1" value="20"><br>
+
+            Beschleunigung a:
+            <input type="range" id="a" min="0" max="30" step="1" value="10"><br>
+
+            t1:
+            <input type="range" id="t1" min="0" max="10" step="0.1" value="1"><br>
+
+            t2:
+            <input type="range" id="t2" min="0" max="10" step="0.1" value="4">
+        </div>
+
+        Die Regler t1 und t2 sind dazu da um die fläche im Geschwindichkeit-Zeit-Diagramm einzustellen, denn diese hat auch eine wichtige bedeutung.
+        
+    </div>
+
+    <div class="widget">
+        <h3>Das Weg-Zeit-Diagramm</h3>
+        Im Weg-Zeit-Diagramm kann man erkennen, wie sich der zurückgelegte Weg eines Körpers mit der Zeit verändert. Die Zeit wird auf der waagerechten Achse dargestellt, der Weg auf der senkrechten Achse. An der Form der Linie lässt sich ablesen, wie sich ein Körper bewegt. Eine gerade Linie bedeutet, dass die Bewegung gleichmäßig ist und die Geschwindigkeit konstant bleibt. Wird die Linie steiler, bewegt sich der Körper schneller. Eine waagerechte Linie zeigt dagegen, dass sich der Körper nicht bewegt. Oben im Diagramm sieht man also direkt, wie sich der Ort eines Körpers im Laufe der Zeit verändert.
+    </div>
+
+    <div class="widget">
+        <h3>Das Geschwindichkeit-Zeit-Diagramm</h3>
+        Das Geschwindigkeit-Zeit-Diagramm zeigt, wie sich die Geschwindigkeit während einer Bewegung verändert. Auch hier steht die Zeit auf der waagerechten Achse, während die Geschwindigkeit auf der senkrechten Achse dargestellt wird. Eine waagerechte Linie bedeutet, dass die Geschwindigkeit gleich bleibt. Steigt die Linie an, wird der Körper schneller, fällt sie ab, wird er langsamer. Besonders wichtig ist, dass die Fläche unter der Linie dem zurückgelegten Weg entspricht. Dadurch kann man im Diagramm nicht nur die Geschwindigkeit erkennen, sondern auch sehen, welche Strecke insgesamt zurückgelegt wurde.
+    </div> 
+    
+    <div class="widget">
+        <h3>Zusammenhang der Diagramme</h3>
+        Die beiden Diagramme hängen eng miteinander zusammen. Im Weg-Zeit-Diagramm erkennt man die Geschwindigkeit an der Steigung der Linie. Je steiler die Linie ist, desto höher ist die Geschwindigkeit. Im Geschwindigkeit-Zeit-Diagramm kann man dagegen erkennen, wie sich die Geschwindigkeit im Verlauf der Zeit verändert. Beide Darstellungen ergänzen sich und helfen dabei, Bewegungen einfacher zu verstehen. Deshalb werden solche Diagramme in der Physik häufig genutzt, um Bewegungen übersichtlich darzustellen und zu vergleichen.
+    </div>
+
+    <p>
+        Mit einfachen Diagrammen lassen sich Bewegungen sehr gut darstellen und untersuchen. Sie zeigen anschaulich, wie Weg, Zeit und Geschwindigkeit zusammenhängen. Dadurch können Bewegungsabläufe leichter verstanden und beschrieben werden. Also stelle dir am besten wenn es  das nächstemal um bewegunbgen geht diese beiden Diagramme vor.
+    </p>
+</div>
+
+<script src="s1.js"></script>
+<script src="s2.js"></script>
+
+</body>
+</html>
