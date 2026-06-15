@@ -1,0 +1,879 @@
+<!DOCTYPE html>
+<html>
+<head>
+    
+  <meta charset="UTF-8">
+  <link rel="stylesheet" href="test.css">
+    
+</head>
+<body>
+
+  <nav>
+    <div class="element">Home</div>
+    <div class="element">Scoreboard</div>
+    <div class="element">News</div>
+    <div class="element no-border dropdown"> 
+      Dropdown
+      <div class="dropdown-content">
+        <button>Link 1</button>
+        <button>Link 2</button>
+        <button>Link 3</button>
+      </div>
+    </div>
+  </nav>
+  <div class="card">
+
+    <h1>Energie in der Mechanik</h1>
+    
+  
+  
+      
+  <div class="widget">
+
+   <p><h2>1.Kinetische Energie</h2></p>
+
+    <p>Die kinetische Energie ist die Energie,
+    die ein Körper aufgrund seiner Bewegung besitzt.Je schneller sich ein Objekt bewegt und je größer seine Masse ist,
+    desto mehr kinetische Energie hat es. Ein leichtes, langsames Objekt hat also wenig kinetische Energie, 
+    während ein schweres oder sehr schnelles Objekt deutlich mehr davon besitzt.</p>
+
+    <p>Sie lässt sich mit folgender Formel berechnen:</p>
+
+    <p><span class="box">Ekin=1/2*m*v²</span></p>
+
+    <p>Dabei steht m für die Masse des Körpers und v für die Geschwindigkeit.
+    Die kinetische Energie Wächst besonders stark mit der Geschwindigkeit,
+    da diese Formel quadriert wird.</p>
+
+    <p>Im Alltag begegnet uns kinetische Energie ständig, zum Beispiel bei fahrenden Autos, 
+    fallenden Gegenständen oder fließendem Wasser. 
+    Sie kann in andere Energieformen umgewandelt werden, 
+    etwa in Wärme bei Reibung oder in elektrische Energie in Kraftwerken.</p>
+ </div>
+    
+  
+     
+    
+      <h2>2.Potentielle Energie</h2>
+
+    <p>Die potentielle Energie (auch Lageenergie genannt) ist die Energie, 
+    die ein Körper aufgrund seiner Position oder Höhe in einem Kraftfeld besitzt,
+    meist im Schwerefeld der Erde.</p> 
+    <p>Je höher ein Objekt liegt und je größer seine Masse ist, desto mehr potentielle Energie hat es.</p>
+
+    <p>Sie lässt sich mit folgender Formel berechnen:</p>
+
+    <p><span class="box">Epot=m*g*h</span></p>
+
+    <p>Dabei steht m für die Masse, g für die Erdbeschleunigung (ca.9,81m/s²)
+    und h für die Höhe über dem Bezugspunkt.
+    Die potentielle Energie nimmt also direkt mit der Höhe zu.</p>
+
+    <p>Im Alltag tritt sie zum Beispiel bei angehobenen Gegenständen, 
+    Wasser in einem Stausee oder einer gespannten Feder auf. 
+    Wird ein Objekt fallen gelassen, wird seine potentielle Energie in kinetische Energie umgewandelt.</p>
+</p>
+
+    <div class="widget">
+    <h2>3.Spannenergie</h2>
+    <p>
+
+Die Spannenergie (auch elastische Energie genannt) ist die Energie, 
+die in einem Körper gespeichert wird, wenn er verformt wird zum Beispiel bei Federn, Gummibändern oder Bögen.</p>
+
+<p>Sie lässt sich mit folgender Formel berechnen:</p>
+
+<p><span class="box">Espan=1/2*D*x²</span></p>
+
+<p>Dabei ist D die Federkonstante (Kraft pro Meter, also wie „hart“ die Feder ist) und x die Auslenkung. 
+Die Spannenergie wächst mit der Auslenkung exponentiell durch die quadrierung von x.
+Im Alltag tritt sie z. B. bei gespannten Federn oder Trampolinen auf und wird beim Loslassen meist in kinetische Energie umgewandelt.</div></p>
+
+<div class="widget"> 
+  <p><h1>Bungee Jump Simulation</h1></p>
+  </div>
+  
+<canvas id="meinCanvas" width="880" height="600" style="width:880px; height:600px;"></canvas>
+
+
+<script>
+
+  /**
+ * BungeeSimulation
+ * ─────────────────────────────────────────────────────────
+ * Alles in einem Canvas – keine externen DOM-Elemente nötig.
+ *
+ * Verwendung:
+ *   const canvas = document.getElementById('meinCanvas');
+ *   const sim = new BungeeSimulation(canvas, { /* optionale Parameter *\/ });
+ *   sim.start();
+ *
+ * Optionale Startkonfiguration (alle optional, Standardwerte s. unten):
+ *   {
+ *     H: 70,    // Brückenhöhe in m
+ *     M: 80,    // Körpermasse in kg
+ *     L: 30,    // Seillänge in m
+ *     K: 90,    // Federkonstante in N/m
+ *     D: 0.6,   // Dämpfung in Ns/m
+ *     darkMode: false   // true = dunkles Farbschema
+ *   }
+ *
+ * Öffentliche Methoden:
+ *   sim.start()   – Simulation starten / neu starten
+ *   sim.pause()   – Pause
+ *   sim.resume()  – Weiter
+ *   sim.reset()   – Zurücksetzen
+ *   sim.setParam(name, value) – Parameter live ändern (H/M/L/K/D)
+ *   sim.destroy() – Event-Listener entfernen, Animation stoppen
+ */
+
+class BungeeSimulation {
+  // ─── Physikkonstanten ────────────────────────────────────
+  static G = 9.81;
+  static DT = 0.01;
+  static SIM_DURATION = 30;
+  static SPEED = 3; // frames pro Tick
+
+  // ─── Farben (hell / dunkel) ──────────────────────────────
+  static COLORS = {
+    light: {
+      bg:         '#f7f7f5',
+      bridge:     '#c8c8c8',
+      ground:     '#c8d8b0',
+      ropeSlack:  '#0F6E56',
+      ropeTaut:   '#A32D2D',
+      person:     '#185FA5',
+      text:       '#222222',
+      textSub:    '#777777',
+      panelBg:    '#efefec',
+      panelBdr:   '#d8d8d4',
+      gridLine:   '#e0e0e0',
+      plotLine:   '#185FA5',
+      cursor:     '#A32D2D',
+      ekinBar:    '#185FA5',
+      epotBar:    '#0F6E56',
+      espanBar:   '#A3732D',
+      sliderTrack:'#d0d0d0',
+      sliderThumb:'#185FA5',
+      btnBg:      '#185FA5',
+      btnText:    '#ffffff',
+    },
+    dark: {
+      bg:         '#1a1a1a',
+      bridge:     '#444444',
+      ground:     '#2a3a2a',
+      ropeSlack:  '#9FE1CB',
+      ropeTaut:   '#F09595',
+      person:     '#B5D4F4',
+      text:       '#e0e0e0',
+      textSub:    '#888888',
+      panelBg:    '#262626',
+      panelBdr:   '#333333',
+      gridLine:   '#2e2e2e',
+      plotLine:   '#B5D4F4',
+      cursor:     '#F09595',
+      ekinBar:    '#B5D4F4',
+      epotBar:    '#9FE1CB',
+      espanBar:   '#F0C87A',
+      sliderTrack:'#3a3a3a',
+      sliderThumb:'#B5D4F4',
+      btnBg:      '#2a4a6a',
+      btnText:    '#e0e0e0',
+    },
+  };
+
+  constructor(canvas, opts = {}) {
+    this.canvas = canvas;
+    this.ctx    = canvas.getContext('2d');
+
+    // Parameter
+    this.params = {
+      H: opts.H ?? 70,
+      M: opts.M ?? 80,
+      L: opts.L ?? 30,
+      K: opts.K ?? 90,
+      D: opts.D ?? 0.6,
+    };
+
+    this.darkMode = opts.darkMode
+      ?? window.matchMedia('(prefers-color-scheme:dark)').matches;
+
+    // State
+    this.simData    = [];
+    this.frameIndex = 0;
+    this.animId     = null;
+    this.isPaused   = false;
+    this.maxEkin    = 1;
+    this.phase      = '—';
+
+    // Drag state für Slider
+    this._drag = null;
+
+    // Layout (wird bei jedem draw neu berechnet)
+    this._layout = {};
+
+    this._boundPointerDown = this._onPointerDown.bind(this);
+    this._boundPointerMove = this._onPointerMove.bind(this);
+    this._boundPointerUp   = this._onPointerUp.bind(this);
+    this._boundClick       = this._onClick.bind(this);
+
+    canvas.addEventListener('pointerdown', this._boundPointerDown);
+    canvas.addEventListener('pointermove', this._boundPointerMove);
+    canvas.addEventListener('pointerup',   this._boundPointerUp);
+    canvas.addEventListener('click',       this._boundClick);
+
+    this._drawIdle();
+  }
+
+  // ─── Öffentliche API ─────────────────────────────────────
+
+  start() {
+    if (this.animId) { cancelAnimationFrame(this.animId); this.animId = null; }
+    const p = this.params;
+    this.simData    = this._runPhysics(p.H, p.M, p.L, p.K, p.D);
+    this.frameIndex = 0;
+    this.maxEkin    = 1;
+    this.isPaused   = false;
+    this._tick();
+  }
+
+  pause() {
+    if (this.animId) {
+      cancelAnimationFrame(this.animId);
+      this.animId = null;
+      this.isPaused = true;
+    }
+  }
+
+  resume() {
+    if (!this.isPaused || this.simData.length === 0) return;
+    this.isPaused = false;
+    this._tick();
+  }
+
+  reset() {
+    if (this.animId) { cancelAnimationFrame(this.animId); this.animId = null; }
+    this.simData    = [];
+    this.frameIndex = 0;
+    this.maxEkin    = 1;
+    this.isPaused   = false;
+    this.phase      = '—';
+    this._drawIdle();
+  }
+
+  setParam(name, value) {
+    this.params[name] = value;
+    if (this.animId || this.isPaused) this.reset();
+    else this._drawIdle();
+  }
+
+  destroy() {
+    if (this.animId) cancelAnimationFrame(this.animId);
+    this.canvas.removeEventListener('pointerdown', this._boundPointerDown);
+    this.canvas.removeEventListener('pointermove', this._boundPointerMove);
+    this.canvas.removeEventListener('pointerup',   this._boundPointerUp);
+    this.canvas.removeEventListener('click',       this._boundClick);
+  }
+
+  // ─── Physik ──────────────────────────────────────────────
+
+  _runPhysics(H, M, L, K, D) {
+    const steps = Math.round(BungeeSimulation.SIM_DURATION / BungeeSimulation.DT);
+    const data  = [];
+    let y = 0, v = 0;
+    for (let i = 0; i < steps; i++) {
+      const t   = i * BungeeSimulation.DT;
+      const ext = y - L;
+      let a;
+      if (ext <= 0) {
+        a = BungeeSimulation.G;
+      } else {
+        a = BungeeSimulation.G - (K * ext + D * v) / M;
+      }
+      v += a * BungeeSimulation.DT;
+      y += v * BungeeSimulation.DT;
+      if (y < 0) { y = 0; v = 0; }
+      const h = Math.max(0, H - y);
+      data.push({ t, y, v, a, h });
+      if (h <= 0 && i > 10) break;
+    }
+    return data;
+  }
+
+  // ─── Animations-Loop ─────────────────────────────────────
+
+  _tick() {
+    if (this.frameIndex >= this.simData.length) {
+      this.phase = 'Fertig';
+      this._drawFrame(this.simData[this.simData.length - 1]);
+      return;
+    }
+    const frame = this.simData[this.frameIndex];
+    this._drawFrame(frame);
+    this.frameIndex += BungeeSimulation.SPEED;
+    this.animId = requestAnimationFrame(() => this._tick());
+  }
+
+  // ─── Haupt-Zeichenroutine ─────────────────────────────────
+
+  _drawIdle() {
+    this._buildLayout();
+    const c = this.ctx;
+    const W = this.canvas.width, H = this.canvas.height;
+    const col = this._col();
+    c.fillStyle = col.bg;
+    c.fillRect(0, 0, W, H);
+    this._drawControls(null);
+    this._drawVis(null);
+    this._drawPlot(null);
+    this._drawStats(null);
+  }
+
+  _drawFrame(frame) {
+    this._buildLayout();
+    const c = this.ctx;
+    const W = this.canvas.width, Hc = this.canvas.height;
+    const col = this._col();
+
+    // Update phase
+    const ext = frame.y - this.params.L;
+    this.phase = ext <= 0 ? 'Freier Fall' : 'Seil gespannt';
+
+    // Update maxEkin
+    const ekin = 0.5 * this.params.M * frame.v * frame.v;
+    if (ekin > this.maxEkin) this.maxEkin = ekin;
+
+    c.fillStyle = col.bg;
+    c.fillRect(0, 0, W, Hc);
+
+    this._drawControls(frame);
+    this._drawVis(frame);
+    this._drawPlot(frame);
+    this._drawStats(frame);
+  }
+
+  // ─── Layout ──────────────────────────────────────────────
+
+  _buildLayout() {
+    const W = this.canvas.width;
+    const H = this.canvas.height;
+
+    // Zones (top-to-bottom)
+    const PAD   = 14;
+    const CTRL_H = 140; // sliders + buttons
+    const STAT_H = 64;
+    const ENRG_H = 48;
+    const BOTTOM = H - PAD;
+    const VIZ_TOP = PAD + CTRL_H + STAT_H + ENRG_H + PAD * 3;
+    const VIZ_H   = BOTTOM - VIZ_TOP;
+    const VIS_W   = Math.round(W * 0.28);
+
+    this._layout = {
+      PAD, W, H,
+      ctrl: { x: PAD, y: PAD, w: W - PAD * 2, h: CTRL_H },
+      stat: { x: PAD, y: PAD + CTRL_H + PAD, w: W - PAD * 2, h: STAT_H },
+      enrg: { x: PAD, y: PAD + CTRL_H + PAD + STAT_H + PAD, w: W - PAD * 2, h: ENRG_H },
+      vis:  { x: PAD,           y: VIZ_TOP, w: VIS_W,             h: VIZ_H },
+      plot: { x: PAD + VIS_W + PAD, y: VIZ_TOP, w: W - PAD * 3 - VIS_W, h: VIZ_H },
+    };
+  }
+
+  // ─── Steuerelement-Zeichnung ──────────────────────────────
+
+  _drawControls(frame) {
+    const c   = this.ctx;
+    const col = this._col();
+    const { ctrl, PAD } = this._layout;
+    const p   = this.params;
+
+    const sliders = [
+      { key: 'H', label: 'Brückenhöhe', unit: 'm',    min: 50,  max: 120, step: 1,   val: p.H },
+      { key: 'M', label: 'Körpermasse', unit: 'kg',   min: 50,  max: 120, step: 1,   val: p.M },
+      { key: 'L', label: 'Seillänge',   unit: 'm',    min: 10,  max: 80,  step: 1,   val: p.L },
+      { key: 'K', label: 'Federkonstante', unit:'N/m',min: 20,  max: 300, step: 1,   val: p.K },
+      { key: 'D', label: 'Dämpfung',    unit: 'Ns/m', min: 0.1, max: 5,  step: 0.1, val: p.D },
+    ];
+
+    const colCount = 3;
+    const slW = Math.floor((ctrl.w - PAD * (colCount - 1)) / colCount);
+    const ROW_H = 44;
+
+    sliders.forEach((sl, i) => {
+      const col2 = i % colCount;
+      const row  = Math.floor(i / colCount);
+      const sx   = ctrl.x + col2 * (slW + PAD);
+      const sy   = ctrl.y + row * ROW_H;
+      this._drawSlider(sl, sx, sy, slW);
+    });
+
+    // Buttons
+    const btnY    = ctrl.y + Math.ceil(sliders.length / colCount) * ROW_H + 6;
+    const btnDefs = ['Starten', 'Stop', 'Zurücksetzen', 'Weiter'];
+    const btnW    = 80;
+    const btnH    = 26;
+    btnDefs.forEach((label, i) => {
+      const bx = ctrl.x + i * (btnW + 8);
+      this._drawButton(label, bx, btnY, btnW, btnH);
+    });
+
+    // Speichere Slider-Geometrie für Hit-Test
+    this._sliders = sliders.map((sl, i) => {
+      const col2 = i % colCount;
+      const row  = Math.floor(i / colCount);
+      const sx   = ctrl.x + col2 * (slW + PAD);
+      const sy   = ctrl.y + row * ROW_H;
+      return { ...sl, x: sx, y: sy, w: slW, trackY: sy + 28 };
+    });
+    this._buttons = btnDefs.map((label, i) => ({
+      label,
+      x: ctrl.x + i * (btnW + 8),
+      y: btnY,
+      w: btnW,
+      h: btnH,
+    }));
+  }
+
+  _drawSlider(sl, x, y, w) {
+    const c   = this.ctx;
+    const col = this._col();
+    const trackY = y + 28;
+    const trackH = 4;
+    const trackW = w;
+
+    // Label
+    c.fillStyle = col.textSub;
+    c.font      = `11px monospace`;
+    c.fillText(`${sl.label}: ${typeof sl.val === 'number' && sl.step < 1 ? sl.val.toFixed(1) : sl.val} ${sl.unit}`, x, y + 12);
+
+    // Track
+    c.fillStyle = col.sliderTrack;
+    this._roundRect(x, trackY, trackW, trackH, 2);
+    c.fill();
+
+    // Filled portion
+    const frac = (sl.val - sl.min) / (sl.max - sl.min);
+    c.fillStyle = col.sliderThumb;
+    this._roundRect(x, trackY, Math.round(frac * trackW), trackH, 2);
+    c.fill();
+
+    // Thumb
+    const thumbX = x + frac * trackW;
+    c.beginPath();
+    c.arc(thumbX, trackY + trackH / 2, 7, 0, Math.PI * 2);
+    c.fillStyle = col.sliderThumb;
+    c.fill();
+  }
+
+  _drawButton(label, x, y, w, h) {
+    const c   = this.ctx;
+    const col = this._col();
+    c.fillStyle = col.btnBg;
+    this._roundRect(x, y, w, h, 5);
+    c.fill();
+    c.fillStyle = col.btnText;
+    c.font      = '12px monospace';
+    c.textAlign = 'center';
+    c.fillText(label, x + w / 2, y + h / 2 + 4);
+    c.textAlign = 'left';
+  }
+
+  // ─── Stats-Zeile ─────────────────────────────────────────
+
+  _drawStats(frame) {
+    const c   = this.ctx;
+    const col = this._col();
+    const { stat, enrg, PAD } = this._layout;
+    const p = this.params;
+
+    const stats4 = [
+      { label: 'Höhe über Boden', val: frame ? frame.h.toFixed(1) + ' m'      : '—' },
+      { label: 'Geschwindigkeit',  val: frame ? frame.v.toFixed(2) + ' m/s'    : '—' },
+      { label: 'Beschleunigung',   val: frame ? frame.a.toFixed(2) + ' m/s²'   : '—' },
+      { label: 'Phase',            val: frame ? this.phase                      : '—' },
+    ];
+
+    const boxW = Math.floor((stat.w - PAD * 3) / 4);
+    stats4.forEach((s, i) => {
+      const bx = stat.x + i * (boxW + PAD);
+      c.fillStyle = col.panelBg;
+      this._roundRect(bx, stat.y, boxW, stat.h, 6);
+      c.fill();
+      c.fillStyle = col.textSub;
+      c.font      = '10px monospace';
+      c.fillText(s.label, bx + 8, stat.y + 14);
+      c.fillStyle = col.text;
+      c.font      = 'bold 15px monospace';
+      c.fillText(s.val, bx + 8, stat.y + stat.h - 10);
+    });
+
+    // Energie
+    let ekin = 0, epot = 0, espan = 0;
+    if (frame) {
+      ekin  = 0.5 * p.M * frame.v * frame.v;
+      epot  = p.M * BungeeSimulation.G * frame.h;
+      const ext = frame.y - p.L;
+      if (ext > 0) espan = 0.5 * p.K * ext * ext;
+    }
+    const maxE = Math.max(this.maxEkin, epot, espan, 1);
+
+    const eBoxW = Math.floor((enrg.w - PAD * 2) / 3);
+    const energies = [
+      { label: 'Kinetische Energie',  val: frame ? ekin.toFixed(0)  + ' J' : '—', frac: ekin  / maxE, barCol: col.ekinBar  },
+      { label: 'Potentielle Energie', val: frame ? epot.toFixed(0)  + ' J' : '—', frac: epot  / maxE, barCol: col.epotBar  },
+      { label: 'Spannenergie',        val: frame ? espan.toFixed(0) + ' J' : '—', frac: espan / maxE, barCol: col.espanBar },
+    ];
+    energies.forEach((e, i) => {
+      const bx = enrg.x + i * (eBoxW + PAD);
+      c.fillStyle = col.panelBg;
+      this._roundRect(bx, enrg.y, eBoxW, enrg.h, 6);
+      c.fill();
+      c.fillStyle = col.textSub;
+      c.font      = '10px monospace';
+      c.fillText(e.label, bx + 8, enrg.y + 13);
+      c.fillStyle = e.barCol;
+      c.font      = 'bold 14px monospace';
+      c.fillText(e.val, bx + 8, enrg.y + enrg.h - 14);
+      // Balken
+      const barX = bx + 8, barY = enrg.y + enrg.h - 7, barW = eBoxW - 16, barH = 4;
+      c.fillStyle = col.sliderTrack;
+      this._roundRect(barX, barY, barW, barH, 2); c.fill();
+      c.fillStyle = e.barCol;
+      this._roundRect(barX, barY, Math.max(0, e.frac * barW), barH, 2); c.fill();
+    });
+  }
+
+  // ─── Visualisierungs-Canvas (linke Spalte) ────────────────
+
+  _drawVis(frame) {
+    const c   = this.ctx;
+    const col = this._col();
+    const { vis } = this._layout;
+    const { x, y, w, h } = vis;
+    const p = this.params;
+
+    // Hintergrund
+    c.save();
+    this._roundRect(x, y, w, h, 6);
+    c.clip();
+
+    c.fillStyle = col.bg;
+    c.fillRect(x, y, w, h);
+
+    // Brücke oben
+    c.fillStyle = col.bridge;
+    c.fillRect(x, y, w, 14);
+
+    // Boden unten
+    c.fillStyle = col.ground;
+    c.fillRect(x, y + h - 18, w, 18);
+
+    const toCanvasY = frac => y + 14 + frac * (h - 32);
+
+    // Seil / gespanntes Bungee
+    if (frame) {
+      const personFrac  = Math.min(frame.y / p.H, 1);
+      const personCY    = toCanvasY(personFrac);
+      const ropeEndFrac = Math.min(p.L / p.H, 1);
+      const ropeEndCY   = toCanvasY(ropeEndFrac);
+
+      // Slack-Seil (gerade)
+      c.strokeStyle = col.ropeSlack;
+      c.lineWidth   = 2;
+      c.setLineDash([]);
+      c.beginPath();
+      c.moveTo(x + w / 2, y + 14);
+      c.lineTo(x + w / 2, Math.min(personCY, ropeEndCY));
+      c.stroke();
+
+      // Gespannter Teil (gestrichelt)
+      if (personCY > ropeEndCY) {
+        c.strokeStyle = col.ropeTaut;
+        c.lineWidth   = 2;
+        c.setLineDash([4, 2]);
+        c.beginPath();
+        c.moveTo(x + w / 2, ropeEndCY);
+        c.lineTo(x + w / 2, personCY);
+        c.stroke();
+        c.setLineDash([]);
+      }
+
+      // Person
+      c.beginPath();
+      c.arc(x + w / 2, personCY, 9, 0, Math.PI * 2);
+      c.fillStyle = col.person;
+      c.fill();
+
+      // Höhenanzeige
+      c.fillStyle = col.text;
+      c.font      = '10px monospace';
+      c.fillText(frame.h.toFixed(1) + ' m', x + 4, y + 26);
+    }
+
+    // Labels
+    c.fillStyle = col.ropeSlack;
+    c.font      = '10px monospace';
+    c.fillText('Brücke', x + 4, y + 11);
+    c.fillStyle = col.textSub;
+    c.fillText('Boden', x + 4, y + h - 4);
+
+    c.restore();
+
+    // Rahmen
+    c.strokeStyle = col.panelBdr;
+    c.lineWidth   = 0.5;
+    this._roundRect(x, y, w, h, 6);
+    c.stroke();
+  }
+
+  // ─── Zeit-Höhe-Plot (rechte Spalte) ──────────────────────
+
+  _drawPlot(frame) {
+    const c   = this.ctx;
+    const col = this._col();
+    const { plot } = this._layout;
+    const { x, y, w, h } = plot;
+    const p    = this.params;
+    const data = this.simData;
+
+    c.save();
+    this._roundRect(x, y, w, h, 6);
+    c.clip();
+    c.fillStyle = col.bg;
+    c.fillRect(x, y, w, h);
+
+    const pad = { l: 44, r: 10, t: 18, b: 34 };
+    const pW  = w - pad.l - pad.r;
+    const pH  = h - pad.t - pad.b;
+
+    if (data.length === 0) {
+      // leeres Gitter
+      this._drawGrid(x, y, pad, pW, pH, p.H, 0);
+      c.restore();
+      c.strokeStyle = col.panelBdr;
+      c.lineWidth   = 0.5;
+      this._roundRect(x, y, w, h, 6);
+      c.stroke();
+      return;
+    }
+
+    const maxT  = data[data.length - 1].t;
+    const toX   = t  => x + pad.l + (t / maxT) * pW;
+    const toYpl = hv => y + pad.t + pH - (hv / p.H) * pH;
+
+    this._drawGrid(x, y, pad, pW, pH, p.H, maxT);
+
+    // Linie
+    c.strokeStyle = col.plotLine;
+    c.lineWidth   = 1.5;
+    c.setLineDash([]);
+    c.beginPath();
+    data.forEach((d, i) => {
+      const px = toX(d.t), py = toYpl(d.h);
+      i === 0 ? c.moveTo(px, py) : c.lineTo(px, py);
+    });
+    c.stroke();
+
+    // Aktueller Punkt + Cursor
+    const fi = Math.min(this.frameIndex, data.length - 1);
+    if (frame && fi >= 0) {
+      const d  = data[fi];
+      const cx = toX(d.t), cy = toYpl(d.h);
+
+      c.strokeStyle = col.panelBdr;
+      c.lineWidth   = 0.5;
+      c.setLineDash([3, 3]);
+      c.beginPath(); c.moveTo(cx, y + pad.t); c.lineTo(cx, y + pad.t + pH); c.stroke();
+      c.setLineDash([]);
+
+      c.beginPath();
+      c.arc(cx, cy, 5, 0, Math.PI * 2);
+      c.fillStyle = col.cursor;
+      c.fill();
+    }
+
+    // Legende
+    c.fillStyle = col.plotLine;
+    c.fillRect(x + pad.l, y + pad.t, 8, 3);
+    c.fillStyle = col.textSub;
+    c.font      = '9px monospace';
+    c.fillText('Höhe über Boden', x + pad.l + 12, y + pad.t + 7);
+
+    // X-Achsen-Label
+    c.fillStyle = col.textSub;
+    c.font      = '10px monospace';
+    c.textAlign = 'center';
+    c.fillText('Zeit (s)', x + pad.l + pW / 2, y + h - 4);
+    c.textAlign = 'left';
+
+    c.restore();
+
+    c.strokeStyle = col.panelBdr;
+    c.lineWidth   = 0.5;
+    this._roundRect(x, y, w, h, 6);
+    c.stroke();
+  }
+
+  _drawGrid(ox, oy, pad, pW, pH, H, maxT) {
+    const c   = this.ctx;
+    const col = this._col();
+
+    for (let g = 0; g <= 4; g++) {
+      const gy = oy + pad.t + (g / 4) * pH;
+      c.strokeStyle = col.gridLine;
+      c.lineWidth   = 0.5;
+      c.beginPath(); c.moveTo(ox + pad.l, gy); c.lineTo(ox + pad.l + pW, gy); c.stroke();
+      c.fillStyle = col.textSub;
+      c.font      = '9px monospace';
+      c.textAlign = 'right';
+      c.fillText(((1 - g / 4) * H).toFixed(0) + 'm', ox + pad.l - 3, gy + 3);
+    }
+    if (maxT > 0) {
+      for (let i = 0; i <= 5; i++) {
+        const tx = ox + pad.l + (i / 5) * pW;
+        c.fillStyle = col.textSub;
+        c.font      = '9px monospace';
+        c.textAlign = 'center';
+        c.fillText(((i / 5) * maxT).toFixed(0), tx, oy + pad.t + pH + 14);
+      }
+    }
+    c.textAlign = 'left';
+  }
+
+  // ─── Interaktion ─────────────────────────────────────────
+
+  _onClick(e) {
+    const { x, y } = this._canvasXY(e);
+    const btn = this._hitButton(x, y);
+    if (!btn) return;
+    switch (btn.label) {
+      case 'Starten':      this.start();  break;
+      case 'Stop':         this.pause();  break;
+      case 'Zurücksetzen': this.reset();  break;
+      case 'Weiter':       this.resume(); break;
+    }
+  }
+
+  _onPointerDown(e) {
+    const { x, y } = this._canvasXY(e);
+    const sl = this._hitSlider(x, y);
+    if (!sl) return;
+    this._drag = sl;
+    this.canvas.setPointerCapture(e.pointerId);
+    this._applySliderDrag(sl, x);
+  }
+
+  _onPointerMove(e) {
+    if (!this._drag) return;
+    const { x } = this._canvasXY(e);
+    this._applySliderDrag(this._drag, x);
+  }
+
+  _onPointerUp(e) {
+    this._drag = null;
+  }
+
+  _applySliderDrag(sl, mouseX) {
+    const frac = Math.max(0, Math.min(1, (mouseX - sl.x) / sl.w));
+    let val = sl.min + frac * (sl.max - sl.min);
+    // Snap to step
+    val = Math.round(val / sl.step) * sl.step;
+    val = Math.max(sl.min, Math.min(sl.max, val));
+    if (sl.step < 1) val = parseFloat(val.toFixed(1));
+    this.setParam(sl.key, val);
+    // Neu zeichnen (setParam ruft reset auf, das drawIdle aufruft)
+  }
+
+  _hitSlider(x, y) {
+    if (!this._sliders) return null;
+    return this._sliders.find(sl =>
+      x >= sl.x && x <= sl.x + sl.w &&
+      y >= sl.trackY - 10 && y <= sl.trackY + 14
+    ) || null;
+  }
+
+  _hitButton(x, y) {
+    if (!this._buttons) return null;
+    return this._buttons.find(b =>
+      x >= b.x && x <= b.x + b.w &&
+      y >= b.y && y <= b.y + b.h
+    ) || null;
+  }
+
+  _canvasXY(e) {
+    const r = this.canvas.getBoundingClientRect();
+    const scaleX = this.canvas.width  / r.width;
+    const scaleY = this.canvas.height / r.height;
+    return {
+      x: (e.clientX - r.left) * scaleX,
+      y: (e.clientY - r.top)  * scaleY,
+    };
+  }
+
+  // ─── Hilfsmethoden ───────────────────────────────────────
+
+  _col() {
+    return BungeeSimulation.COLORS[this.darkMode ? 'dark' : 'light'];
+  }
+
+  _roundRect(x, y, w, h, r) {
+    const c = this.ctx;
+    c.beginPath();
+    c.moveTo(x + r, y);
+    c.lineTo(x + w - r, y);
+    c.quadraticCurveTo(x + w, y,     x + w, y + r);
+    c.lineTo(x + w, y + h - r);
+    c.quadraticCurveTo(x + w, y + h, x + w - r, y + h);
+    c.lineTo(x + r, y + h);
+    c.quadraticCurveTo(x, y + h,     x, y + h - r);
+    c.lineTo(x, y + r);
+    c.quadraticCurveTo(x, y,         x + r, y);
+    c.closePath();
+  }
+}
+</script>
+<script>
+  const canvas = document.getElementById("meinCanvas");
+  const sim = new BungeeSimulation(canvas, {
+    darkMode: false,  
+  });
+</script>
+
+
+<div class="widget">  
+<p><h2>Simulation erklärt</h2></p>
+</div>
+<p>
+  Die Bungee-Jump-Simulation veranschaulicht die Umwandlung verschiedener 
+  Energieformen während eines Sprungs.
+   Am Anfang besitzt die Person hauptsächlich potentielle Energie,
+   weil sie sich in großer Höhe über dem Boden befindet. 
+   Während des Falls nimmt die Geschwindigkeit zu, 
+   wodurch die potentielle Energie zunehmend in
+    kinetische Energie umgewandelt wird.
+</p>
+<p>
+Sobald das Seil gespannt ist, beginnt es sich zu dehnen. 
+Dabei speichert das Seil Energie in Form von Spannenergie und bremst die fallende
+ Person ab. Am tiefsten Punkt ist die Geschwindigkeit kurzzeitig nahezu null,
+  bevor das Seil die Person wieder nach oben zieht. 
+  Dadurch entsteht eine Auf- und Abbewegung, bei der ständig Energie zwischen
+ potentieller, kinetischer und Spannenergie umgewelt wird.
+</p>
+<p>
+In der Simulation können außerdem Werte wie Höhe,
+ Geschwindigkeit und Energieverläufe beobachtet werden. 
+ Durch das Ändern verschiedener Parameter lässt sich erkennen, 
+ welchen Einfluss Masse, Seillänge, Dämpfung, Höhe oder Federhärte auf den Sprung haben.
+</p>
+ <p>
+Das direkte fallen bei einer zu niedrigen Federkonstante ist der Fall 
+weil die kraft der Feder nicht ausreicht um die Person oder in der Simulation den Ball
+rechtzeitig zu Bremsen.
+ </p>
+
+
+
+</p>
+</div>
+</body>
+</html>
