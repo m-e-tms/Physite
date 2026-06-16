@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+
+<hotpot-jcross-file>
+<rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:dc="http://purl.org/dc/elements/1.1/">
+  <rdf:Description rdf:about="">
+    <dc:creator>Schnullerbacke</dc:creator>
+    <dc:creator>Greta</dc:creator>
+    <dc:title>Kreuzwortr&amp;#x00E4;tsel zur Optik f&amp;#x00FC;r die Mittelstufe</dc:title>
+  </rdf:Description>
+</rdf:RDF><version>7</version>
+
+<data>
+<title>Kreuzwortr&amp;#x00E4;tsel zur Optik f&amp;#x00FC;r die Mittelstufe</title>
+
+
+
+<timer><seconds>60</seconds><include-timer>0</include-timer></timer><reading>
+<include-reading>0</include-reading>
+<reading-title></reading-title>
+<reading-text></reading-text>
+
+</reading>
+
+<crossword>
+<grid><row><cell>S</cell><cell>O</cell><cell>N</cell><cell>N</cell><cell>E</cell><cell>N</cell><cell>F</cell><cell>I</cell><cell>N</cell><cell>S</cell><cell>T</cell><cell>E</cell><cell>R</cell><cell>N</cell><cell>I</cell><cell>S</cell><cell></cell><cell></cell><cell></cell><cell></cell></row><row><cell></cell><cell></cell><cell></cell><cell></cell><cell></cell><cell></cell><cell></cell><cell></cell><cell></cell><cell></cell><cell></cell><cell></cell><cell>E</cell><cell></cell><cell></cell><cell></cell><cell></cell><cell></cell><cell></cell><cell></cell></row><row><cell></cell><cell></cell><cell></cell><cell></cell><cell></cell><cell></cell><cell></cell><cell></cell><cell></cell><cell></cell><cell>I</cell><cell>N</cell><cell>F</cell><cell>R</cell><cell>A</cell><cell>R</cell><cell>O</cell><cell>T</cell><cell></cell><cell></cell></row><row><cell></cell><cell></cell><cell></cell><cell></cell><cell></cell><cell></cell><cell>K</cell><cell></cell><cell></cell><cell></cell><cell></cell><cell></cell><cell>L</cell><cell></cell><cell></cell><cell></cell><cell></cell><cell></cell><cell></cell><cell></cell></row><row><cell></cell><cell></cell><cell></cell><cell></cell><cell></cell><cell></cell><cell>E</cell><cell></cell><cell></cell><cell></cell><cell></cell><cell>G</cell><cell>E</cell><cell>L</cell><cell>B</cell><cell></cell><cell></cell><cell></cell><cell></cell><cell></cell></row><row><cell></cell><cell></cell><cell></cell><cell></cell><cell></cell><cell></cell><cell>R</cell><cell></cell><cell></cell><cell></cell><cell></cell><cell></cell><cell>X</cell><cell></cell><cell></cell><cell></cell><cell></cell><cell></cell><cell></cell><cell></cell></row><row><cell>M</cell><cell>O</cell><cell>N</cell><cell>D</cell><cell>F</cell><cell>I</cell><cell>N</cell><cell>S</cell><cell>T</cell><cell>E</cell><cell>R</cell><cell>N</cell><cell>I</cell><cell>S</cell><cell></cell><cell></cell><cell></cell><cell></cell><cell></cell><cell></cell></row><row><cell></cell><cell></cell><cell></cell><cell></cell><cell></cell><cell></cell><cell>S</cell><cell></cell><cell></cell><cell></cell><cell></cell><cell></cell><cell>O</cell><cell></cell><cell></cell><cell></cell><cell></cell><cell></cell><cell></cell><cell></cell></row><row><cell></cell><cell>H</cell><cell>A</cell><cell>L</cell><cell>B</cell><cell>S</cell><cell>C</cell><cell>H</cell><cell>A</cell><cell>T</cell><cell>T</cell><cell>E</cell><cell>N</cell><cell></cell><cell></cell><cell></cell><cell></cell><cell></cell><cell></cell><cell></cell></row><row><cell></cell><cell></cell><cell></cell><cell></cell><cell></cell><cell></cell><cell>H</cell><cell></cell><cell></cell><cell></cell><cell></cell><cell></cell><cell></cell><cell></cell><cell></cell><cell></cell><cell></cell><cell></cell><cell></cell><cell></cell></row><row><cell></cell><cell></cell><cell>U</cell><cell>L</cell><cell>T</cell><cell>R</cell><cell>A</cell><cell>V</cell><cell>I</cell><cell>O</cell><cell>L</cell><cell>E</cell><cell>T</cell><cell>T</cell><cell></cell><cell></cell><cell></cell><cell></cell><cell></cell><cell></cell></row><row><cell></cell><cell></cell><cell></cell><cell></cell><cell></cell><cell></cell><cell>T</cell><cell></cell><cell></cell><cell></cell><cell></cell><cell></cell><cell></cell><cell></cell><cell></cell><cell></cell><cell></cell><cell></cell><cell></cell><cell></cell></row><row><cell>A</cell><cell>B</cell><cell>S</cell><cell>O</cell><cell>R</cell><cell>P</cell><cell>T</cell><cell>I</cell><cell>O</cell><cell>N</cell><cell></cell><cell></cell><cell></cell><cell></cell><cell></cell><cell></cell><cell></cell><cell></cell><cell></cell><cell></cell></row><row><cell></cell><cell></cell><cell></cell><cell></cell><cell></cell><cell></cell><cell>E</cell><cell></cell><cell></cell><cell></cell><cell></cell><cell></cell><cell></cell><cell></cell><cell></cell><cell></cell><cell></cell><cell></cell><cell></cell><cell></cell></row><row><cell></cell><cell></cell><cell></cell><cell></cell><cell></cell><cell></cell><cell>N</cell><cell></cell><cell></cell><cell></cell><cell></cell><cell></cell><cell></cell><cell></cell><cell></cell><cell></cell><cell></cell><cell></cell><cell></cell><cell></cell></row><row><cell></cell><cell></cell><cell></cell><cell></cell><cell></cell><cell></cell><cell></cell><cell></cell><cell></cell><cell></cell><cell></cell><cell></cell><cell></cell><cell></cell><cell></cell><cell></cell><cell></cell><cell></cell><cell></cell><cell></cell></row><row><cell></cell><cell></cell><cell></cell><cell></cell><cell></cell><cell></cell><cell></cell><cell></cell><cell></cell><cell></cell><cell></cell><cell></cell><cell></cell><cell></cell><cell></cell><cell></cell><cell></cell><cell></cell><cell></cell><cell></cell></row><row><cell></cell><cell></cell><cell></cell><cell></cell><cell></cell><cell></cell><cell></cell><cell></cell><cell></cell><cell></cell><cell></cell><cell></cell><cell></cell><cell></cell><cell></cell><cell></cell><cell></cell><cell></cell><cell></cell><cell></cell></row><row><cell></cell><cell></cell><cell></cell><cell></cell><cell></cell><cell></cell><cell></cell><cell></cell><cell></cell><cell></cell><cell></cell><cell></cell><cell></cell><cell></cell><cell></cell><cell></cell><cell></cell><cell></cell><cell></cell><cell></cell></row><row><cell></cell><cell></cell><cell></cell><cell></cell><cell></cell><cell></cell><cell></cell><cell></cell><cell></cell><cell></cell><cell></cell><cell></cell><cell></cell><cell></cell><cell></cell><cell></cell><cell></cell><cell></cell><cell></cell><cell></cell></row></grid>
+
+<clues><item><word>SONNENFINSTERNIS</word><def>Ph&amp;#x00E4;nomen, bei dem der Mond genau zwischen Erde und Sonne steht.</def></item><item><word>INFRAROT</word><def>Der Teil des Lichtspektrums mit der geringsten Energie.</def></item><item><word>GELB</word><def>Besitzt eine Wellenl&amp;#x00E4;nge zwischen etwa 580 und 595 nm.</def></item><item><word>MONDFINSTERNIS</word><def>Ereignis, bei dem die Erde genau zwischen Sonne und Mond steht.</def></item><item><word>HALBSCHATTEN</word><def>Entsteht an Stellen, wo von mehreren Lichtquellen mindestens eine abgeschirmt wird, das Licht mindestens einer Lichtquelle allerdings die jeweilige Stelle erreicht, ohne abgeschirmt zu werden.</def></item><item><word>ULTRAVIOLETT</word><def>Der Teil des Lichtspektrums, der die k&amp;#x00FC;rzeste Wellenl&amp;#x00E4;nge besitzt.</def></item><item><word>ABSORPTION</word><def>Tritt haupts&amp;#x00E4;chlich bei dunklen Oberfl&amp;#x00E4;chen auf.</def></item><item><word>REFLEXION</word><def>Ph&amp;#x00E4;nomen, bei dem Licht nach dem Auftreffen auf ein Objekt zur&amp;#x00FC;ckgeworfen wird.</def></item><item><word>KERNSCHATTEN</word><def>Wenn das Licht von allen vorhandenen Lichtquellen abgeschirmt wird.</def></item><item><word>KERNSCHATTEN</word><def>Wenn das Licht von allen vorhandenen Lichtquellen abgeschirmt wird.</def></item></clues>
+</crossword>
+</data>
+
+<hotpot-config-file>
+<jcross>
+<exercise-subtitle>Kreuzwortr&amp;#x00E4;tsel</exercise-subtitle>
+<instructions>Vervollst&amp;#x00E4;ndige das Kreuzwortr&amp;#x00E4;tsel, klicke dann auf &quot;L&amp;#x00F6;sungen pr&amp;#x00FC;fen&quot;, um deine Antworten zu &amp;#x00FC;berpr&amp;#x00FC;fen. Wenn du nicht weiter wei&amp;#x00DF;t, klicke auf &quot;Hinweis&quot;, um einen Buchstaben zu erhalten. Um die jeweilige Definition zu erhalten, klicke auf eine Zahl im Raster.</instructions>
+<guess-correct>Das stimmt, super gemacht!</guess-correct>
+<guess-incorrect>Das ist leider nicht ganz richtig.</guess-incorrect>
+<clues-across>waagerecht</clues-across>
+<clues-down>senkrecht</clues-down>
+<next-correct-letter>Ein richtiger Buchstabe wurde hinzugef&amp;#x00FC;gt.</next-correct-letter>
+<include-keypad>0</include-keypad>
+<include-clue-list>0</include-clue-list>
+<enter-caption>L&amp;#x00F6;sung eingeben</enter-caption>
+<include-hint>1</include-hint>
+<case-sensitive>0</case-sensitive>
+<next-ex-url>nextpage.htm</next-ex-url>
+<send-email>0</send-email>
+<separate-javascript-file>0</separate-javascript-file>
+</jcross>
+
+<global>
+<your-score-is>Dein Ergebnis ist:</your-score-is>
+<check-caption>&amp;#x00DC;berpr&amp;#x00FC;fe L&amp;#x00F6;sung</check-caption>
+<ok-caption>OK</ok-caption>
+<hint-caption>Hinweis</hint-caption>
+<keypad-characters></keypad-characters>
+<process-for-rtl>0</process-for-rtl>
+<include-scorm-12>0</include-scorm-12>
+<next-ex-caption>=&amp;#x003E;</next-ex-caption>
+<back-caption>&amp;#x003C;=</back-caption>
+<contents-caption>Zur&amp;#x00FC;ck zur Startseite</contents-caption>
+<include-next-ex>0</include-next-ex>
+<include-contents>1</include-contents>
+<include-back>0</include-back>
+<contents-url>programmiert_Infoseite_Optik_Mittelstufe.html</contents-url>
+<graphic-url></graphic-url>
+<font-face>Geneva,Arial,sans-serif</font-face>
+<font-size>small</font-size>
+<page-bg-color>#C0C0C0</page-bg-color>
+<title-color>#000000</title-color>
+<ex-bg-color>#FFFFFF</ex-bg-color>
+<text-color>#000000</text-color>
+<link-color>#004080</link-color>
+<vlink-color>#0000CC</vlink-color>
+<nav-bar-color>#000000</nav-bar-color>
+<formmail-url>http://yourserver.com/cgi-bin/FormMail.pl</formmail-url>
+<email>you@yourserver.com</email>
+<name-please>Please enter your name:</name-please>
+<user-string-1>one</user-string-1>
+<user-string-2>two</user-string-2>
+<user-string-3>three</user-string-3>
+<header-code></header-code>
+</global>
+</hotpot-config-file>
+</hotpot-jcross-file>
