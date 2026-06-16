@@ -128,6 +128,10 @@ $top_raetsel= getTop5($db, 'score_raetsel');
             <div class="icon">🤸</div>
             <h3>Bungee</h3>
         </a>
+        <a class="game-card" href="../../Physik%20Mittelstufe/MittelstufeOptik/programmiert_Infoseite_Optik_Mittelstufe.html">
+            <div class="icon">💡</div>
+            <h3>Optik</h3>
+        </a>
 
     </div>
 
