@@ -18,6 +18,6 @@ local content = destination_file:read("a")
 destination_file:close()
 
 destination_file = io.open(arg[2], "w")
-destination_file:write(content:gsub(css_pattern, css_string))
+destination_file:write(content:gsub(css_pattern, css_string, 1))
 destination_file:flush()
 destination_file:close()
