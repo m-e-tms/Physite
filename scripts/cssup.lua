@@ -5,7 +5,7 @@ if (#arg ~= 2) then
     os.exit(1)
 end
 
-local css_pattern = "<link rel=\"stylesheet\" href=\".-\">"
+local css_pattern = "<link rel=\"stylesheet\" href=\".-test.-\">"
 
 local source_file = io.open(arg[1], "r")
 local css_string = source_file:read("a"):match(css_pattern)--:gsub("[^\n]-\n", "  %0")
