@@ -1,0 +1,358 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Wurfsimulation</title>
+  <link rel="stylesheet" href="../../resources/test.css">
+
+  <div class="card">
+        <h1>Würfe in der Physik</h1>
+        <p>
+            Ein Wurf ist eine Bewegung, bei der ein Körper nach dem Loslassen
+             nur noch durch die Schwerkraft beeinflusst wird – der sogenannte freie Fall 
+             überlagert sich dabei mit einer Anfangsgeschwindigkeit. Je nach Richtung dieser 
+             Anfangsgeschwindigkeit unterscheidet man drei grundlegende Wurfarten.
+        </p>
+<div class="widget">
+            
+                <h2>Senkrechter Wurf</h2>
+                <p>
+                    Beim senkrechten Wurf nach oben wird ein Körper mit einer Anfangsgeschwindigkeit 
+                    <em>v₀</em> senkrecht nach oben abgeschossen. Die Schwerkraft bremst ihn dabei 
+                    kontinuierlich ab, bis er seinen höchsten Punkt erreicht – dort ist seine 
+                    Geschwindigkeit null. Anschließend fällt er wie beim freien Fall senkrecht 
+                    zurück. Die Steighöhe berechnet sich mit <em>h = v₀² / (2g)</em>.
+                </p>
+            </div>
+ <div class="widget">
+                <h2>Waagrechter Wurf</h2>
+                <p>
+                    Der waagrechte Wurf entsteht, wenn ein Körper aus einer 
+                    Höhe horizontal mit Geschwindigkeit <em>v₀</em> abgeworfen wird, 
+                    ohne vertikale Anfangsgeschwindigkeit. Horizontal bewegt er sich 
+                    gleichförmig, vertikal beschleunigt ihn die Schwerkraft wie beim freien Fall. 
+                    Die Flugbahn ist eine Parabel; die Wurfweite hängt von <em>v₀</em> und der Abwurfhöhe ab.
+                </p>
+            </div>
+<div class="widget">
+                <h2>Schräger Wurf</h2>
+                <p>
+                    Beim schrägen Wurf wird ein Körper unter einem Winkel
+                    <em>α</em> zur Horizontalen abgeworfen. Die Anfangsgeschwindigkeit zerlegt
+                    sich in eine horizontale Komponente (<em>v₀ · cos α</em>) und eine vertikale 
+                    (<em>v₀ · sin α</em>). Die Flugbahn ist eine symmetrische Parabel. 
+                    Die maximale Wurfweite wird bei einem Abwurfwinkel von 45° erreicht.
+                </p>
+            </div>
+</div>
+</div>
+  <style>
+    .card > div { padding: 0 !important; }
+    .card canvas#c {
+      display: block !important;
+      width: 100% !important;
+      background-color: transparent !important;
+      border-radius: 1vw !important;
+      border: 2px solid #666666 !important;
+      cursor: default !important;
+    }
+  </style>
+</head>
+<body>
+  
+  <div class="card">
+
+    <h1>Wurfsimulation</h1>
+    <canvas id="c"></canvas>
+  </div>
+
+<script>
+const G = 9.81;
+let mode = 0;
+let v0 = 20, h0 = 40, angle = 45;
+let dragging = null;
+let animId = null, animT = 1, animRunning = false;
+
+const MODES = ['Senkrechter Wurf', 'Waagerechter Wurf', 'Schiefer Wurf'];
+const COLORS = [['#378ADD','#185FA5'],['#1D9E75','#0F6E56'],['#D85A30','#993C1D']];
+
+const tc   = 'rgba(255,255,255,0.85)';
+const tc2  = 'rgba(255,255,255,0.45)';
+const grid = 'rgba(255,255,255,0.07)';
+const axc  = 'rgba(255,255,255,0.25)';
+const bg2  = 'rgba(255,255,255,0.06)';
+
+// Slider-Positionen werden hier von draw() gespeichert und von getHitInfo() gelesen
+let sliderRects = [];
+
+function getMetrics() {
+  const g = G, ang = angle * Math.PI / 180;
+  if (mode === 0) {
+    return { tmax: 2*v0/g, hmax: v0*v0/(2*g), xmax: null, vland: v0 };
+  } else if (mode === 1) {
+    const t = Math.sqrt(2*h0/g);
+    return { tmax: t, hmax: h0, xmax: v0*t, vland: Math.sqrt(v0*v0+2*g*h0) };
+  } else {
+    const vx = v0*Math.cos(ang), vy = v0*Math.sin(ang);
+    const t = (vy + Math.sqrt(vy*vy + 2*g*h0)) / g;
+    return { tmax: t, hmax: h0+vy*vy/(2*g), xmax: vx*t, vland: Math.sqrt(vx*vx+(vy-g*t)*(vy-g*t)) };
+  }
+}
+
+function calcPoints(steps=500) {
+  const g = G, ang = angle * Math.PI / 180;
+  const pts = [];
+  if (mode === 0) {
+    const total = 2*v0/g;
+    for(let i=0;i<=steps;i++){const t=total*i/steps; pts.push({x:0, y:Math.max(0, v0*t-0.5*g*t*t)});}
+  } else if (mode === 1) {
+    const total = Math.sqrt(2*h0/g);
+    for(let i=0;i<=steps;i++){const t=total*i/steps; const y=h0-0.5*g*t*t; if(y<0){pts.push({x:v0*total,y:0});break;} pts.push({x:v0*t,y});}
+  } else {
+    const vx=v0*Math.cos(ang), vy=v0*Math.sin(ang);
+    const total=(vy+Math.sqrt(vy*vy+2*g*h0))/g;
+    for(let i=0;i<=steps;i++){const t=total*i/steps; const y=h0+vy*t-0.5*g*t*t; if(y<0){pts.push({x:vx*total,y:0});break;} pts.push({x:vx*t,y});}
+  }
+  return pts;
+}
+
+function getSliderDefs() {
+  if(mode===0) return [{label:'Anfangsgeschwindigkeit', valStr:v0+' m/s', val:v0, min:1, max:50, key:'v0'}];
+  if(mode===1) return [
+    {label:'Anfangsgeschwindigkeit', valStr:v0+' m/s', val:v0, min:1, max:50, key:'v0'},
+    {label:'Anfangshöhe', valStr:h0+' m', val:h0, min:1, max:100, key:'h0'},
+  ];
+  return [
+    {label:'Anfangsgeschwindigkeit', valStr:v0+' m/s', val:v0, min:1, max:50, key:'v0'},
+    {label:'Anfangshöhe', valStr:h0+' m', val:h0, min:1, max:100, key:'h0'},
+    {label:'Winkel', valStr:angle+'°', val:angle, min:1, max:89, key:'angle'},
+  ];
+}
+
+function draw() {
+  const canvas = document.getElementById('c');
+  const ctx = canvas.getContext('2d');
+  const W = canvas.width, H = canvas.height;
+  ctx.clearRect(0, 0, W, H);
+
+  const tabH=36, ctrlH=90, metH=54, pad=12;
+  const plotT = pad+tabH+pad+ctrlH+pad;
+  const plotB = H-pad-metH-pad;
+  const plotL = 48, plotR = W-pad;
+  const plotW = plotR-plotL, plotH = plotB-plotT;
+
+  // TABS
+  const tabW = (W-pad*2)/3;
+  MODES.forEach((label, i) => {
+    const x=pad+i*tabW, y=pad, w=tabW-4, h=tabH-2, active=i===mode;
+    ctx.beginPath(); ctx.roundRect(x,y,w,h,6);
+    ctx.fillStyle = active ? 'rgba(55,138,221,0.25)' : bg2; ctx.fill();
+    ctx.strokeStyle = active ? COLORS[mode][0] : axc;
+    ctx.lineWidth = active ? 1.5 : 0.5; ctx.stroke();
+    ctx.fillStyle = active ? COLORS[mode][0] : tc2;
+    ctx.font = `${W<500?11:13}px Arial`; ctx.textAlign='center'; ctx.textBaseline='middle';
+    ctx.fillText(label, x+w/2, y+h/2);
+  });
+
+  // CONTROLS – Positionen in sliderRects speichern
+  const cy = pad+tabH+pad;
+  const defs = getSliderDefs();
+  sliderRects = [];
+  const slotW = (W-pad*2) / defs.length;
+  defs.forEach((sl, i) => {
+    const sx = pad+i*slotW, sw = slotW-8;
+    ctx.fillStyle=tc2; ctx.font='11px Arial'; ctx.textAlign='left'; ctx.textBaseline='top';
+    ctx.fillText(sl.label, sx, cy+2);
+    ctx.fillStyle=tc; ctx.font='bold 13px Arial'; ctx.textAlign='right';
+    ctx.fillText(sl.valStr, sx+sw, cy+2);
+    const ty=cy+24, th=4;
+    ctx.beginPath(); ctx.roundRect(sx,ty,sw,th,2); ctx.fillStyle=axc; ctx.fill();
+    const frac=(sl.val-sl.min)/(sl.max-sl.min);
+    ctx.beginPath(); ctx.roundRect(sx,ty,sw*frac,th,2); ctx.fillStyle=COLORS[mode][0]; ctx.fill();
+    const tx2=sx+sw*frac;
+    ctx.beginPath(); ctx.arc(tx2,ty+2,8,0,Math.PI*2); ctx.fillStyle='#1a1a1a'; ctx.fill();
+    ctx.strokeStyle=COLORS[mode][0]; ctx.lineWidth=2; ctx.stroke();
+    // Positionen für Hit-Test merken
+    sliderRects.push({ key:sl.key, sx, sw, ty:ty+2, min:sl.min, max:sl.max });
+  });
+
+  // PLAY BUTTON
+  const btnX=W-pad-90, btnY=cy+52, btnW=90, btnH=30;
+  ctx.beginPath(); ctx.roundRect(btnX,btnY,btnW,btnH,6);
+  ctx.fillStyle=COLORS[mode][1]; ctx.fill();
+  ctx.fillStyle='#fff'; ctx.font='bold 13px Arial'; ctx.textAlign='center'; ctx.textBaseline='middle';
+  ctx.fillText(animRunning?'■ Stop':'▶ Starten', btnX+btnW/2, btnY+btnH/2);
+
+  // PLOT AREA
+  ctx.beginPath(); ctx.roundRect(plotL,plotT,plotW,plotH,4);
+  ctx.fillStyle=bg2; ctx.fill();
+  ctx.strokeStyle=axc; ctx.lineWidth=0.5; ctx.stroke();
+
+  const pts = calcPoints();
+  if(!pts.length) return;
+  const maxY = Math.max(...pts.map(p=>p.y), 0.1);
+  // Senkrechter Wurf: x ist immer 0 → feste X-Skala damit der Ball mittig gezeichnet wird
+  const maxX = (mode === 0) ? 2 : (pts[pts.length-1].x || 1);
+  const scX=plotW/maxX, scY=plotH/(maxY*1.15);
+  // Senkrechter Wurf: Ball soll mittig im Plot stehen
+  const toX = (mode === 0)
+    ? v => plotL + plotW/2
+    : v => plotL + v*scX;
+  const toY=v=>plotB-v*scY;
+
+  ctx.strokeStyle=grid; ctx.lineWidth=0.5;
+  for(let i=1;i<=4;i++){
+    const y=plotT+plotH*i/4; ctx.beginPath(); ctx.moveTo(plotL,y); ctx.lineTo(plotR,y); ctx.stroke();
+    const x=plotL+plotW*i/4; ctx.beginPath(); ctx.moveTo(x,plotT); ctx.lineTo(x,plotB); ctx.stroke();
+  }
+  ctx.strokeStyle=axc; ctx.lineWidth=1;
+  ctx.beginPath(); ctx.moveTo(plotL,plotT); ctx.lineTo(plotL,plotB); ctx.stroke();
+  ctx.beginPath(); ctx.moveTo(plotL,plotB); ctx.lineTo(plotR,plotB); ctx.stroke();
+
+  ctx.fillStyle=tc2; ctx.font='10px Arial'; ctx.textAlign='right'; ctx.textBaseline='middle';
+  for(let i=0;i<=4;i++){const v=maxY*1.15*i/4; ctx.fillText(Math.round(v), plotL-4, plotT+plotH-plotH*i/4);}
+  ctx.textAlign='center'; ctx.textBaseline='top';
+  if(mode !== 0){
+    for(let i=0;i<=4;i++){const v=maxX*i/4; ctx.fillText((Math.round(v*10)/10)+'', plotL+plotW*i/4, plotB+4);}
+  }
+  ctx.fillStyle=tc2; ctx.font='11px Arial'; ctx.textAlign='center'; ctx.textBaseline='bottom';
+  ctx.fillText(mode===0?'':'x (m)', plotL+plotW/2, H-2);
+  ctx.save(); ctx.translate(10,plotT+plotH/2); ctx.rotate(-Math.PI/2); ctx.textBaseline='middle'; ctx.fillText('y (m)',0,0); ctx.restore();
+
+  ctx.strokeStyle='rgba(255,255,255,0.08)'; ctx.lineWidth=1.5; ctx.setLineDash([4,4]);
+  ctx.beginPath(); pts.forEach((p,i)=>{i===0?ctx.moveTo(toX(p.x),toY(p.y)):ctx.lineTo(toX(p.x),toY(p.y));}); ctx.stroke(); ctx.setLineDash([]);
+
+  const showN = animT<1 ? Math.ceil(pts.length*animT) : pts.length;
+  ctx.strokeStyle=COLORS[mode][0]; ctx.lineWidth=2.5;
+  ctx.beginPath();
+  for(let i=0;i<showN;i++){const p=pts[i]; i===0?ctx.moveTo(toX(p.x),toY(p.y)):ctx.lineTo(toX(p.x),toY(p.y));}
+  ctx.stroke();
+
+  if(showN>0){
+    const bp=pts[showN-1]; const bx=toX(bp.x), by=toY(bp.y);
+    ctx.beginPath(); ctx.arc(bx,by,7,0,Math.PI*2); ctx.fillStyle=COLORS[mode][1]; ctx.fill();
+    ctx.beginPath(); ctx.arc(bx,by,3.5,0,Math.PI*2); ctx.fillStyle='#fff'; ctx.fill();
+
+  }
+
+  // METRICS
+  const m = getMetrics();
+  const mLabels=['Flugzeit','Max. Höhe','Wurfweite','Auftreffgeschw.'];
+  const mVals=[m.tmax.toFixed(2)+' s', m.hmax.toFixed(1)+' m', m.xmax!==null?m.xmax.toFixed(1)+' m':'—', m.vland.toFixed(1)+' m/s'];
+  const mY=H-pad-metH, mW=(W-pad*2)/4;
+  mLabels.forEach((lbl,i)=>{
+    const mx=pad+i*mW, mw=mW-6;
+    ctx.beginPath(); ctx.roundRect(mx,mY,mw,metH-2,6); ctx.fillStyle=bg2; ctx.fill();
+    ctx.fillStyle=tc; ctx.font='bold 14px Arial'; ctx.textAlign='center'; ctx.textBaseline='middle';
+    ctx.fillText(mVals[i], mx+mw/2, mY+metH*0.38);
+    ctx.fillStyle=tc2; ctx.font='10px Arial';
+    ctx.fillText(lbl, mx+mw/2, mY+metH*0.72);
+  });
+}
+
+function stopAnim(){if(animId)cancelAnimationFrame(animId); animRunning=false; animId=null; animT=1;}
+
+function startAnim(){
+  if(animRunning){stopAnim(); draw(); return;}
+  animRunning=true; animT=0;
+  const dur=2000, start=performance.now();
+  function frame(now){animT=Math.min((now-start)/dur,1); draw(); if(animT<1)animId=requestAnimationFrame(frame); else animRunning=false;}
+  animId=requestAnimationFrame(frame);
+}
+
+function toCanvasCoords(e, touch) {
+  const canvas = document.getElementById('c');
+  const r = canvas.getBoundingClientRect();
+  const src = touch || e;
+  return {
+    mx: (src.clientX - r.left) * (canvas.width  / r.width),
+    my: (src.clientY - r.top)  * (canvas.height / r.height)
+  };
+}
+
+function getHitInfo(mx, my) {
+  const canvas = document.getElementById('c');
+  const W = canvas.width, pad=12, tabH=36, cy=pad+tabH+pad;
+
+  // Tabs
+  const tabW=(W-pad*2)/3;
+  if(my>=pad && my<=pad+tabH-2){
+    const i=Math.floor((mx-pad)/tabW);
+    if(i>=0 && i<3) return {type:'tab', idx:i};
+  }
+
+  // Play-Button
+  const btnX=W-pad-90, btnY=cy+52, btnW=90, btnH=30;
+  if(mx>=btnX && mx<=btnX+btnW && my>=btnY && my<=btnY+btnH) return {type:'btn'};
+
+  // Slider – aus sliderRects lesen (von draw() befüllt)
+  for(const sr of sliderRects){
+    if(my >= sr.ty-14 && my <= sr.ty+14 && mx >= sr.sx-4 && mx <= sr.sx+sr.sw+4)
+      return {type:'slider', key:sr.key, sr};
+  }
+  return null;
+}
+
+function applySlider(key, mx, sr) {
+  const frac = Math.max(0, Math.min(1, (mx - sr.sx) / sr.sw));
+  const val  = Math.round(sr.min + frac * (sr.max - sr.min));
+  if(key==='v0')    v0    = val;
+  else if(key==='h0')    h0    = Math.max(1, val);
+  else if(key==='angle') angle = val;
+  draw();
+}
+
+const canvas = document.getElementById('c');
+
+canvas.addEventListener('mousedown', e => {
+  const {mx,my} = toCanvasCoords(e);
+  const hit = getHitInfo(mx, my);
+  if(!hit) return;
+  if(hit.type==='tab')    { mode=hit.idx; stopAnim(); draw(); }
+  else if(hit.type==='btn') startAnim();
+  else if(hit.type==='slider') { dragging=hit; applySlider(hit.key, mx, hit.sr); }
+});
+
+canvas.addEventListener('mousemove', e => {
+  if(!dragging) return;
+  const {mx} = toCanvasCoords(e);
+  applySlider(dragging.key, mx, dragging.sr);
+});
+
+canvas.addEventListener('mouseup',    () => dragging=null);
+canvas.addEventListener('mouseleave', () => dragging=null);
+
+canvas.addEventListener('touchstart', e => {
+  e.preventDefault();
+  const {mx,my} = toCanvasCoords(null, e.touches[0]);
+  const hit = getHitInfo(mx, my);
+  if(!hit) return;
+  if(hit.type==='tab')    { mode=hit.idx; stopAnim(); draw(); }
+  else if(hit.type==='btn') startAnim();
+  else if(hit.type==='slider') { dragging=hit; applySlider(hit.key, mx, hit.sr); }
+}, {passive:false});
+
+canvas.addEventListener('touchmove', e => {
+  e.preventDefault();
+  if(!dragging) return;
+  const {mx} = toCanvasCoords(null, e.touches[0]);
+  applySlider(dragging.key, mx, dragging.sr);
+}, {passive:false});
+
+canvas.addEventListener('touchend', () => dragging=null);
+
+function resize(){
+  const card = canvas.parentElement;
+  const w = Math.max(card.clientWidth - 40, 300);
+  canvas.width  = w;
+  canvas.height = Math.round(w * 0.72);
+  canvas.style.height = canvas.height + 'px';
+  draw();
+}
+window.addEventListener('resize', resize);
+setTimeout(resize, 100);
+</script>
+</body>
+</html>
+001

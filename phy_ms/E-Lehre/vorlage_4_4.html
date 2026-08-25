@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <link rel="stylesheet" href="../../resources/test.css">
+</head>
+<body>
+
+  <nav>
+    <button onclick="location.href='../../infra/Hub_Lernseite_Mint.php'">Home</button>
+    <button>Scoreboard</button>
+    <button>News</button>
+    <div class="dropdown">
+      <button class="dropdown"> Dropdown </button>
+      <div class="dropdown-content">
+        <button onclick="location.href='www.google.com'">Schwingungen und Wellen</a>
+        <button onclick="location.href='www.google.com'">Link 2</button>
+        <button onclick="location.href='www.google.com'">Linksas3</button>
+        <button onclick="location.href='www.google.com'">Linksas3</button>
+        
+      </div>
+    </div>
+
+  </nav>
+
+  <div class="card">
+
+    <h1>Elektromagnetismus</h1>
+
+    <div class="widget">
+      <h2>Was ist der Elektromagnetismus?</h2>
+      <p>
+        Der Elektromagnetismus ist eine der vier fundamentalen Wechselwirkungen der Natur. Er beschreibt die Beziehung zwischen elektrischen Ladungen, elektrischen Feldern und magnetischen Feldern. Elektrische und magnetische Phänomene sind eng miteinander verknüpft: Ein sich veränderndes elektrisches Feld erzeugt ein magnetisches Feld und umgekehrt. Diese gegenseitige Abhängigkeit wurde von James Clerk Maxwell im 19. Jahrhundert in seinen berühmten Maxwell-Gleichungen mathematisch beschrieben.
+      </p>
+    </div>
+
+    <h2>Geschichte des Elektromagnetismus</h2>
+
+    <p>
+      Die Erforschung des Elektromagnetismus begann im frühen 19. Jahrhundert. Hans Christian Ørsted entdeckte 1820, dass ein elektrischer Strom eine Kompassnadel ablenkt – ein klarer Beweis, dass Elektrizität und Magnetismus zusammenhängen. Michael Faraday entwickelte das Konzept der Feldlinien und entdeckte die elektromagnetische Induktion. Schließlich fasste James Clerk Maxwell all diese Erkenntnisse 1865 in vier eleganten Gleichungen zusammen, die das Fundament der klassischen Elektrodynamik bilden.
+    </p>
+
+    <div class="widget">
+      <h2>Das Magnetfeld eines Leiters</h2>
+      <p>
+        <img class="left" width="300px" height="300px" src="https://image.jimcdn.com/app/cms/image/transf/none/path/sf54fc935291fe22a/image/i0b49423969b02a91/version/1541088223/homogenes-elektrisches-feld-zwischen-zwei-geladenen-platten.jpg">
+        Fließt ein elektrischer Strom durch einen geraden Leiter, so entsteht um diesen Leiter herum ein kreisförmiges Magnetfeld. Die Stärke des Feldes nimmt mit zunehmendem Abstand vom Leiter ab. Die Richtung des Magnetfeldes lässt sich mit der sogenannten Rechte-Hand-Regel bestimmen: Zeigt der ausgestreckte Daumen der rechten Hand in Stromflussrichtung, geben die gekrümmten Finger die Richtung der Magnetfeldlinien an. Dieses Prinzip ist die Grundlage für den Elektromagneten.
+      </p>
+    </div>
+
+    <div class="widget">
+      <h2>Elektromagnetische Induktion</h2>
+      <p>
+        <img class="left" width="300px" height="300px" src="https://www.elektropraktiker.de/fileadmin/_processed_/5/a/csm_bild_1_induktion_c54d6d7333.png">
+        Unter elektromagnetischer Induktion versteht man die Erzeugung einer elektrischen Spannung durch ein sich zeitlich änderndes Magnetfeld. Dieses Prinzip wurde von Michael Faraday entdeckt und bildet die Grundlage für Generatoren und Transformatoren. Je schneller sich der magnetische Fluss durch eine Leiterschleife ändert, desto größer ist die induzierte Spannung. Das Faradaysche Induktionsgesetz beschreibt diesen Zusammenhang mathematisch: Die induzierte Spannung ist gleich der negativen zeitlichen Ableitung des magnetischen Flusses.
+      </p>
+    </div>
+
+    <div class="widget">
+      <h2>Simulation: Induktion im Experiment</h2>
+      <p><strong>Aufbau:</strong> In der Mitte befindet sich eine <em>Spule</em> – mehrere übereinander gestapelte Leiterschleifen, hier als horizontale Ringe dargestellt. Durch die Spule wird ein <em>Stabmagnet</em> (rot = Nordpol, blau = Südpol) auf und ab bewegt. Am rechten Rand ist ein <em>Voltmeter</em> angeschlossen, das die entstehende Spannung anzeigt.</p>
+      <p><strong>Was passiert:</strong> Sobald der Magnet in die Spule eindringt, verändert sich der <em>magnetische Fluss</em> durch die Leiterschleifen. Laut dem <em>Faradayschen Induktionsgesetz</em> wird durch jede Änderung dieses Flusses eine elektrische Spannung induziert. Der Zeiger schlägt in die eine Richtung aus, wenn der Nordpol eintritt – und in die entgegengesetzte, wenn der Südpol folgt oder der Magnet die Spule verlässt.</p>
+      <p><strong>Einfluss der Geschwindigkeit:</strong> Je schneller der Magnet bewegt wird, desto schneller ändert sich der magnetische Fluss – und desto größer ist die induzierte Spannung. Steht der Magnet still, zeigt das Voltmeter exakt null an, egal wie stark das Magnetfeld ist. Nur die <em>Änderung</em> zählt, nicht der Absolutwert.</p>
+
+      <style>
+        .sim-wrap { padding: 1rem 0 !important; display: flex !important; flex-direction: column !important; align-items: center !important; gap: 1.5rem !important; box-sizing: border-box !important; }
+        .sim-canvas { position: relative !important; width: 320px !important; height: 380px !important; padding: 0 !important; overflow: visible !important; box-sizing: content-box !important; }
+        .coil-group { position: absolute !important; left: 50% !important; transform: translateX(-50%) !important; top: 100px !important; width: 160px !important; padding: 0 !important; }
+        .coil-ring { width: 100% !important; height: 14px !important; border: 2.5px solid #aaaaaa !important; border-radius: 50% !important; margin-bottom: 6px !important; position: relative !important; background: transparent !important; padding: 0 !important; box-sizing: border-box !important; display: block !important; }
+        .coil-ring::after { content: '' !important; display: block !important; position: absolute !important; left: 8px !important; right: 8px !important; top: 50% !important; height: 2.5px !important; background: #aaaaaa !important; transform: translateY(-50%) !important; padding: 0 !important; margin: 0 !important; }
+        .sim-wire { position: absolute !important; top: 100px !important; left: 50% !important; width: 2.5px !important; height: 160px !important; background: #aaaaaa !important; transform: translateX(-50%) !important; padding: 0 !important; }
+        .sim-magnet { position: absolute !important; left: 50% !important; transform: translateX(-50%) !important; width: 56px !important; display: flex !important; flex-direction: column !important; border-radius: 6px !important; overflow: hidden !important; animation-name: sim-movemagnet !important; animation-timing-function: ease-in-out !important; animation-iteration-count: infinite !important; animation-duration: 2.4s; padding: 0 !important; box-sizing: border-box !important; }
+        .sim-mag-n { background: #D85A30 !important; color: #fff !important; text-align: center !important; font-size: 14px !important; font-weight: 700 !important; padding: 8px 0 !important; letter-spacing: 1px !important; line-height: 1.2 !important; display: block !important; }
+        .sim-mag-s { background: #378ADD !important; color: #fff !important; text-align: center !important; font-size: 14px !important; font-weight: 700 !important; padding: 8px 0 !important; letter-spacing: 1px !important; line-height: 1.2 !important; display: block !important; }
+        @keyframes sim-movemagnet { 0% { top: 20px; } 50% { top: 270px; } 100% { top: 20px; } }
+        .sim-voltmeter { position: absolute !important; right: 0 !important; top: 130px !important; width: 64px !important; height: 64px !important; border: 2px solid #888 !important; border-radius: 50% !important; display: flex !important; flex-direction: column !important; align-items: center !important; justify-content: center !important; background: #1a1a2e !important; padding: 0 !important; box-sizing: border-box !important; }
+        .sim-vm-label { font-size: 10px !important; color: #aaa !important; margin-bottom: 2px !important; padding: 0 !important; line-height: 1 !important; display: block !important; }
+        .sim-vm-needle { width: 2px !important; height: 22px !important; background: #D85A30 !important; transform-origin: bottom center !important; animation-name: sim-needle !important; animation-timing-function: ease-in-out !important; animation-iteration-count: infinite !important; animation-duration: 2.4s; border-radius: 2px 2px 0 0 !important; padding: 0 !important; display: block !important; }
+        @keyframes sim-needle { 0% { transform: rotate(-50deg); } 25% { transform: rotate(0deg); } 50% { transform: rotate(50deg); } 75% { transform: rotate(0deg); } 100% { transform: rotate(-50deg); } }
+        .sim-fieldlines { position: absolute !important; left: 50% !important; transform: translateX(-50%) !important; width: 110px !important; pointer-events: none !important; animation-name: sim-movelines !important; animation-timing-function: ease-in-out !important; animation-iteration-count: infinite !important; animation-duration: 2.4s; padding: 0 !important; }
+        @keyframes sim-movelines { 0% { top: 50px; } 50% { top: 300px; } 100% { top: 50px; } }
+        .sim-fieldline { height: 3px !important; margin-bottom: 6px !important; border-radius: 2px !important; animation-name: sim-pulseline !important; animation-timing-function: ease-in-out !important; animation-iteration-count: infinite !important; animation-duration: 2.4s; padding: 0 !important; display: block !important; }
+        @keyframes sim-pulseline { 0% { opacity: 0.3; width: 60%; margin-left: 20%; } 12% { opacity: 0.9; width: 100%; margin-left: 0; } 25% { opacity: 0.3; width: 60%; margin-left: 20%; } 50% { opacity: 0.9; width: 100%; margin-left: 0; } 62% { opacity: 0.3; width: 60%; margin-left: 20%; } 75% { opacity: 0.9; width: 100%; margin-left: 0; } 88% { opacity: 0.3; width: 60%; margin-left: 20%; } 100% { opacity: 0.3; width: 60%; margin-left: 20%; } }
+        .sim-glow { position: absolute !important; left: 50% !important; top: 100px !important; transform: translateX(-50%) !important; width: 164px !important; height: 160px !important; border-radius: 4px !important; pointer-events: none !important; animation-name: sim-glowpulse !important; animation-timing-function: ease-in-out !important; animation-iteration-count: infinite !important; animation-duration: 2.4s; padding: 0 !important; }
+        @keyframes sim-glowpulse { 0% { background: transparent; } 12% { background: rgba(55,138,221,0.12); } 25% { background: transparent; } 38% { background: rgba(216,90,48,0.12); } 50% { background: rgba(55,138,221,0.12); } 62% { background: rgba(216,90,48,0.12); } 75% { background: transparent; } 100% { background: transparent; } }
+        .sim-vdisplay { display: flex !important; align-items: baseline !important; gap: 6px !important; padding: 0 !important; }
+        .sim-vvalue { font-size: 28px !important; font-weight: 500 !important; animation-name: sim-vchange !important; animation-timing-function: ease-in-out !important; animation-iteration-count: infinite !important; animation-duration: 2.4s; line-height: 1 !important; }
+        @keyframes sim-vchange { 0% { color: #888; } 12% { color: #D85A30; } 25% { color: #888; } 50% { color: #378ADD; } 62% { color: #888; } 75% { color: #378ADD; } 88% { color: #D85A30; } 100% { color: #888; } }
+        .sim-vunit { font-size: 14px !important; color: #aaa !important; }
+        .sim-vlabel { font-size: 12px !important; color: #aaa !important; }
+        .sim-speed-row { display: flex !important; align-items: center !important; gap: 12px !important; width: 320px !important; padding: 0 !important; box-sizing: border-box !important; }
+        .sim-speed-row label { font-size: 13px !important; color: #aaa !important; white-space: nowrap !important; }
+        .sim-speed-row input[type=range] { flex: 1 !important; padding: 0 !important; }
+        .sim-legend { display: flex !important; gap: 16px !important; font-size: 12px !important; color: #aaa !important; flex-wrap: wrap !important; justify-content: center !important; padding: 0 !important; }
+        .sim-leg-dot { width: 10px !important; height: 10px !important; border-radius: 50% !important; display: inline-block !important; margin-right: 4px !important; vertical-align: middle !important; padding: 0 !important; }
+      </style>
+
+      <div class="sim-wrap">
+        <div class="sim-canvas">
+          <div class="sim-wire"></div>
+
+          <div class="sim-fieldlines" id="sim-fieldlines">
+            <div class="sim-fieldline" style="background:#D85A30;animation-delay:0s"></div>
+            <div class="sim-fieldline" style="background:#D85A30;animation-delay:0.1s"></div>
+            <div class="sim-fieldline" style="background:#D85A30;animation-delay:0.2s"></div>
+          </div>
+
+          <div class="sim-magnet" id="sim-magnet">
+            <div class="sim-mag-n">N</div>
+            <div class="sim-mag-s">S</div>
+          </div>
+
+          <div class="sim-glow" id="sim-glow"></div>
+
+          <div class="coil-group">
+            <div class="coil-ring"></div>
+            <div class="coil-ring"></div>
+            <div class="coil-ring"></div>
+            <div class="coil-ring"></div>
+            <div class="coil-ring"></div>
+            <div class="coil-ring"></div>
+            <div class="coil-ring"></div>
+            <div class="coil-ring"></div>
+          </div>
+
+          <div class="sim-voltmeter">
+            <span class="sim-vm-label">U</span>
+            <div class="sim-vm-needle" id="sim-vm-needle"></div>
+          </div>
+
+          <div style="position:absolute;left:0;top:310px;font-size:11px;color:#888;text-align:center;width:100%">Spule · Leiterschleife</div>
+        </div>
+
+        <div class="sim-vdisplay">
+          <span class="sim-vvalue" id="sim-vvalue">~</span><span class="sim-vunit">V</span>
+          <span class="sim-vlabel">induzierte Spannung</span>
+        </div>
+
+        <div class="sim-speed-row">
+          <label>Geschwindigkeit</label>
+          <input type="range" min="1" max="10" value="5" step="1" id="sim-slider">
+          <span style="font-size:13px;color:#888;min-width:16px" id="sim-spd-out">5</span>
+        </div>
+
+        <div class="sim-legend">
+          <span><span class="sim-leg-dot" style="background:#D85A30"></span>Nordpol / steigende Flussdichte</span>
+          <span><span class="sim-leg-dot" style="background:#378ADD"></span>Südpol / sinkende Flussdichte</span>
+        </div>
+      </div>
+    </div>
+
+    <h2>Anwendungen im Alltag</h2>
+
+    <p>
+      Der Elektromagnetismus ist allgegenwärtig in unserem Alltag. Elektromotoren in Haushaltsgeräten, Generatoren in Kraftwerken, Transformatoren in Netzteilen, Induktionsladegeräte für Smartphones, Magnetresonanztomographen in der Medizin – all diese Technologien basieren auf elektromagnetischen Prinzipien. Auch die Übertragung von Radio-, WLAN- und Mobilfunksignalen erfolgt durch elektromagnetische Wellen, die sich mit Lichtgeschwindigkeit ausbreiten.
+    </p>
+
+    <div class="widget">
+      <h2>Die Maxwell-Gleichungen</h2>
+      <p>
+        Die vier Maxwell-Gleichungen bilden das theoretische Fundament des Elektromagnetismus. Sie beschreiben: (1) das Gaußsche Gesetz – elektrische Ladungen erzeugen elektrische Felder; (2) das Gaußsche Gesetz für Magnetfelder – es gibt keine magnetischen Monopole; (3) das Faradaysche Induktionsgesetz – ein sich änderndes Magnetfeld erzeugt ein elektrisches Feld; und (4) das Ampère-Maxwell-Gesetz – elektrische Ströme und sich ändernde elektrische Felder erzeugen Magnetfelder. Aus diesen Gleichungen folgt direkt, dass elektromagnetische Wellen mit Lichtgeschwindigkeit reisen – Maxwell erkannte dadurch, dass Licht selbst eine elektromagnetische Welle ist.
+      </p>
+    </div>
+
+  </div>
+
+
+<script>
+  document.getElementById('sim-slider').addEventListener('input', function() {
+    var val = parseInt(this.value);
+    var t = (2.4 / (val / 5)) + 's';
+    document.getElementById('sim-spd-out').textContent = val;
+    document.getElementById('sim-magnet').style.animationDuration = t;
+    document.getElementById('sim-fieldlines').style.animationDuration = t;
+    document.getElementById('sim-glow').style.animationDuration = t;
+    document.getElementById('sim-vm-needle').style.animationDuration = t;
+    document.getElementById('sim-vvalue').style.animationDuration = t;
+    document.querySelectorAll('.sim-fieldline').forEach(function(el) {
+      el.style.animationDuration = t;
+    });
+  });
+</script>
+</body>
+</html>
+111
