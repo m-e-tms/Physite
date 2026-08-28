@@ -39,244 +39,466 @@ $resultColor = $wheelResult > 0 ? $hex[$wheelResult] : '';
 <head>
   <meta charset="UTF-8">
   <title>Stochastik Lernseite</title>
+  <link rel="stylesheet" href="../../resources/test.css">
   <style>
-    body { font-family: Arial, sans-serif; background-color: #f5f5f5; margin: 0; padding: 0; }
-    .container { display: flex; min-height: 100vh; }
+    /*
+      Page-specific rules on top of resources/test.css.
+      Grey page/stage background; purple accent theme on panels and controls.
+    */
+    body {
+      background-color: #222222;
+      background-image: repeating-radial-gradient(circle at -100px -100px, #000000, #222222 150px, #000000 300px);
+      background-attachment: fixed;
+      font-family: Arial, sans-serif;
+    }
+    h1, h2, h3 { font-family: Arial, sans-serif; }
+    p { color: #dddddd; }
 
-    .sidebar { width: 200px; background-color: #0066cc; color: white; padding: 10px; }
-    .sidebar button { display: block; width: 100%; margin-bottom: 5px; padding: 8px; background-color: #005fa3; color: white; border: none; cursor: pointer; text-align: left; }
-    .sidebar button.active { background-color: #00b4d8; }
+    .page-title {
+      color: #e0a3ff;
+      text-align: center;
+      margin-bottom: 1.75rem;
+    }
 
-    .main { flex: 1; padding: 20px; }
-    .content-box { background-color: white; padding: 15px; margin-bottom: 10px; border-left: 4px solid #00b4d8; }
+    .stage {
+      background: #111111 repeating-radial-gradient(circle at -100px -100px, #000000, #222222 150px, #000000 300px);
+      border-color: #666666;
+    }
 
-    /* progress */
-    .progress { display: flex; align-items: center; margin-bottom: 20px; }
-    .progress-step { display: flex; flex-direction: column; align-items: center; gap: 4px; }
-    .progress-circle { width: 36px; height: 36px; border-radius: 50%; background: #ccc; color: white; font-weight: bold; font-size: 16px; display: flex; align-items: center; justify-content: center; }
-    .progress-circle.done { background: #22c55e; }
-    .progress-circle.active { background: #0066cc; }
-    .progress-label { font-size: 12px; color: #555; }
-    .progress-line { flex: 1; height: 3px; background: #ccc; margin: 0 6px; margin-bottom: 16px; }
-    .progress-line.done { background: #22c55e; }
+    .stochastik-layout {
+      display: flex;
+      gap: 2rem;
+      align-items: flex-start;
+    }
 
-    .game-section { background: white; border-left: 4px solid #00b4d8; padding: 20px; }
-    .game-layout { display: flex; align-items: center; gap: 30px; justify-content: center; }
-    .game-side { display: flex; flex-direction: column; align-items: center; }
+    .topic-sidebar {
+      width: 220px;
+      flex-shrink: 0;
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+    }
+    .topic-sidebar h3 {
+      margin: 0 0 0.5rem;
+      color: #cccccc;
+      font-size: 0.8rem;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+    }
+    .topic-sidebar button {
+      display: block;
+      width: 100%;
+      text-align: left;
+      padding: 0.65rem 1rem;
+      border-radius: 8px;
+      border: 1px solid #666666;
+      background-color: #222233;
+      color: #ffffff;
+      font-family: Arial, sans-serif;
+      font-size: 0.9rem;
+      cursor: pointer;
+      transition: background 0.2s;
+    }
+    .topic-sidebar button:hover,
+    .topic-sidebar button.active {
+      background-image: linear-gradient(to bottom right, #440044, #000000, #000044);
+      border-color: #999999;
+    }
 
-    #wheel-wrapper { position: relative; width: 400px; height: 430px; }
-    #arrow { position: absolute; left: 50%; top: 0; transform: translateX(-50%); width: 0; height: 0; border-left: 16px solid transparent; border-right: 16px solid transparent; border-top: 32px solid #111; }
-    #wheelCanvas { position: absolute; top: 30px; left: 0; }
+    .content-area {
+      flex: 1;
+      min-width: 0;
+      text-align: left;
+    }
 
-    .result-text { font-size: 28px; font-weight: bold; margin: 14px 0; min-height: 36px; text-align: center; }
+    /* static panels, matching the .widget look from the shared game template */
+    .info-box,
+    .step-panel {
+      display: block;
+      background-color: #222233;
+      background-image: linear-gradient(to bottom right, #440044, #000000, #000044);
+      border: 1px solid #666666;
+      border-radius: 16px;
+      padding: 1.5rem 1.75rem;
+      margin-bottom: 1.5rem;
+      text-align: left;
+    }
+    .info-box h2,
+    .step-panel h2 {
+      color: #e0a3ff;
+      margin-top: 0;
+    }
+    .info-box ul {
+      padding-left: 1.2rem;
+    }
+    .info-box li {
+      margin-bottom: 0.4rem;
+    }
 
-    .btn { font-size: 22px; padding: 12px 36px; margin-top: 16px; color: white; border: none; border-radius: 8px; cursor: pointer; }
-    .btn:disabled { background-color: #aaa; cursor: not-allowed; }
-    .btn-green { background-color: #66e86a; }
-    .btn-green:hover:not(:disabled) { background-color: #44cc50; }
-    .btn-blue { background-color: #2196F3; }
-    .btn-blue:hover:not(:disabled) { background-color: #1976D2; }
-    .btn-next { background-color: #0066cc; font-size: 18px; padding: 10px 28px; margin-top: 20px; }
-    .btn-next:hover { background-color: #005fa3; }
+    .highlight-box {
+      background-color: rgba(0, 0, 0, 0.25);
+      border: 1px solid #666666;
+      border-radius: 12px;
+      padding: 1.1rem 1.4rem;
+      margin-top: 1rem;
+    }
 
+    /* progress bar */
+    .progress {
+      display: flex;
+      align-items: center;
+      margin-bottom: 2rem;
+    }
+    .progress-step {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 6px;
+    }
+    .progress-circle {
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      background-color: #444444;
+      color: #ffffff;
+      font-weight: bold;
+      font-size: 16px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: background 0.2s;
+    }
+    .progress-circle.active {
+      background-image: linear-gradient(to bottom right, #440044, #000000, #000044);
+    }
+    .progress-circle.done {
+      background-color: #228822;
+    }
+    .progress-label {
+      font-size: 12px;
+      color: #cccccc;
+    }
+    .progress-line {
+      flex: 1;
+      height: 3px;
+      background-color: #444444;
+      margin: 0 6px;
+      margin-bottom: 22px;
+      transition: background 0.2s;
+    }
+    .progress-line.done {
+      background-color: #228822;
+    }
 
+    /* game section */
+    .game-layout {
+      display: flex;
+      align-items: center;
+      gap: 2.5rem;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+    .game-side {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    #wheel-wrapper {
+      position: relative;
+      width: 400px;
+      height: 430px;
+    }
+    #arrow {
+      position: absolute;
+      left: 50%;
+      top: 0;
+      transform: translateX(-50%);
+      width: 0;
+      height: 0;
+      border-left: 16px solid transparent;
+      border-right: 16px solid transparent;
+      border-top: 32px solid #ffffff;
+    }
+    #wheelCanvas {
+      position: absolute;
+      top: 30px;
+      left: 0;
+    }
+
+    .result-text {
+      font-size: 28px;
+      font-weight: bold;
+      margin: 14px 0;
+      min-height: 36px;
+      text-align: center;
+      color: #ffffff;
+    }
+
+    /* buttons */
+    .btn {
+      font-size: 1.05rem;
+      padding: 0.7rem 2rem;
+      margin-top: 1rem;
+      border-radius: 8px;
+      border: none;
+      cursor: pointer;
+      font-family: Arial, sans-serif;
+      font-weight: bold;
+      color: #ffffff;
+      transition: transform 0.2s, background 0.2s;
+    }
+    .btn:disabled {
+      background-color: #666666 !important;
+      background-image: none !important;
+      cursor: not-allowed;
+      transform: none !important;
+    }
+    .btn:hover:not(:disabled) {
+      transform: translateY(-2px);
+    }
+
+    .btn-spin {
+      background-color: #66e86a;
+      color: #111111;
+    }
+    .btn-spin:hover:not(:disabled) {
+      background-color: #44cc50;
+    }
+
+    .btn-roll {
+      background-color: #2196F3;
+    }
+    .btn-roll:hover:not(:disabled) {
+      background-color: #1976D2;
+    }
+
+    .btn-next {
+      background-image: linear-gradient(to bottom right, #440044, #000000, #000044);
+      border: 1px solid #666666;
+      font-size: 0.95rem;
+      padding: 0.6rem 1.6rem;
+    }
+    .btn-next:hover {
+      background-image: linear-gradient(to bottom right, #660066, #111111, #000066);
+    }
+
+    @media (max-width: 900px) {
+      .stochastik-layout {
+        flex-direction: column;
+      }
+      .topic-sidebar {
+        width: 100%;
+        flex-direction: row;
+        flex-wrap: wrap;
+      }
+    }
   </style>
 </head>
 <!-- body start, buttons zum sidebar-->
 <body>
-<div class="container">
-  <div class="sidebar">
-    <h3>Themen</h3>
-    <button onclick="showSection('wahrscheinlichkeit', this)">Wahrscheinlichkeit</button>
-    <button onclick="showSection('zufallsversuche', this)">Zufallsversuche</button>
-    <button onclick="showSection('baumdiagramme', this)">Baumdiagramme</button>
-  </div>
 
-  <div class="main">
-    <h1 style="color:#0066cc; text-align:center">STOCHASTIK</h1>
+<main class="stage">
+  <h1 class="page-title">STOCHASTIK</h1>
 
-    <!-- sidebar inhalt -->
-    <div id="wahrscheinlichkeit" class="content-box" style="display:none">
-      <h2>Wahrscheinlichkeit</h2>
-      <p>Wahrscheinlichkeit sagt dir, wie wahrscheinlich etwas passiert. 🎲</p>
-      <ul>
-        <li>Beispiel: Die Chance, eine 6 zu würfeln, ist 1 von 6.</li>
-        <li>Wenn du 6-mal würfelst, erscheint die 6 ungefähr einmal.</li>
-        <li>Mit der Wahrscheinlichkeit kannst du vorhersagen, wie oft ein Ergebnis auftreten könnte.</li>
-      </ul>
-    </div>
-    <div id="zufallsversuche" class="content-box" style="display:none">
-      <h2>Zufallsversuche</h2>
-      <p>Ein Zufallsversuch ist ein Experiment, bei dem du vorher nicht weißt, was passiert. 🃏</p>
-      <p>Typische Beispiele: Würfeln, Glücksrad drehen, Karte ziehen.</p>
-      <ul>
-        <li>Jeder Spielzug ist ein Zufallsversuch.</li>
-        <li>Du kannst beobachten, welche Ergebnisse häufiger oder seltener vorkommen.</li>
-      </ul>
-    </div>
-    <div id="baumdiagramme" class="content-box" style="display:none">
-      <h2>Baumdiagramme</h2>
-      <p>Ein Baumdiagramm zeigt alle möglichen Ergebnisse eines Zufallsexperiments. 🌳</p>
-      <ul>
-        <li>Welche Farben oder Zahlen es gibt</li>
-        <li>Welche Reihenfolgen auftreten könnten</li>
-        <li>Wie wahrscheinlich jede Möglichkeit ist</li>
-      </ul>
+  <div class="stochastik-layout">
+    <div class="topic-sidebar">
+      <h3>Themen</h3>
+      <button onclick="showSection('wahrscheinlichkeit', this)">Wahrscheinlichkeit</button>
+      <button onclick="showSection('zufallsversuche', this)">Zufallsversuche</button>
+      <button onclick="showSection('baumdiagramme', this)">Baumdiagramme</button>
     </div>
 
-    <!-- Prog bar oben konstant -->
-    <div class="progress">
-      <div class="progress-step">
-        <div class="progress-circle <?= $step >= 1 ? ($step > 1 ? 'done' : 'active') : '' ?>">1</div>
-        <div class="progress-label">Start</div>
+    <div class="content-area">
+
+      <!-- sidebar inhalt -->
+      <div id="wahrscheinlichkeit" class="info-box" style="display:none">
+        <h2>Wahrscheinlichkeit</h2>
+        <p>Wahrscheinlichkeit beschreibt, wie groß die Chance ist, dass ein bestimmtes Ereignis eintritt, zum Beispiel eine 6 beim Würfeln oder eine Farbe am Glücksrad.</p>
+        <p>Man gibt sie als Bruch, Dezimalzahl oder Prozent an. Beim fairen Würfel ist die Chance für eine 6 gleich <strong>1/6</strong>, also etwa <strong>16,67&nbsp;%</strong>. Bei gleich wahrscheinlichen Ergebnissen spricht man von einem <strong>Laplace-Experiment</strong>.</p>
+        <p>Wahrscheinlichkeit sagt nicht genau voraus, was der nächste Wurf bringt. Sie beschreibt, was man <em>langfristig</em> erwarten kann, wenn man ein Experiment oft wiederholt.</p>
+        <ul>
+          <li>Beispiel: Die Chance, eine 6 zu würfeln, ist 1 von 6.</li>
+          <li>Wenn du 6-mal würfelst, erscheint die 6 ungefähr einmal.</li>
+          <li>Mit der Wahrscheinlichkeit kannst du vorhersagen, wie oft ein Ergebnis auftreten könnte.</li>
+        </ul>
       </div>
-      <div class="progress-line <?= $step > 1 ? 'done' : '' ?>"></div>
-      <div class="progress-step">
-        <div class="progress-circle <?= $step >= 2 ? ($step > 2 ? 'done' : 'active') : '' ?>">2</div>
-        <div class="progress-label">Glücksrad</div>
+      <div id="zufallsversuche" class="info-box" style="display:none">
+        <h2>Zufallsversuche</h2>
+        <p>Ein Zufallsversuch ist ein Experiment, dessen Ergebnis du vorher nicht sicher kennst.</p>
+        <p>Typisch sind Würfeln, Glücksrad drehen oder Karten ziehen. Jeder Durchgang liefert genau ein Ergebnis aus einer festen Menge möglicher Ergebnisse.</p>
+        <p>Wiederholst du den Versuch oft, kannst du beobachten, welche Ergebnisse häufiger auftreten. So lernst du den Zufall nicht nur aus Rechnungen, sondern direkt beim Spielen kennen.</p>
+        <ul>
+          <li>Jeder Spielzug ist ein Zufallsversuch.</li>
+          <li>Du kannst beobachten, welche Ergebnisse häufiger oder seltener vorkommen.</li>
+        </ul>
       </div>
-      <div class="progress-line <?= $step > 2 ? 'done' : '' ?>"></div>
-      <div class="progress-step">
-        <div class="progress-circle <?= $step >= 3 ? ($step > 3 ? 'done' : 'active') : '' ?>">3</div>
-        <div class="progress-label">Würfelspiel</div>
+      <div id="baumdiagramme" class="info-box" style="display:none">
+        <h2>Baumdiagramme</h2>
+        <p>Ein Baumdiagramm ist eine Übersicht aller möglichen Ergebnisse eines Zufallsexperiments.</p>
+        <p>Man startet an einem Punkt und verzweigt sich Schritt für Schritt. An jeder Kante steht oft die Wahrscheinlichkeit für den nächsten Zweig, zum Beispiel <strong>1/4</strong> für jede Farbe am Glücksrad.</p>
+        <p>So siehst du auf einen Blick, welche Wege möglich sind und wie wahrscheinlich sie sind. Besonders hilfreich ist das, wenn mehrere Versuche hintereinander stattfinden.</p>
+        <ul>
+          <li>Welche Farben oder Zahlen es gibt</li>
+          <li>Welche Reihenfolgen auftreten könnten</li>
+          <li>Wie wahrscheinlich jede Möglichkeit ist</li>
+        </ul>
       </div>
-      <div class="progress-line <?= $step > 3 ? 'done' : '' ?>"></div>
-      <div class="progress-step">
-        <div class="progress-circle <?= $step >= 4 ? 'active' : '' ?>">4</div>
-        <div class="progress-label">Auswertung</div>
-      </div>
-    </div>
 
-    <!-- step 1: Intro -->
-    <?php if ($step == 1): ?>
-    <div class="content-box">
-      <h2>Einführung in die Stochastik</h2>
-      <p>Willkommen in der spannenden Welt des Zufalls!</p>
-      <p>Hier kannst du herausfinden, wie Wahrscheinlichkeiten funktionieren, warum manche Ergebnisse überraschend sind und wie man das alles spielerisch entdecken kann.</p>
-      <p>In dieser Übung wirst du zuerst ein <strong>Glücksrad</strong> drehen und danach einen <strong>Würfel</strong> werfen. Am Ende schauen wir gemeinsam, was passiert ist.</p>
-      <p>Beide Versuche sind <strong>Laplace-Experimente</strong> – jedes mögliche Ergebnis ist gleich wahrscheinlich.</p>
-      <p>Bist du bereit?</p>
-      <a href="?step=2"><button class="btn btn-green" style="margin-top:10px">Los geht's! 🎡</button></a>
-    </div>
-
-    <!-- step 2: Drehrad - Baumdiagramm -->
-    <?php elseif ($step == 2): ?>
-    <div class="game-section">
-      <h2 style="text-align:center">Schritt 1: Glücksrad</h2>
-      <p style="text-align:center">Dreh das Rad! Jede Farbe hat eine Chance von <strong>25 % (1/4)</strong>.</p>
-
-      <div class="game-layout">
-        <div>
-          <svg width="220" height="380">
-            <circle cx="40" cy="190" r="14" fill="#0066cc"/>
-            <text x="40" y="195" text-anchor="middle" fill="white" font-size="11" font-weight="bold">Start</text>
-
-            <line id="line-1" x1="54" y1="183" x2="152" y2="62"  stroke="#aaa" stroke-width="2"/>
-            <text x="90"  y="108" text-anchor="middle" fill="#555" font-size="12">1/4</text>
-            <line id="line-2" x1="54" y1="187" x2="152" y2="132" stroke="#aaa" stroke-width="2"/>
-            <text x="103" y="152" text-anchor="middle" fill="#555" font-size="12">1/4</text>
-            <line id="line-3" x1="54" y1="193" x2="152" y2="248" stroke="#aaa" stroke-width="2"/>
-            <text x="103" y="228" text-anchor="middle" fill="#555" font-size="12">1/4</text>
-            <line id="line-4" x1="54" y1="197" x2="152" y2="318" stroke="#aaa" stroke-width="2"/>
-            <text x="90"  y="272" text-anchor="middle" fill="#555" font-size="12">1/4</text>
-
-            <circle cx="170" cy="60"  r="18" fill="#e02020"/>
-            <text x="170" y="65"  text-anchor="middle" fill="white" font-size="11" font-weight="bold">Rot</text>
-            <circle cx="170" cy="130" r="18" fill="#22c55e"/>
-            <text x="170" y="135" text-anchor="middle" fill="white" font-size="11" font-weight="bold">Grün</text>
-            <circle cx="170" cy="250" r="18" fill="#3b82f6"/>
-            <text x="170" y="255" text-anchor="middle" fill="white" font-size="11" font-weight="bold">Blau</text>
-            <circle cx="170" cy="320" r="18" fill="#eab308"/>
-            <text x="170" y="325" text-anchor="middle" fill="#333"  font-size="11" font-weight="bold">Gelb</text>
-          </svg>
+      <!-- Prog bar oben konstant -->
+      <div class="progress">
+        <div class="progress-step">
+          <div class="progress-circle <?= $step >= 1 ? ($step > 1 ? 'done' : 'active') : '' ?>">1</div>
+          <div class="progress-label">Start</div>
         </div>
+        <div class="progress-line <?= $step > 1 ? 'done' : '' ?>"></div>
+        <div class="progress-step">
+          <div class="progress-circle <?= $step >= 2 ? ($step > 2 ? 'done' : 'active') : '' ?>">2</div>
+          <div class="progress-label">Glücksrad</div>
+        </div>
+        <div class="progress-line <?= $step > 2 ? 'done' : '' ?>"></div>
+        <div class="progress-step">
+          <div class="progress-circle <?= $step >= 3 ? ($step > 3 ? 'done' : 'active') : '' ?>">3</div>
+          <div class="progress-label">Würfelspiel</div>
+        </div>
+        <div class="progress-line <?= $step > 3 ? 'done' : '' ?>"></div>
+        <div class="progress-step">
+          <div class="progress-circle <?= $step >= 4 ? 'active' : '' ?>">4</div>
+          <div class="progress-label">Auswertung</div>
+        </div>
+      </div>
 
-        <div class="game-side">
-          <div id="wheel-wrapper">
-            <div id="arrow"></div>
-            <canvas id="wheelCanvas" width="400" height="400"></canvas>
+      <!-- step 1: Intro -->
+      <?php if ($step == 1): ?>
+      <div class="step-panel">
+        <h2>Einführung in die Stochastik</h2>
+        <p>Willkommen in der spannenden Welt des Zufalls!</p>
+        <p>Hier kannst du herausfinden, wie Wahrscheinlichkeiten funktionieren, warum manche Ergebnisse überraschend sind und wie man das alles spielerisch entdecken kann.</p>
+        <p>In dieser Übung wirst du zuerst ein <strong>Glücksrad</strong> drehen und danach einen <strong>Würfel</strong> werfen. Am Ende schauen wir gemeinsam, was passiert ist.</p>
+        <p>Beide Versuche sind <strong>Laplace-Experimente</strong> – jedes mögliche Ergebnis ist gleich wahrscheinlich.</p>
+        <p>Bist du bereit?</p>
+        <a href="?step=2"><button class="btn btn-spin">Los geht's!</button></a>
+      </div>
+
+      <!-- step 2: Drehrad - Baumdiagramm -->
+      <?php elseif ($step == 2): ?>
+      <div class="step-panel">
+        <h2 style="text-align:center">Schritt 1: Glücksrad</h2>
+        <p style="text-align:center">Dreh das Rad! Jede Farbe hat eine Chance von <strong>25 % (1/4)</strong>.</p>
+
+        <div class="game-layout">
+          <div>
+            <svg width="220" height="380">
+              <circle cx="40" cy="190" r="14" fill="#60a5fa"/>
+              <text x="40" y="195" text-anchor="middle" fill="white" font-size="11" font-weight="bold">Start</text>
+
+              <line id="line-1" x1="54" y1="183" x2="152" y2="62"  stroke="#5b6472" stroke-width="2"/>
+              <text x="90"  y="108" text-anchor="middle" fill="#9ca3af" font-size="12">1/4</text>
+              <line id="line-2" x1="54" y1="187" x2="152" y2="132" stroke="#5b6472" stroke-width="2"/>
+              <text x="103" y="152" text-anchor="middle" fill="#9ca3af" font-size="12">1/4</text>
+              <line id="line-3" x1="54" y1="193" x2="152" y2="248" stroke="#5b6472" stroke-width="2"/>
+              <text x="103" y="228" text-anchor="middle" fill="#9ca3af" font-size="12">1/4</text>
+              <line id="line-4" x1="54" y1="197" x2="152" y2="318" stroke="#5b6472" stroke-width="2"/>
+              <text x="90"  y="272" text-anchor="middle" fill="#9ca3af" font-size="12">1/4</text>
+
+              <circle cx="170" cy="60"  r="18" fill="#e02020"/>
+              <text x="170" y="65"  text-anchor="middle" fill="white" font-size="11" font-weight="bold">Rot</text>
+              <circle cx="170" cy="130" r="18" fill="#22c55e"/>
+              <text x="170" y="135" text-anchor="middle" fill="white" font-size="11" font-weight="bold">Grün</text>
+              <circle cx="170" cy="250" r="18" fill="#3b82f6"/>
+              <text x="170" y="255" text-anchor="middle" fill="white" font-size="11" font-weight="bold">Blau</text>
+              <circle cx="170" cy="320" r="18" fill="#eab308"/>
+              <text x="170" y="325" text-anchor="middle" fill="#333"  font-size="11" font-weight="bold">Gelb</text>
+            </svg>
           </div>
-          <div id="result-text" class="result-text"></div>
-          <form method="POST">
-            <button type="submit" name="spin" id="spin-btn" class="btn btn-green"><?= $wheelResult > 0 ? 'Nochmal drehen!' : 'Drehen!' ?></button>
-          </form>
-          <div id="next-btn" style="display:none">
-            <a href="?step=3"><button class="btn btn-next">Weiter zum Würfelspiel</button></a>
-          </div>
-        </div>
-      </div>
-    </div>
 
-    <!-- step 3: Würfelspiel - Baumdiagramm -->
-    <?php elseif ($step == 3): ?>
-    <div class="game-section">
-      <h2 style="text-align:center">Schritt 2: Würfelspiel</h2>
-      <p style="text-align:center">Wirf den Würfel! Jede Zahl hat eine Chance von <strong>16,67 % (1/6)</strong>.</p>
-
-      <div class="game-layout">
-        <div>
-          <svg width="220" height="560">
-            <circle cx="40" cy="280" r="14" fill="#0066cc"/>
-            <text x="40" y="285" text-anchor="middle" fill="white" font-size="11" font-weight="bold">Start</text>
-
-            <line id="dline-1" x1="54" y1="272" x2="152" y2="50"  stroke="#aaa" stroke-width="2"/>
-            <text x="85"  y="140" text-anchor="middle" fill="#555" font-size="12">1/6</text>
-            <line id="dline-2" x1="54" y1="276" x2="152" y2="140" stroke="#aaa" stroke-width="2"/>
-            <text x="100" y="196" text-anchor="middle" fill="#555" font-size="12">1/6</text>
-            <line id="dline-3" x1="54" y1="279" x2="152" y2="220" stroke="#aaa" stroke-width="2"/>
-            <text x="108" y="242" text-anchor="middle" fill="#555" font-size="12">1/6</text>
-            <line id="dline-4" x1="54" y1="281" x2="152" y2="310" stroke="#aaa" stroke-width="2"/>
-            <text x="108" y="305" text-anchor="middle" fill="#555" font-size="12">1/6</text>
-            <line id="dline-5" x1="54" y1="284" x2="152" y2="400" stroke="#aaa" stroke-width="2"/>
-            <text x="100" y="372" text-anchor="middle" fill="#555" font-size="12">1/6</text>
-            <line id="dline-6" x1="54" y1="288" x2="152" y2="490" stroke="#aaa" stroke-width="2"/>
-            <text x="85"  y="418" text-anchor="middle" fill="#555" font-size="12">1/6</text>
-
-            <circle cx="170" cy="50"  r="18" fill="#555"/>
-            <text x="170" y="55"  text-anchor="middle" fill="white" font-size="13" font-weight="bold">1</text>
-            <circle cx="170" cy="140" r="18" fill="#555"/>
-            <text x="170" y="145" text-anchor="middle" fill="white" font-size="13" font-weight="bold">2</text>
-            <circle cx="170" cy="220" r="18" fill="#555"/>
-            <text x="170" y="225" text-anchor="middle" fill="white" font-size="13" font-weight="bold">3</text>
-            <circle cx="170" cy="310" r="18" fill="#555"/>
-            <text x="170" y="315" text-anchor="middle" fill="white" font-size="13" font-weight="bold">4</text>
-            <circle cx="170" cy="400" r="18" fill="#555"/>
-            <text x="170" y="405" text-anchor="middle" fill="white" font-size="13" font-weight="bold">5</text>
-            <circle cx="170" cy="490" r="18" fill="#555"/>
-            <text x="170" y="495" text-anchor="middle" fill="white" font-size="13" font-weight="bold">6</text>
-          </svg>
-        </div>
-
-        <div class="game-side">
-          <canvas id="diceCanvas" width="300" height="300"></canvas>
-          <div id="dice-result-text" class="result-text"></div>
-          <form method="POST">
-            <button type="submit" name="roll" id="roll-btn" class="btn btn-blue"><?= $diceResult > 0 ? 'Nochmal würfeln!' : 'Würfeln!' ?></button>
-          </form>
-          <div id="next-btn" style="display:none">
-            <a href="?step=4"><button class="btn btn-next">Weiter zur Auswertung</button></a>
+          <div class="game-side">
+            <div id="wheel-wrapper">
+              <div id="arrow"></div>
+              <canvas id="wheelCanvas" width="400" height="400"></canvas>
+            </div>
+            <div id="result-text" class="result-text"></div>
+            <form method="POST">
+              <button type="submit" name="spin" id="spin-btn" class="btn btn-spin"><?= $wheelResult > 0 ? 'Nochmal drehen!' : 'Drehen!' ?></button>
+            </form>
+            <div id="next-btn" style="display:none">
+              <a href="?step=3"><button class="btn btn-next">Weiter zum Würfelspiel</button></a>
+            </div>
           </div>
         </div>
       </div>
-    </div>
 
-    <!-- step 4: auswertung -->
-    <?php elseif ($step == 4): ?>
-    <div class="content-box">
-      <h2>Auswertung</h2>
-      <p>Du hast beide Zufallsversuche abgeschlossen. Hier ist, was passiert ist:</p>
+      <!-- step 3: Würfelspiel - Baumdiagramm -->
+      <?php elseif ($step == 3): ?>
+      <div class="step-panel">
+        <h2 style="text-align:center">Schritt 2: Würfelspiel</h2>
+        <p style="text-align:center">Wirf den Würfel! Jede Zahl hat eine Chance von <strong>16,67 % (1/6)</strong>.</p>
 
-      <div class="content-box" style="margin-top:15px">
-        <p>In den Experimenten war zu erkennen, dass der Würfel geringere Wahrscheinlichkeiten für das jeweilige Ergebnis hatte, aber dafür 6 statt 4 verschiedene Ergebnisse zu erzielen waren.</p>
-        <p>Obwohl der Würfel mehr verschiedene Ergebnisse hat als das Glücksrad, ist bei beiden Experimenten die jeweilige Chance immer der Anzahl der möglichen Ergebnisse entsprechend <strong>(= Laplace Experiment)!</strong></p>
+        <div class="game-layout">
+          <div>
+            <svg width="220" height="560">
+              <circle cx="40" cy="280" r="14" fill="#60a5fa"/>
+              <text x="40" y="285" text-anchor="middle" fill="white" font-size="11" font-weight="bold">Start</text>
+
+              <line id="dline-1" x1="54" y1="272" x2="152" y2="50"  stroke="#5b6472" stroke-width="2"/>
+              <text x="85"  y="140" text-anchor="middle" fill="#9ca3af" font-size="12">1/6</text>
+              <line id="dline-2" x1="54" y1="276" x2="152" y2="140" stroke="#5b6472" stroke-width="2"/>
+              <text x="100" y="196" text-anchor="middle" fill="#9ca3af" font-size="12">1/6</text>
+              <line id="dline-3" x1="54" y1="279" x2="152" y2="220" stroke="#5b6472" stroke-width="2"/>
+              <text x="108" y="242" text-anchor="middle" fill="#9ca3af" font-size="12">1/6</text>
+              <line id="dline-4" x1="54" y1="281" x2="152" y2="310" stroke="#5b6472" stroke-width="2"/>
+              <text x="108" y="305" text-anchor="middle" fill="#9ca3af" font-size="12">1/6</text>
+              <line id="dline-5" x1="54" y1="284" x2="152" y2="400" stroke="#5b6472" stroke-width="2"/>
+              <text x="100" y="372" text-anchor="middle" fill="#9ca3af" font-size="12">1/6</text>
+              <line id="dline-6" x1="54" y1="288" x2="152" y2="490" stroke="#5b6472" stroke-width="2"/>
+              <text x="85"  y="418" text-anchor="middle" fill="#9ca3af" font-size="12">1/6</text>
+
+              <circle cx="170" cy="50"  r="18" fill="#555"/>
+              <text x="170" y="55"  text-anchor="middle" fill="white" font-size="13" font-weight="bold">1</text>
+              <circle cx="170" cy="140" r="18" fill="#555"/>
+              <text x="170" y="145" text-anchor="middle" fill="white" font-size="13" font-weight="bold">2</text>
+              <circle cx="170" cy="220" r="18" fill="#555"/>
+              <text x="170" y="225" text-anchor="middle" fill="white" font-size="13" font-weight="bold">3</text>
+              <circle cx="170" cy="310" r="18" fill="#555"/>
+              <text x="170" y="315" text-anchor="middle" fill="white" font-size="13" font-weight="bold">4</text>
+              <circle cx="170" cy="400" r="18" fill="#555"/>
+              <text x="170" y="405" text-anchor="middle" fill="white" font-size="13" font-weight="bold">5</text>
+              <circle cx="170" cy="490" r="18" fill="#555"/>
+              <text x="170" y="495" text-anchor="middle" fill="white" font-size="13" font-weight="bold">6</text>
+            </svg>
+          </div>
+
+          <div class="game-side">
+            <canvas id="diceCanvas" width="300" height="300"></canvas>
+            <div id="dice-result-text" class="result-text"></div>
+            <form method="POST">
+              <button type="submit" name="roll" id="roll-btn" class="btn btn-roll"><?= $diceResult > 0 ? 'Nochmal würfeln!' : 'Würfeln!' ?></button>
+            </form>
+            <div id="next-btn" style="display:none">
+              <a href="?step=4"><button class="btn btn-next">Weiter zur Auswertung</button></a>
+            </div>
+          </div>
+        </div>
       </div>
 
-      <a href="?step=1"><button class="btn btn-green" style="margin-top:10px">Nochmal von vorne 🔄</button></a>
-    </div>
-    <?php endif; ?>
+      <!-- step 4: auswertung -->
+      <?php elseif ($step == 4): ?>
+      <div class="step-panel">
+        <h2>Auswertung</h2>
+        <p>Du hast beide Zufallsversuche abgeschlossen. Hier ist, was passiert ist:</p>
 
-  </div>
-</div>
+        <div class="highlight-box">
+          <p>In den Experimenten war zu erkennen, dass der Würfel geringere Wahrscheinlichkeiten für das jeweilige Ergebnis hatte, aber dafür 6 statt 4 verschiedene Ergebnisse zu erzielen waren.</p>
+          <p>Obwohl der Würfel mehr verschiedene Ergebnisse hat als das Glücksrad, ist bei beiden Experimenten die jeweilige Chance immer der Anzahl der möglichen Ergebnisse entsprechend <strong>(= Laplace Experiment)!</strong></p>
+        </div>
+
+        <a href="?step=1"><button class="btn btn-spin">Nochmal von vorne</button></a>
+      </div>
+      <?php endif; ?>
+
+    </div><!-- .content-area -->
+  </div><!-- .stochastik-layout -->
+</main>
 
 <script>
 var infoSections = ['wahrscheinlichkeit', 'zufallsversuche', 'baumdiagramme'];
@@ -287,7 +509,7 @@ function showSection(id, btn) {
         document.getElementById(infoSections[i]).style.display = 'none';
     }
     document.getElementById(id).style.display = 'block';
-    var btns = document.querySelectorAll('.sidebar button');
+    var btns = document.querySelectorAll('.topic-sidebar button');
     for (var i = 0; i < btns.length; i++) btns[i].classList.remove('active');
     btn.classList.add('active');
 }
@@ -312,7 +534,7 @@ function drawWheel(deg) {
         wctx.lineWidth = 2;
         wctx.stroke();
     }
-    wctx.beginPath(); wctx.arc(200, 200, 150, 0, Math.PI * 2); wctx.strokeStyle = '#222'; wctx.lineWidth = 3; wctx.stroke();
+    wctx.beginPath(); wctx.arc(200, 200, 150, 0, Math.PI * 2); wctx.strokeStyle = 'rgba(255,255,255,0.35)'; wctx.lineWidth = 3; wctx.stroke();
     wctx.beginPath(); wctx.arc(200, 200, 10, 0, Math.PI * 2); wctx.fillStyle = '#111'; wctx.fill();
 }
 
