@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Wurfsimulation</title>
-  <link rel="stylesheet" href="test.css">
+  <link rel="stylesheet" href="../../resources/test.css">
 
   <div class="card">
         <h1>Würfe in der Physik</h1>
@@ -76,30 +76,6 @@ let animId = null, animT = 1, animRunning = false;
 
 const MODES = ['Senkrechter Wurf', 'Waagerechter Wurf', 'Schiefer Wurf'];
 const COLORS = [['#378ADD','#185FA5'],['#1D9E75','#0F6E56'],['#D85A30','#993C1D']];
-
-// Feste, globale Wertebereiche je Wurfart (basierend auf den Schieberegler-Maxima).
-// Damit bekommt jede Wurfart einen festen Maßstab (m/px) statt sich bei jeder
-// Einstellung künstlich auf die volle Plotgröße zu strecken – so verändert sich
-// beim Anpassen von v0 / h0 / Winkel wirklich die Form der Kurve und nicht nur
-// die im Metrik-Kasten angezeigte Distanz.
-const V0_MAX = 50, H0_MAX = 100, ANGLE_MAX = 89;
-function computeMode2Extent(){
-  let maxX = 0;
-  const maxY = H0_MAX + Math.pow(V0_MAX*Math.sin(ANGLE_MAX*Math.PI/180), 2)/(2*G);
-  for(let a=1; a<=ANGLE_MAX; a++){
-    const ang = a*Math.PI/180;
-    const vx = V0_MAX*Math.cos(ang), vy = V0_MAX*Math.sin(ang);
-    const t = (vy+Math.sqrt(vy*vy+2*G*H0_MAX))/G;
-    const x = vx*t;
-    if(x>maxX) maxX = x;
-  }
-  return {maxX, maxY};
-}
-const GLOBAL_EXT = [
-  { maxX: 2, maxY: (V0_MAX*V0_MAX)/(2*G) },               // Senkrechter Wurf
-  { maxX: V0_MAX*Math.sqrt(2*H0_MAX/G), maxY: H0_MAX },     // Waagerechter Wurf
-  computeMode2Extent()                                      // Schiefer Wurf
-];
 
 const tc   = 'rgba(255,255,255,0.85)';
 const tc2  = 'rgba(255,255,255,0.45)';
@@ -215,13 +191,10 @@ function draw() {
 
   const pts = calcPoints();
   if(!pts.length) return;
-  // Fester, einheitlicher Maßstab (gleiche m/px auf x- und y-Achse) je Wurfart,
-  // damit sich die Kurvenform wirklich mit v0 / h0 / Winkel verändert, statt
-  // bei jeder Einstellung künstlich auf die volle Plotgröße gestreckt zu werden.
-  const ext = GLOBAL_EXT[mode];
-  const maxX = ext.maxX, maxY = ext.maxY;
-  const sc = Math.min(plotW/maxX, plotH/(maxY*1.15));
-  const scX = sc, scY = sc;
+  const maxY = Math.max(...pts.map(p=>p.y), 0.1);
+  // Senkrechter Wurf: x ist immer 0 → feste X-Skala damit der Ball mittig gezeichnet wird
+  const maxX = (mode === 0) ? 2 : (pts[pts.length-1].x || 1);
+  const scX=plotW/maxX, scY=plotH/(maxY*1.15);
   // Senkrechter Wurf: Ball soll mittig im Plot stehen
   const toX = (mode === 0)
     ? v => plotL + plotW/2
@@ -382,3 +355,4 @@ setTimeout(resize, 100);
 </script>
 </body>
 </html>
+001

@@ -84,7 +84,7 @@ $top_raetsel= getTop5($db, 'score_raetsel');
             <div class="icon">🌊</div>
             <h3>Schwingungen/Wellen</h3>
         </a>
-        <a class="game-card" href="../phy_os/Simulation%20zum%20Doppelspaltexperiment/doppelspalt_v2%20(1).html">
+        <a class="game-card" href="../phy_os/Simulation%20zum%20Doppelspaltexperiment/doppelspalt_v2.html">
             <div class="icon">⏸</div>
             <h3>Doppelspalt</h3>
         </a>
@@ -131,6 +131,10 @@ $top_raetsel= getTop5($db, 'score_raetsel');
         <a class="game-card" href="../phy_ms/MittelstufeOptik/programmiert_Infoseite_Optik_Mittelstufe.html">
             <div class="icon">💡</div>
             <h3>Optik</h3>
+        </a>
+        <a class="game-card" href="../phy_os/Kraft_Reibung/Kraft,Trägheit,Reibung.html">
+            <div class="icon">💪</div>
+            <h3>Kraft/Reibung</h3>
         </a>
 
     </div>

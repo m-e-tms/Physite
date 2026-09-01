@@ -1,0 +1,658 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Physik-Labor · Kraft, Trägheit &amp; Reibung</title>
+</head>
+<body style="--bg:#0a0d13; --bg-alt:#0d111a; --panel:#121722; --panel-2:#161c29; --border:rgba(255,255,255,0.08); --text:#e7ecf3; --text-dim:#7c8598; --text-dimmer:#4c5468; --accent:#ff8c42; --mono:ui-monospace,'SFMono-Regular',Menlo,Consolas,monospace; --display:system-ui,-apple-system,'Segoe UI',sans-serif; margin:0; padding:28px 18px 60px; min-height:100vh; color:var(--text); font-family:var(--mono); background:
+      radial-gradient(circle at 15% -10%, rgba(255,140,66,0.07), transparent 45%),
+      radial-gradient(circle at 85% 110%, rgba(69,208,192,0.06), transparent 45%),
+      var(--bg); box-sizing:border-box;">
+
+<div id="wrap" style="max-width:1080px; margin:0 auto; box-sizing:border-box;">
+
+  <header style="margin-bottom:22px;">
+    <div style="font-size:11px; letter-spacing:0.24em; text-transform:uppercase; color:var(--text-dimmer); margin-bottom:8px;">Klassische Mechanik · Interaktiv</div>
+    <h1 style="font-family:var(--display); font-weight:700; font-size:clamp(24px,4vw,34px); margin:0 0 6px; letter-spacing:-0.01em; color:var(--text);">Kraft, Masse &amp; Bewegung</h1>
+    <p style="color:var(--text-dim); font-size:14px; max-width:640px; line-height:1.5; margin:0;">Drei Grundprinzipien der Newtonschen Mechanik zum Ausprobieren: das Kraftgesetz F&nbsp;=&nbsp;ma, das Trägheitsprinzip und die Reibungskraft.</p>
+  </header>
+
+  <nav id="tabs" style="display:flex; gap:2px; margin:26px 0 18px; background:var(--panel-2); border:1px solid var(--border); border-radius:12px; padding:4px; box-sizing:border-box;">
+    <button class="tab-btn" data-mode="kraft" style="flex:1; appearance:none; border:none; background:transparent; color:var(--text-dim); font-family:var(--mono); font-size:12.5px; letter-spacing:0.03em; text-transform:uppercase; padding:11px 8px; border-radius:9px; cursor:pointer;"><span style="opacity:.55; margin-right:6px;" class="tab-num">01</span>F = m·a</button>
+    <button class="tab-btn" data-mode="traegheit" style="flex:1; appearance:none; border:none; background:transparent; color:var(--text-dim); font-family:var(--mono); font-size:12.5px; letter-spacing:0.03em; text-transform:uppercase; padding:11px 8px; border-radius:9px; cursor:pointer;"><span style="opacity:.55; margin-right:6px;" class="tab-num">02</span>Trägheit</button>
+    <button class="tab-btn" data-mode="reibung" style="flex:1; appearance:none; border:none; background:transparent; color:var(--text-dim); font-family:var(--mono); font-size:12.5px; letter-spacing:0.03em; text-transform:uppercase; padding:11px 8px; border-radius:9px; cursor:pointer;"><span style="opacity:.55; margin-right:6px;" class="tab-num">03</span>Reibung</button>
+  </nav>
+
+  <div id="mainGrid" style="display:grid; grid-template-columns: 1fr 280px; gap:14px; box-sizing:border-box;">
+    <div style="background:var(--panel); border:1px solid var(--border); border-radius:14px; padding:16px; box-sizing:border-box;">
+      <h2 id="scene-title" style="font-family:var(--display); font-size:13px; text-transform:uppercase; letter-spacing:0.1em; color:var(--text-dim); margin:0 0 12px; font-weight:700;">Simulation</h2>
+      <canvas id="scene" width="900" height="340" style="width:100%; height:auto; display:block; border-radius:10px; background:var(--bg-alt); border:1px solid var(--border); box-sizing:border-box;"></canvas>
+      <h2 style="font-family:var(--display); font-size:13px; text-transform:uppercase; letter-spacing:0.1em; color:var(--text-dim); margin:16px 0 12px; font-weight:700;">Geschwindigkeit über Zeit</h2>
+      <canvas id="graph" width="900" height="170" style="width:100%; height:auto; display:block; border-radius:10px; background:var(--bg-alt); border:1px solid var(--border); box-sizing:border-box;"></canvas>
+    </div>
+
+    <div style="background:var(--panel); border:1px solid var(--border); border-radius:14px; padding:16px; box-sizing:border-box;">
+      <h2 style="font-family:var(--display); font-size:13px; text-transform:uppercase; letter-spacing:0.1em; color:var(--text-dim); margin:0 0 12px; font-weight:700;">Parameter</h2>
+
+      <!-- KRAFT CONTROLS -->
+      <div class="controls-group" id="controls-kraft" style="flex-direction:column; gap:16px;">
+        <div style="display:flex; flex-direction:column; gap:6px;">
+          <label style="font-size:11.5px; color:var(--text-dim); display:flex; justify-content:space-between;">Kraft F <span class="val" id="val-F" style="color:var(--accent); font-weight:700;">20 N</span></label>
+          <input type="range" id="F" min="2" max="100" step="1" value="20" style="width:100%; height:4px; border-radius:2px; outline:none; box-sizing:border-box;">
+        </div>
+        <div style="display:flex; flex-direction:column; gap:6px;">
+          <label style="font-size:11.5px; color:var(--text-dim); display:flex; justify-content:space-between;">Masse m <span class="val" id="val-m" style="color:var(--accent); font-weight:700;">5 kg</span></label>
+          <input type="range" id="m" min="1" max="20" step="0.5" value="5" style="width:100%; height:4px; border-radius:2px; outline:none; box-sizing:border-box;">
+        </div>
+        <label style="display:flex; align-items:center; gap:9px; font-size:12.5px; color:var(--text-dim); cursor:pointer; user-select:none;"><input type="checkbox" id="compare" style="accent-color:var(--accent); width:15px; height:15px; cursor:pointer;"> Vergleichsobjekt anzeigen</label>
+        <div style="display:none; flex-direction:column; gap:6px;" id="field-m2">
+          <label style="font-size:11.5px; color:var(--text-dim); display:flex; justify-content:space-between;">Masse m₂ <span class="val" id="val-m2" style="color:var(--accent); font-weight:700;">10 kg</span></label>
+          <input type="range" id="m2" min="1" max="20" step="0.5" value="10" style="width:100%; height:4px; border-radius:2px; outline:none; box-sizing:border-box;">
+        </div>
+        <div style="display:flex; gap:8px; margin-top:2px;">
+          <button class="action primary" id="kraft-start" style="flex:1; appearance:none; border:1px solid var(--accent); background:var(--accent); color:#0a0d13; font-family:var(--mono); font-weight:700; font-size:12.5px; text-transform:uppercase; letter-spacing:0.04em; padding:11px 10px; border-radius:8px; cursor:pointer;">Start</button>
+          <button class="action" id="kraft-reset" style="flex:1; appearance:none; border:1px solid var(--border); background:var(--panel-2); color:var(--text); font-family:var(--mono); font-size:12.5px; text-transform:uppercase; letter-spacing:0.04em; padding:11px 10px; border-radius:8px; cursor:pointer;">Reset</button>
+        </div>
+        <div style="margin-top:4px; padding-top:14px; border-top:1px dashed var(--border); display:flex; flex-direction:column; gap:5px;">
+          <div style="display:flex; justify-content:space-between; font-size:12px; color:var(--text-dim);"><span>Beschleunigung a</span><b id="read-a" style="color:var(--text); font-weight:600;">4.00 m/s²</b></div>
+          <div style="display:flex; justify-content:space-between; font-size:12px; color:var(--text-dim);"><span>Geschwindigkeit v</span><b id="read-v" style="color:var(--text); font-weight:600;">0.00 m/s</b></div>
+          <div style="display:flex; justify-content:space-between; font-size:12px; color:var(--text-dim);"><span>Zeit t</span><b id="read-t" style="color:var(--text); font-weight:600;">0.0 s</b></div>
+        </div>
+      </div>
+
+      <!-- TRAEGHEIT CONTROLS -->
+      <div class="controls-group" id="controls-traegheit" style="display:none; flex-direction:column; gap:16px;">
+        <div style="display:flex; flex-direction:column; gap:6px;">
+          <label style="font-size:11.5px; color:var(--text-dim); display:flex; justify-content:space-between;">Anfangsgeschwindigkeit v₀ <span class="val" id="val-v0t" style="color:var(--accent); font-weight:700;">4 m/s</span></label>
+          <input type="range" id="v0t" min="1" max="10" step="0.5" value="4" style="width:100%; height:4px; border-radius:2px; outline:none; box-sizing:border-box;">
+        </div>
+        <label style="display:flex; align-items:center; gap:9px; font-size:12.5px; color:var(--text-dim); cursor:pointer; user-select:none;"><input type="checkbox" id="frictionToggle" style="accent-color:var(--accent); width:15px; height:15px; cursor:pointer;"> Reibung nach dem Bremsen</label>
+        <div style="display:flex; gap:8px; margin-top:2px;">
+          <button class="action primary" id="traegheit-brake" disabled style="flex:1; appearance:none; border:1px solid var(--accent); background:var(--accent); color:#0a0d13; font-family:var(--mono); font-weight:700; font-size:12.5px; text-transform:uppercase; letter-spacing:0.04em; padding:11px 10px; border-radius:8px; cursor:pointer; opacity:.35;">Bremsen!</button>
+          <button class="action" id="traegheit-reset" style="flex:1; appearance:none; border:1px solid var(--border); background:var(--panel-2); color:var(--text); font-family:var(--mono); font-size:12.5px; text-transform:uppercase; letter-spacing:0.04em; padding:11px 10px; border-radius:8px; cursor:pointer;">Reset</button>
+        </div>
+        <div style="margin-top:4px; padding-top:14px; border-top:1px dashed var(--border); display:flex; flex-direction:column; gap:5px;">
+          <div style="display:flex; justify-content:space-between; font-size:12px; color:var(--text-dim);"><span>Wagen v</span><b id="read-cartv" style="color:var(--text); font-weight:600;">0.00 m/s</b></div>
+          <div style="display:flex; justify-content:space-between; font-size:12px; color:var(--text-dim);"><span>Kugel v</span><b id="read-ballv" style="color:var(--text); font-weight:600;">0.00 m/s</b></div>
+          <div style="display:flex; justify-content:space-between; font-size:12px; color:var(--text-dim);"><span>Status</span><b id="read-status" style="color:var(--text); font-weight:600;">bereit</b></div>
+        </div>
+      </div>
+
+      <!-- REIBUNG CONTROLS -->
+      <div class="controls-group" id="controls-reibung" style="display:none; flex-direction:column; gap:16px;">
+        <div style="display:flex; flex-direction:column; gap:6px;">
+          <label style="font-size:11.5px; color:var(--text-dim);">Untergrund</label>
+          <select id="surface" style="width:100%; background:var(--panel-2); color:var(--text); border:1px solid var(--border); border-radius:8px; padding:9px 10px; font-family:var(--mono); font-size:13px; cursor:pointer; box-sizing:border-box;">
+            <option value="0.02">Eis (μ ≈ 0.02)</option>
+            <option value="0.30" selected>Holz (μ ≈ 0.30)</option>
+            <option value="0.55">Beton (μ ≈ 0.55)</option>
+            <option value="0.90">Sandpapier (μ ≈ 0.90)</option>
+          </select>
+        </div>
+        <div style="display:flex; flex-direction:column; gap:6px;">
+          <label style="font-size:11.5px; color:var(--text-dim); display:flex; justify-content:space-between;">Masse m <span class="val" id="val-mr" style="color:var(--accent); font-weight:700;">5 kg</span></label>
+          <input type="range" id="mr" min="1" max="20" step="0.5" value="5" style="width:100%; height:4px; border-radius:2px; outline:none; box-sizing:border-box;">
+        </div>
+        <div style="display:flex; flex-direction:column; gap:6px;">
+          <label style="font-size:11.5px; color:var(--text-dim); display:flex; justify-content:space-between;">Anfangsgeschwindigkeit v₀ <span class="val" id="val-v0r" style="color:var(--accent); font-weight:700;">8 m/s</span></label>
+          <input type="range" id="v0r" min="1" max="15" step="0.5" value="8" style="width:100%; height:4px; border-radius:2px; outline:none; box-sizing:border-box;">
+        </div>
+        <div style="display:flex; gap:8px; margin-top:2px;">
+          <button class="action primary" id="reibung-start" style="flex:1; appearance:none; border:1px solid var(--accent); background:var(--accent); color:#0a0d13; font-family:var(--mono); font-weight:700; font-size:12.5px; text-transform:uppercase; letter-spacing:0.04em; padding:11px 10px; border-radius:8px; cursor:pointer;">Start</button>
+          <button class="action" id="reibung-reset" style="flex:1; appearance:none; border:1px solid var(--border); background:var(--panel-2); color:var(--text); font-family:var(--mono); font-size:12.5px; text-transform:uppercase; letter-spacing:0.04em; padding:11px 10px; border-radius:8px; cursor:pointer;">Reset</button>
+        </div>
+        <div style="margin-top:4px; padding-top:14px; border-top:1px dashed var(--border); display:flex; flex-direction:column; gap:5px;">
+          <div style="display:flex; justify-content:space-between; font-size:12px; color:var(--text-dim);"><span>Normalkraft F_N</span><b id="read-fn" style="color:var(--text); font-weight:600;">49.05 N</b></div>
+          <div style="display:flex; justify-content:space-between; font-size:12px; color:var(--text-dim);"><span>Reibungskraft F_R</span><b id="read-fr" style="color:var(--text); font-weight:600;">14.72 N</b></div>
+          <div style="display:flex; justify-content:space-between; font-size:12px; color:var(--text-dim);"><span>Bremsweg</span><b id="read-s" style="color:var(--text); font-weight:600;">0.0 m</b></div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <div id="consoleBar" style="margin-top:14px; background:var(--panel); border:1px solid var(--border); border-radius:14px; padding:16px 18px; display:flex; align-items:center; gap:14px; flex-wrap:wrap; box-sizing:border-box;">
+    <div id="console-dot" style="width:8px; height:8px; border-radius:50%; background:var(--accent); box-shadow:0 0 10px var(--accent); flex:none;"></div>
+    <div id="formula-text" style="font-size:15px; letter-spacing:0.01em; color:var(--text);">a&nbsp;=&nbsp;F&nbsp;/&nbsp;m&nbsp;=&nbsp;<span class="hl" style="color:var(--accent); font-weight:700;">4.00 m/s²</span></div>
+    <div id="console-note" style="font-size:11.5px; color:var(--text-dimmer); margin-left:auto;">Regler bewegen, um live zu sehen, wie sich die Formel auswirkt.</div>
+  </div>
+
+  <div id="explain-panel" style="margin-top:14px; background:var(--panel); border:1px solid var(--border); border-radius:14px; padding:16px; font-size:12.5px; color:var(--text-dim); line-height:1.6; box-sizing:border-box;">
+    <b style="color:var(--text);">F = m·a:</b> Je größer die Kraft oder je kleiner die Masse, desto stärker beschleunigt ein Körper. Bei gleicher Kraft beschleunigt die leichtere Masse schneller.
+  </div>
+
+  <footer style="margin-top:26px; font-size:11px; color:var(--text-dimmer); text-align:center;">Newtonsche Mechanik · Simulation läuft vollständig im Browser</footer>
+</div>
+
+<script>
+// ---------- Setup ----------
+const sceneCanvas = document.getElementById('scene');
+const ctx = sceneCanvas.getContext('2d');
+const graphCanvas = document.getElementById('graph');
+const gctx = graphCanvas.getContext('2d');
+const W = sceneCanvas.width, H = sceneCanvas.height;
+const GW = graphCanvas.width, GH = graphCanvas.height;
+const groundY = H - 70;
+const g = 9.81;
+
+const accentByMode = {
+  kraft: '#ff8c42',
+  traegheit: '#45d0c0',
+  reibung: '#e0577a'
+};
+const titleByMode = {
+  kraft: 'Kraft & Beschleunigung',
+  traegheit: 'Trägheitsprinzip',
+  reibung: 'Reibungskraft'
+};
+const explainByMode = {
+  kraft: '<b style="color:#e7ecf3;">F = m·a:</b> Je größer die Kraft oder je kleiner die Masse, desto stärker beschleunigt ein Körper. Bei gleicher Kraft beschleunigt die leichtere Masse schneller.',
+  traegheit: '<b style="color:#e7ecf3;">Trägheitsprinzip:</b> Ohne wirkende Kraft behält ein Körper seine Geschwindigkeit bei &mdash; auch die Richtung. Bremst der Wagen abrupt ab, bewegt sich die Kugel wegen ihrer Trägheit einfach weiter.',
+  reibung: '<b style="color:#e7ecf3;">Reibungskraft:</b> F_R = μ·F_N. Sie wirkt der Bewegung entgegen und hängt vom Untergrund (μ) und der Normalkraft (Gewicht) ab, nicht von der Geschwindigkeit.'
+};
+
+// FIXED axis ranges per mode: these NEVER change during a run, no autoscaling.
+const axisByMode = {
+  kraft:     { maxV: 70, window: 8  },
+  traegheit: { maxV: 12, window: 10 },
+  reibung:   { maxV: 18, window: 10 }
+};
+
+let currentMode = 'kraft';
+
+function setAccent(mode){
+  document.body.style.setProperty('--accent', accentByMode[mode]);
+}
+
+// ---------- Responsive grid (replaces CSS media query) ----------
+const mainGrid = document.getElementById('mainGrid');
+function applyResponsiveLayout(){
+  if(window.innerWidth <= 760){
+    mainGrid.style.gridTemplateColumns = '1fr';
+  } else {
+    mainGrid.style.gridTemplateColumns = '1fr 280px';
+  }
+}
+window.addEventListener('resize', applyResponsiveLayout);
+applyResponsiveLayout();
+
+// ---------- Tabs ----------
+const tabButtons = document.querySelectorAll('.tab-btn');
+function refreshTabStyles(){
+  tabButtons.forEach(btn=>{
+    const active = btn.dataset.mode === currentMode;
+    btn.style.color = active ? '#e7ecf3' : '#7c8598';
+    btn.style.background = active ? 'var(--panel)' : 'transparent';
+    btn.style.boxShadow = active ? 'inset 0 0 0 1px var(--border), 0 0 0 1px var(--accent)' : 'none';
+    const num = btn.querySelector('.tab-num');
+    num.style.color = active ? 'var(--accent)' : '';
+    num.style.opacity = active ? '1' : '.55';
+  });
+}
+tabButtons.forEach(btn=>{
+  btn.addEventListener('mouseenter', ()=>{ if(btn.dataset.mode !== currentMode) btn.style.color = '#e7ecf3'; });
+  btn.addEventListener('mouseleave', ()=>{ if(btn.dataset.mode !== currentMode) btn.style.color = '#7c8598'; });
+  btn.addEventListener('click', ()=>{
+    currentMode = btn.dataset.mode;
+    refreshTabStyles();
+    setAccent(currentMode);
+    document.querySelectorAll('.controls-group').forEach(g=>{ g.style.display = 'none'; });
+    document.getElementById('controls-'+currentMode).style.display = 'flex';
+    document.getElementById('scene-title').textContent = titleByMode[currentMode];
+    document.getElementById('explain-panel').innerHTML = explainByMode[currentMode];
+    graphHistory.length = 0;
+    graphHistory2.length = 0;
+    updateFormula();
+  });
+});
+
+// ---------- Slider fill + value labels (inline background instead of CSS var(--pct)) ----------
+function bindRange(id, valId, fmt){
+  const el = document.getElementById(id);
+  const disp = document.getElementById(valId);
+  function refresh(){
+    const pct = (el.value - el.min) / (el.max - el.min) * 100;
+    el.style.background = `linear-gradient(90deg, var(--accent) 0%, var(--accent) ${pct}%, var(--panel-2) ${pct}%, var(--panel-2) 100%)`;
+    el.style.webkitAppearance = 'none';
+    el.style.appearance = 'none';
+    if(disp) disp.textContent = fmt(parseFloat(el.value));
+  }
+  el.addEventListener('input', refresh);
+  refresh();
+  return el;
+}
+
+const elF  = bindRange('F', 'val-F', v=>v.toFixed(0)+' N');
+const elM  = bindRange('m', 'val-m', v=>v.toFixed(1)+' kg');
+const elM2 = bindRange('m2', 'val-m2', v=>v.toFixed(1)+' kg');
+const elV0t = bindRange('v0t', 'val-v0t', v=>v.toFixed(1)+' m/s');
+const elMr = bindRange('mr', 'val-mr', v=>v.toFixed(1)+' kg');
+const elV0r = bindRange('v0r', 'val-v0r', v=>v.toFixed(1)+' m/s');
+
+document.getElementById('compare').addEventListener('change', e=>{
+  document.getElementById('field-m2').style.display = e.target.checked ? 'flex' : 'none';
+});
+
+[elF, elM, elM2].forEach(el=>el.addEventListener('input', ()=>{ if(currentMode==='kraft') updateFormula(); }));
+[elMr, elV0r].forEach(el=>el.addEventListener('input', ()=>{ if(currentMode==='reibung') updateFormula(); }));
+document.getElementById('surface').addEventListener('change', ()=>{ if(currentMode==='reibung') updateFormula(); });
+
+// button hover effects (replaces CSS :hover)
+document.querySelectorAll('button.action').forEach(btn=>{
+  const isPrimary = btn.classList.contains('primary');
+  btn.addEventListener('mouseenter', ()=>{
+    if(btn.disabled) return;
+    if(isPrimary){ btn.style.filter = 'brightness(1.08)'; }
+    else { btn.style.borderColor = 'var(--accent)'; btn.style.color = 'var(--accent)'; }
+  });
+  btn.addEventListener('mouseleave', ()=>{
+    if(isPrimary){ btn.style.filter = 'none'; }
+    else { btn.style.borderColor = 'var(--border)'; btn.style.color = 'var(--text)'; }
+  });
+});
+
+// ---------- Shared graph state ----------
+let graphHistory = [];  // {t, v}
+let graphHistory2 = [];
+let clock = 0;
+
+function pushGraph(t, v, v2){
+  graphHistory.push({t, v});
+  if(v2 !== undefined) graphHistory2.push({t, v2});
+  const win = axisByMode[currentMode].window;
+  while(graphHistory.length && t - graphHistory[0].t > win) graphHistory.shift();
+  while(graphHistory2.length && t - graphHistory2[0].t > win) graphHistory2.shift();
+}
+
+// ---------- Graph: FIXED axis, never rescales ----------
+function drawGraph(){
+  gctx.clearRect(0,0,GW,GH);
+
+  const padL = 46, padR = 14, padT = 14, padB = 26;
+  const x0 = padL, x1 = GW - padR, y0 = GH - padB, y1 = padT;
+
+  const cfg = axisByMode[currentMode];
+  const maxV = cfg.maxV;
+  const win = cfg.window;
+
+  // current time window: always spans exactly `win` seconds, fixed on the axis
+  const nowT = graphHistory.length ? graphHistory[graphHistory.length-1].t : 0;
+  const t0 = Math.max(0, nowT - win);
+  const t1 = t0 + win;
+
+  function xFor(t){ return x0 + ((t-t0)/win)*(x1-x0); }
+  function yFor(v){ return y0 - (v/maxV)*(y0-y1); }
+
+  // horizontal grid lines + fixed v-axis labels
+  const steps = 4;
+  gctx.font = '10px monospace';
+  gctx.textAlign = 'right';
+  gctx.textBaseline = 'middle';
+  for(let i=0;i<=steps;i++){
+    const v = (maxV/steps)*i;
+    const y = yFor(v);
+    gctx.strokeStyle = 'rgba(255,255,255,0.06)';
+    gctx.beginPath(); gctx.moveTo(x0,y); gctx.lineTo(x1,y); gctx.stroke();
+    gctx.fillStyle = '#5a6376';
+    gctx.fillText(v.toFixed(0), x0-8, y);
+  }
+  gctx.textAlign = 'left';
+
+  // vertical grid lines + fixed t-axis labels (relative seconds within window)
+  const tSteps = 5;
+  for(let i=0;i<=tSteps;i++){
+    const frac = i/tSteps;
+    const t = t0 + frac*win;
+    const x = x0 + frac*(x1-x0);
+    gctx.strokeStyle = 'rgba(255,255,255,0.035)';
+    gctx.beginPath(); gctx.moveTo(x,y1); gctx.lineTo(x,y0); gctx.stroke();
+    gctx.fillStyle = '#5a6376';
+    gctx.textAlign = 'center';
+    gctx.textBaseline = 'top';
+    gctx.fillText(t.toFixed(1)+'s', x, y0+6);
+  }
+
+  // axes
+  gctx.strokeStyle = 'rgba(255,255,255,0.18)';
+  gctx.lineWidth = 1;
+  gctx.beginPath(); gctx.moveTo(x0,y0); gctx.lineTo(x1,y0); gctx.stroke();
+  gctx.beginPath(); gctx.moveTo(x0,y0); gctx.lineTo(x0,y1); gctx.stroke();
+
+  gctx.fillStyle = '#7c8598';
+  gctx.font = '10.5px monospace';
+  gctx.textAlign = 'left'; gctx.textBaseline = 'alphabetic';
+  gctx.fillText('v (m/s)', 6, 12);
+
+  if(graphHistory.length < 2) return;
+
+  function plot(hist, key, color, fill){
+    const visible = hist.filter(p => p.t >= t0 - 0.01);
+    if(visible.length < 2) return;
+    gctx.beginPath();
+    visible.forEach((p,i)=>{
+      const x = xFor(p.t), y = yFor(Math.min(p[key], maxV));
+      if(i===0) gctx.moveTo(x,y); else gctx.lineTo(x,y);
+    });
+    if(fill){
+      const last = visible[visible.length-1];
+      gctx.lineTo(xFor(last.t), y0);
+      gctx.lineTo(xFor(visible[0].t), y0);
+      gctx.closePath();
+      const grad = gctx.createLinearGradient(0,y1,0,y0);
+      grad.addColorStop(0, color+'55');
+      grad.addColorStop(1, color+'02');
+      gctx.fillStyle = grad;
+      gctx.fill();
+    }
+    gctx.beginPath();
+    visible.forEach((p,i)=>{
+      const x = xFor(p.t), y = yFor(Math.min(p[key], maxV));
+      if(i===0) gctx.moveTo(x,y); else gctx.lineTo(x,y);
+    });
+    gctx.strokeStyle = color;
+    gctx.lineWidth = 2.5;
+    gctx.lineJoin = 'round';
+    gctx.lineCap = 'round';
+    gctx.stroke();
+
+    const last = visible[visible.length-1];
+    gctx.beginPath();
+    gctx.arc(xFor(last.t), yFor(Math.min(last[key], maxV)), 3.5, 0, Math.PI*2);
+    gctx.fillStyle = color;
+    gctx.fill();
+  }
+
+  plot(graphHistory, 'v', accentByMode[currentMode], true);
+  if(graphHistory2.length > 1) plot(graphHistory2, 'v2', '#8892a6', false);
+}
+
+// ---------- Formula console ----------
+function updateFormula(){
+  const f = document.getElementById('formula-text');
+  const note = document.getElementById('console-note');
+  if(currentMode === 'kraft'){
+    const F = parseFloat(elF.value), m = parseFloat(elM.value);
+    const a = F/m;
+    f.innerHTML = `a&nbsp;=&nbsp;F&nbsp;/&nbsp;m&nbsp;=&nbsp;${F.toFixed(0)}&nbsp;N&nbsp;/&nbsp;${m.toFixed(1)}&nbsp;kg&nbsp;=&nbsp;<span style="color:var(--accent); font-weight:700;">${a.toFixed(2)} m/s²</span>`;
+    note.textContent = 'Kleinere Masse → größere Beschleunigung bei gleicher Kraft.';
+  } else if(currentMode === 'traegheit'){
+    f.innerHTML = `Ohne&nbsp;Kraft:&nbsp;<span style="color:var(--accent); font-weight:700;">v = konstant</span>`;
+    note.textContent = 'Erst eine Kraft (z. B. Bremsen) ändert den Bewegungszustand.';
+  } else {
+    const mu = parseFloat(document.getElementById('surface').value);
+    const m = parseFloat(elMr.value);
+    const FN = m*g;
+    const FR = mu*FN;
+    const a = mu*g;
+    f.innerHTML = `F_R&nbsp;=&nbsp;μ&nbsp;·&nbsp;F_N&nbsp;=&nbsp;${mu.toFixed(2)}&nbsp;·&nbsp;${FN.toFixed(1)}&nbsp;N&nbsp;=&nbsp;<span style="color:var(--accent); font-weight:700;">${FR.toFixed(1)} N</span>`;
+    note.textContent = `Bremsverzögerung a = μ·g = ${a.toFixed(2)} m/s²`;
+    document.getElementById('read-fn').textContent = FN.toFixed(2)+' N';
+    document.getElementById('read-fr').textContent = FR.toFixed(2)+' N';
+  }
+}
+
+// ================= MODE 1: KRAFT =================
+const scaleKraft = 34; // px per meter
+const kraftState = { running:false, x:0, v:0, t:0, x2:0, v2:0, done:false };
+
+function resetKraft(){
+  kraftState.running=false; kraftState.x=0; kraftState.v=0; kraftState.t=0;
+  kraftState.x2=0; kraftState.v2=0; kraftState.done=false;
+  graphHistory.length=0; graphHistory2.length=0;
+  document.getElementById('kraft-start').textContent='Start';
+  updateFormula();
+  drawKraft();
+}
+document.getElementById('kraft-start').addEventListener('click', ()=>{
+  if(kraftState.done) resetKraft();
+  kraftState.running = !kraftState.running;
+  document.getElementById('kraft-start').textContent = kraftState.running ? 'Pause' : 'Weiter';
+});
+document.getElementById('kraft-reset').addEventListener('click', resetKraft);
+
+function stepKraft(dt){
+  if(!kraftState.running) return;
+  const F = parseFloat(elF.value), m = parseFloat(elM.value);
+  const a = F/m;
+  kraftState.v += a*dt;
+  kraftState.x += kraftState.v*dt;
+  kraftState.t += dt;
+
+  let v2reading;
+  if(document.getElementById('compare').checked){
+    const m2 = parseFloat(elM2.value);
+    const a2 = F/m2;
+    kraftState.v2 += a2*dt;
+    kraftState.x2 += kraftState.v2*dt;
+    v2reading = kraftState.v2;
+  }
+  pushGraph(kraftState.t, kraftState.v, v2reading);
+
+  document.getElementById('read-a').textContent = a.toFixed(2)+' m/s²';
+  document.getElementById('read-v').textContent = kraftState.v.toFixed(2)+' m/s';
+  document.getElementById('read-t').textContent = kraftState.t.toFixed(1)+' s';
+
+  const trackM = (W-160)/scaleKraft;
+  if(kraftState.x >= trackM || (document.getElementById('compare').checked && kraftState.x2 >= trackM)){
+    kraftState.running = false;
+    kraftState.done = true;
+    document.getElementById('kraft-start').textContent = 'Neu starten';
+  }
+}
+
+function drawTrack(){
+  ctx.fillStyle = '#161c29';
+  ctx.fillRect(0, groundY, W, 4);
+}
+
+function drawBlock(xPx, y, mass, color, label){
+  const size = 26 + Math.min(mass,20)*2.2;
+  ctx.fillStyle = color;
+  ctx.globalAlpha = 0.18;
+  ctx.fillRect(xPx, y-size, size, size);
+  ctx.globalAlpha = 1;
+  ctx.strokeStyle = color; ctx.lineWidth = 2;
+  ctx.strokeRect(xPx, y-size, size, size);
+  ctx.fillStyle = color; ctx.font = 'bold 12px monospace';
+  ctx.fillText(label, xPx+6, y-size/2+4);
+  return xPx+size;
+}
+
+function drawArrow(x1,y1,x2,y2,color){
+  ctx.strokeStyle = color; ctx.fillStyle = color; ctx.lineWidth = 3;
+  ctx.beginPath(); ctx.moveTo(x1,y1); ctx.lineTo(x2,y2); ctx.stroke();
+  const angle = Math.atan2(y2-y1,x2-x1);
+  ctx.beginPath();
+  ctx.moveTo(x2,y2);
+  ctx.lineTo(x2-10*Math.cos(angle-0.4), y2-10*Math.sin(angle-0.4));
+  ctx.lineTo(x2-10*Math.cos(angle+0.4), y2-10*Math.sin(angle+0.4));
+  ctx.closePath(); ctx.fill();
+}
+
+function drawKraft(){
+  ctx.clearRect(0,0,W,H);
+  drawTrack();
+  const startX = 40;
+  const compare = document.getElementById('compare').checked;
+  const y1 = compare ? groundY : groundY;
+  const xPx1 = startX + kraftState.x*scaleKraft;
+  const bottomEdge = drawBlock(xPx1, y1, parseFloat(elM.value), accentByMode.kraft, 'm');
+  drawArrow(bottomEdge+4, y1-24, bottomEdge+34, y1-24, accentByMode.kraft);
+  ctx.fillStyle = accentByMode.kraft; ctx.font='11px monospace';
+  ctx.fillText('F', bottomEdge+40, y1-18);
+
+  if(compare){
+    const y2 = groundY - 70;
+    ctx.fillStyle = '#161c29'; ctx.fillRect(0, y2, W, 4);
+    const xPx2 = startX + kraftState.x2*scaleKraft;
+    const edge2 = drawBlock(xPx2, y2, parseFloat(elM2.value), '#8892a6', 'm₂');
+    drawArrow(edge2+4, y2-24, edge2+34, y2-24, '#8892a6');
+  }
+}
+
+// ================= MODE 2: TRAEGHEIT =================
+const scaleT = 34;
+const traegState = {
+  cartX: 40, cartV: 0, running:false,
+  braked:false, ballOffset:0, ballV:0, ballDone:false, t:0
+};
+const cartW = 130, cartH = 60;
+
+function resetTraegheit(){
+  traegState.cartX = 40;
+  traegState.cartV = parseFloat(elV0t.value);
+  traegState.running = true;
+  traegState.braked = false;
+  traegState.ballOffset = 0;
+  traegState.ballV = traegState.cartV;
+  traegState.ballDone = false;
+  traegState.t = 0;
+  graphHistory.length = 0; graphHistory2.length = 0;
+  document.getElementById('traegheit-brake').disabled = false;
+  document.getElementById('traegheit-brake').style.opacity = '1';
+  document.getElementById('read-status').textContent = 'fährt (keine Kraft)';
+  updateFormula();
+}
+document.getElementById('traegheit-reset').addEventListener('click', resetTraegheit);
+document.getElementById('traegheit-brake').addEventListener('click', ()=>{
+  if(traegState.braked) return;
+  traegState.braked = true;
+  traegState.cartV = 0;
+  document.getElementById('traegheit-brake').disabled = true;
+  document.getElementById('traegheit-brake').style.opacity = '.35';
+  document.getElementById('read-status').textContent = 'gebremst \u2013 Kugel bewegt sich weiter (Trägheit)';
+});
+elV0t.addEventListener('input', ()=>{ if(!traegState.braked) traegState.cartV = parseFloat(elV0t.value); });
+
+function stepTraegheit(dt){
+  if(!traegState.running) return;
+  traegState.t += dt;
+  const trackLimit = W - 60;
+
+  if(!traegState.braked){
+    traegState.cartX += traegState.cartV*scaleT*dt;
+    if(traegState.cartX > trackLimit){ traegState.cartX = 40; }
+  } else if(!traegState.ballDone){
+    const friction = document.getElementById('frictionToggle').checked;
+    if(friction && traegState.ballV > 0){
+      traegState.ballV = Math.max(0, traegState.ballV - 2.5*dt);
+    }
+    traegState.ballOffset += traegState.ballV*scaleT*dt;
+    if(traegState.cartX + traegState.ballOffset > trackLimit || (traegState.ballV <= 0.001 && friction)){
+      traegState.ballDone = true;
+      document.getElementById('read-status').textContent = friction ? 'Kugel durch Reibung gestoppt' : 'Kugel bewegt sich unbegrenzt weiter';
+    }
+  }
+
+  pushGraph(traegState.t, traegState.braked ? traegState.ballV : traegState.cartV);
+  document.getElementById('read-cartv').textContent = traegState.cartV.toFixed(2)+' m/s';
+  document.getElementById('read-ballv').textContent = traegState.ballV.toFixed(2)+' m/s';
+}
+
+function drawTraegheit(){
+  ctx.clearRect(0,0,W,H);
+  drawTrack();
+  const y = groundY;
+  const cx = traegState.cartX;
+  ctx.strokeStyle = accentByMode.traegheit; ctx.lineWidth = 2;
+  ctx.globalAlpha = 0.15; ctx.fillStyle = accentByMode.traegheit;
+  ctx.fillRect(cx, y-cartH, cartW, cartH);
+  ctx.globalAlpha = 1;
+  ctx.strokeRect(cx, y-cartH, cartW, cartH);
+  ctx.beginPath(); ctx.arc(cx+22, y, 9, 0, 7); ctx.arc(cx+cartW-22, y, 9, 0, 7);
+  ctx.fillStyle = '#1c2333'; ctx.fill(); ctx.stroke();
+
+  const ballX = cx + cartW/2 + traegState.ballOffset;
+  ctx.beginPath();
+  ctx.arc(ballX, y-cartH/2, 12, 0, Math.PI*2);
+  ctx.fillStyle = '#e7ecf3';
+  ctx.fill();
+  ctx.strokeStyle = accentByMode.traegheit; ctx.lineWidth = 2; ctx.stroke();
+
+  ctx.fillStyle = '#7c8598'; ctx.font='11px monospace';
+  ctx.fillText('Wagen', cx+cartW/2-20, y-cartH-10);
+}
+
+// ================= MODE 3: REIBUNG =================
+const scaleR = 24;
+const reibState = { running:false, x:0, v:0, t:0, v0:0, done:false };
+
+function resetReibung(){
+  reibState.running=false; reibState.x=0; reibState.v=0; reibState.t=0; reibState.done=false;
+  graphHistory.length=0; graphHistory2.length=0;
+  document.getElementById('read-s').textContent = '0.0 m';
+  document.getElementById('reibung-start').textContent = 'Start';
+  updateFormula();
+  drawReibung();
+}
+document.getElementById('reibung-start').addEventListener('click', ()=>{
+  if(reibState.done || (!reibState.running && reibState.t===0)){
+    reibState.x=0; reibState.v = parseFloat(elV0r.value); reibState.t=0; reibState.done=false;
+    graphHistory.length=0;
+  }
+  reibState.running = true;
+  document.getElementById('reibung-start').textContent = 'Läuft…';
+});
+document.getElementById('reibung-reset').addEventListener('click', resetReibung);
+
+function stepReibung(dt){
+  if(!reibState.running) return;
+  const mu = parseFloat(document.getElementById('surface').value);
+  const a = mu*g;
+  if(reibState.v > 0){
+    reibState.v = Math.max(0, reibState.v - a*dt);
+    reibState.x += reibState.v*dt;
+    reibState.t += dt;
+  } else {
+    reibState.running = false;
+    reibState.done = true;
+    document.getElementById('reibung-start').textContent = 'Neu starten';
+  }
+  pushGraph(reibState.t, reibState.v);
+  document.getElementById('read-s').textContent = reibState.x.toFixed(2)+' m';
+}
+
+function drawReibung(){
+  ctx.clearRect(0,0,W,H);
+  drawTrack();
+  const surfNames = {'0.02':'Eis','0.30':'Holz','0.55':'Beton','0.90':'Sandpapier'};
+  ctx.fillStyle = '#7c8598'; ctx.font='11px monospace';
+  ctx.fillText('Untergrund: '+(surfNames[document.getElementById('surface').value]||''), 12, groundY+22);
+
+  const xPx = 40 + reibState.x*scaleR;
+  const edge = drawBlock(xPx, groundY, parseFloat(elMr.value), accentByMode.reibung, 'm');
+  if(reibState.v > 0.02){
+    drawArrow(xPx-6, groundY-24, xPx-30, groundY-24, '#8892a6');
+    ctx.fillStyle = '#8892a6'; ctx.fillText('F_R', xPx-46, groundY-18);
+  }
+}
+
+// ================= MAIN LOOP =================
+let lastTime = null;
+function loop(ts){
+  if(lastTime === null) lastTime = ts;
+  let dt = (ts - lastTime)/1000;
+  dt = Math.min(dt, 0.05);
+  lastTime = ts;
+
+  if(currentMode === 'kraft'){ stepKraft(dt); drawKraft(); }
+  else if(currentMode === 'traegheit'){ stepTraegheit(dt); drawTraegheit(); }
+  else if(currentMode === 'reibung'){ stepReibung(dt); drawReibung(); }
+
+  drawGraph();
+  requestAnimationFrame(loop);
+}
+
+// ---------- Init ----------
+setAccent('kraft');
+refreshTabStyles();
+resetKraft();
+resetTraegheit();
+resetReibung();
+currentMode = 'kraft';
+updateFormula();
+requestAnimationFrame(loop);
+</script>
+</body>
+</html>
