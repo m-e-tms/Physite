@@ -1,0 +1,981 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <style>
+      body {
+        margin: auto;
+        background-color: #222222;
+        background-attachment: fixed;
+      }
+
+      .card {
+        display: block;
+
+        padding: 5%;
+        margin: 5% 10%;
+        background-color: #111111;
+        background-image: repeating-radial-gradient(
+          circle at -100px -100px,
+          #000000,
+          #222222 150px,
+          #000000 300px
+        );
+        font-size: 32px;
+        line-height: 2em;
+        color: #ffffff;
+
+        text-align: center;
+
+        border-style: solid;
+        border-width: 3px;
+        border-radius: 3vw;
+        border-color: #666666;
+
+        .widget {
+          display: block;
+          min-width: 40%;
+          padding: 40px;
+          background-color: #222233;
+          background-image: linear-gradient(
+            to bottom right,
+            #440044,
+            #000000,
+            #000044
+          );
+          margin: 5% 0;
+          border-style: solid;
+          border-width: inherit;
+          border-radius: inherit;
+          border-color: inherit;
+        }
+
+        span.box {
+          display: inline-block;
+          line-height: 1;
+          padding: 10px;
+          border-style: solid;
+          border-width: 2px;
+          border-radius: 10px;
+          border-color: #ffffff;
+          box-shadow: 0 0 25px white;
+        }
+
+        canvas {
+          display: innline-block;
+          background-color: #888888;
+          width: 500px;
+          height: 500px;
+        }
+
+        p,
+        h1,
+        h3 {
+          font-family: Arial;
+        }
+
+        p::after {
+          content: "";
+          display: table;
+          clear: both;
+        }
+
+        .left {
+          float: left;
+          margin: 20px 20px 20px 0;
+        }
+
+        .right {
+          float: right;
+          margin: 20px 0 20px 20px;
+        }
+
+        div {
+          padding: 10px;
+        }
+
+        * {
+          &:first-child {
+            margin-top: 0;
+          }
+          &:last-child {
+            margin-bottom: 0;
+          }
+        }
+      }
+
+      nav {
+        position: fixed;
+        width: 100%;
+        top: 0;
+        background-color: #444444;
+        margin: 0;
+        padding: 0;
+        display: flex;
+        flex-direction: row;
+
+        .element {
+          padding: 1% 2%;
+          border-right: 2px solid #222222;
+          color: white;
+          cursor: pointer;
+          text-align: center;
+
+          &:hover {
+            background-color: #333333;
+          }
+        }
+
+        .no-border {
+          border-style: none;
+        }
+      }
+
+      .dropdown {
+        position: relative;
+
+        &:hover {
+          .dropdown-content {
+            display: block;
+          }
+        }
+      }
+
+      .dropdown-content {
+        display: none;
+        position: absolute;
+        color: black;
+        background-color: #f9f9f9;
+        top: 100%;
+        left: -80%;
+
+        &:hover {
+          display: block;
+        }
+
+        button {
+          border-style: dotted;
+          border-width: 0px;
+          border-color: #ffffff;
+          background-color: #ffffff;
+          display: block;
+          min-width: 250px;
+          padding: 20px;
+
+          &:hover {
+            background-color: #eeeeee;
+            border-color: #000000;
+          }
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <nav>
+      <button onclick="location.href='../../infra/Hub_Lernseite_Mint.php'">Home</button>
+      <button>Scoreboard</button>
+      <button>News</button>
+      <div class="dropdown">
+        <button class="dropdown"> Dropdown </button>
+        <div class="dropdown-content">
+          <button onclick="location.href='../Schwingungen_und_Wellen/Schwingungen_und_Wellen.html'">Schwingungen und Wellen</button>
+        </div>
+      </div>
+    </nav>
+
+    <div class="card">
+      <h1>Dopplereffekt</h1>
+
+      <!-- ① GRUNDLAGEN -->
+      <div class="widget" id="s-grund">
+        <h2>Grundlagen</h2>
+        <p>
+          Bewegen sich eine Wellenquelle und ein Beobachter
+          <strong>relativ zueinander</strong>, so nimmt der Beobachter eine
+          andere Frequenz wahr, als die Quelle aussendet. Nähert sich die
+          Quelle, erscheint der Ton
+          <span style="color: #ff5555; font-weight: bold">höher</span> –
+          entfernt sie sich, erscheint er
+          <span style="color: #5588ff; font-weight: bold">tiefer</span>.
+        </p>
+
+        <p>
+          <span class="box">Alltagsbeispiel: Das Martinshorn eines
+            vorbeifahrenden Krankenwagens</span>
+        </p>
+
+        <p>
+          Die Ursache: Vor der bewegten Quelle werden die Wellenfronten
+          <strong>gestaucht</strong> (kürzere Wellenlänge, höhere Frequenz),
+          hinter ihr werden sie <strong>gedehnt</strong> (längere Wellenlänge,
+          tiefere Frequenz).
+        </p>
+      </div>
+
+      <!-- ② SIMULATION -->
+      <div class="widget" id="s-sim">
+        <h2>Simulation</h2>
+
+        <p>
+          Ein Krankenwagen fährt mit <strong>Martinshorn</strong> (Folgetonhorn
+          nach DIN&nbsp;14610, Stadthorn) an dir vorbei. Wähle deinen Standort,
+          schalte den Ton ein – du hörst das typische Ta-TÜ und den Doppler-Effekt.
+        </p>
+
+        <canvas
+          id="cD"
+          style="background-color: #1a2233; width: 500px; height: 420px"
+        ></canvas>
+
+        <div
+          style="
+            margin-top: 14px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 12px;
+            font-size: 18px;
+            font-family: Arial;
+          "
+        >
+          <div
+            style="
+              display: flex;
+              align-items: center;
+              gap: 12px;
+              width: 100%;
+              max-width: 420px;
+              justify-content: space-between;
+            "
+          >
+            <label>Geschwindigkeit Krankenwagen</label>
+            <input
+              type="range"
+              id="slV"
+              min="5"
+              max="100"
+              value="22"
+              step="1"
+              style="width: 55%; accent-color: #aa44aa"
+            />
+            <span
+              id="vV"
+              style="color: #cc88cc; min-width: 120px; text-align: right"
+              >22 m/s (79 km/h)</span
+            >
+          </div>
+          <div
+            style="
+              display: flex;
+              align-items: center;
+              gap: 12px;
+              width: 100%;
+              max-width: 420px;
+              justify-content: space-between;
+            "
+          >
+            <label>Martinshorn-Takt (Ta-TÜ)</label>
+            <input
+              type="range"
+              id="slF"
+              min="0.5"
+              max="3"
+              value="1.5"
+              step="0.1"
+              style="width: 55%; accent-color: #aa44aa"
+            />
+            <span
+              id="vF"
+              style="color: #cc88cc; min-width: 70px; text-align: right"
+              >1.5/s</span
+            >
+          </div>
+          <div
+            style="
+              display: flex;
+              gap: 10px;
+              flex-wrap: wrap;
+              justify-content: center;
+            "
+          >
+            <button class="btn-a active" id="bObsA" onclick="setObserver('A')">
+              👂 Straßenrand links
+            </button>
+            <button class="btn-a" id="bObsB" onclick="setObserver('B')">
+              👂 Straßenrand rechts
+            </button>
+          </div>
+          <div
+            style="
+              display: flex;
+              gap: 10px;
+              flex-wrap: wrap;
+              justify-content: center;
+            "
+          >
+            <button class="btn-a" id="bSound" onclick="toggleSound()">
+              🔊 Ton einschalten
+            </button>
+            <button class="btn-a" onclick="launchAmbulance()">🚑 Vorbeifahrt starten</button>
+            <button class="btn-a" id="bPause" onclick="togglePause()">
+              ⏸ Pause
+            </button>
+            <button class="btn-a" onclick="resetSim()">↺ Reset</button>
+          </div>
+          <p
+            id="fObs"
+            style="font-family: monospace; font-size: 16px; color: #44dd88"
+          >
+            Gehörte Frequenz bei Beobachter A: — Hz
+          </p>
+          <p
+            id="fml"
+            style="font-family: monospace; font-size: 17px; color: #cc88cc"
+          >
+            f′ = f · c / (c − v) → …
+          </p>
+        </div>
+      </div>
+
+      <!-- ③ FORMELN -->
+      <div class="widget" id="s-formeln">
+        <h2>Formeln</h2>
+        <p>
+          Für eine bewegte Quelle und einen ruhenden Beobachter gilt:
+        </p>
+
+        <p>
+          <span class="box"
+            ><span style="color: #ff5555">f&#8242;&#8599;</span> = f · c / (c
+            &minus; v<sub>Q</sub>&#8594;)</span
+          >
+          &nbsp; Quelle nähert sich
+        </p>
+        <p>
+          <span class="box"
+            ><span style="color: #5588ff">f&#8242;&#8601;</span> = f · c / (c +
+            <span style="color: #5588ff">v<sub>Q</sub>&#8592;</span>)</span
+          >
+          &nbsp; Quelle entfernt sich
+        </p>
+
+        <p align="left" style="font-size: 22px; line-height: 1.6em">
+          <strong>Was bedeuten die Pfeile?</strong> Sie sind Merkhilfen – in Lehrbüchern
+          stehen meist nur f&#8242; und v<sub>Q</sub> ohne Pfeile.
+          <br><br>
+          <span style="color: #ff5555">↗ / ↙ bei f&#8242;</span> – wahrgenommene Frequenz:
+          Pfeil <strong>nach oben</strong> = Ton wird <strong>höher</strong>,
+          Pfeil <strong>nach unten</strong> = Ton wird <strong>tiefer</strong>.
+          <br>
+          <span style="color: #5588ff">→ / ← bei v<sub>Q</sub></span> – Bewegung der Quelle:
+          Pfeil zeigt, wohin der Krankenwagen fährt (auf den Beobachter zu oder weg).
+          <br><br>
+          Nähert sich die Quelle an, werden die Wellen gestaucht (c&nbsp;&minus;&nbsp;v<sub>Q</sub> im Nenner) –
+          du hörst f&#8242; <strong>höher</strong> als f.
+          Entfernt sie sich, werden sie gedehnt (c&nbsp;+&nbsp;v<sub>Q</sub> im Nenner) –
+          du hörst f&#8242; <strong>tiefer</strong>.
+        </p>
+
+        <table border="1" cellspacing="0" cellpadding="5" align="center" style="font-size: 20px; line-height: 1.5em">
+          <thead>
+            <tr>
+              <th>Größe</th>
+              <th>Formelzeichen</th>
+              <th>Einheit</th>
+              <th>Bedeutung</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Sendefrequenz</td>
+              <td>f</td>
+              <td>Hz</td>
+              <td>Frequenz, die die Quelle aussendet</td>
+            </tr>
+            <tr>
+              <td>Beobachtete Frequenz</td>
+              <td>f&#8242;</td>
+              <td>Hz</td>
+              <td>Frequenz, die der Beobachter wahrnimmt</td>
+            </tr>
+            <tr>
+              <td>Ausbreitungsgeschwindigkeit</td>
+              <td>c</td>
+              <td>m/s</td>
+              <td>z.&nbsp;B. Schallgeschwindigkeit &approx; 340 m/s in Luft</td>
+            </tr>
+            <tr>
+              <td>Quellgeschwindigkeit</td>
+              <td>v<sub>Q</sub></td>
+              <td>m/s</td>
+              <td>Geschwindigkeit der Quelle relativ zum Medium</td>
+            </tr>
+          </tbody>
+        </table>
+
+        <p>
+          <strong>Wichtig:</strong> Erreicht die Quelle die
+          Ausbreitungsgeschwindigkeit (v<sub>Q</sub> = c), überlagern sich alle
+          Wellenfronten vor ihr – es entsteht der
+          <strong>Machsche Kegel</strong> (Überschallknall).
+        </p>
+      </div>
+
+      <!-- ④ ANWENDUNGEN -->
+      <h2 id="s-anw">Anwendungen</h2>
+
+      <p>
+        Der Dopplereffekt wird vielfältig genutzt: bei der
+        <strong>Radar-Geschwindigkeitsmessung</strong> im Straßenverkehr, beim
+        <strong>Doppler-Ultraschall</strong> zur Messung der
+        Blutflussgeschwindigkeit in der Medizin und in der Astronomie: Die
+        <span style="color: #ff5555; font-weight: bold">Rotverschiebung</span>
+        des Lichts entfernter Galaxien zeigt, dass sich das Universum ausdehnt.
+      </p>
+    </div>
+    <!-- end .card -->
+
+    <style>
+      .btn-a {
+        background: #440044;
+        color: #fff;
+        border: 1px solid #666;
+        padding: 9px 16px;
+        border-radius: 5px;
+        cursor: pointer;
+        font-size: 16px;
+        font-family: Arial;
+      }
+      .btn-a:hover {
+        background: #660066;
+      }
+      .btn-a.active {
+        background: #660066;
+        box-shadow: 0 0 12px rgba(170, 68, 170, 0.8);
+        border-color: #cc88cc;
+      }
+      .btn-a.audio-on {
+        background: #224422;
+        border-color: #44dd88;
+      }
+      #cD {
+        display: block;
+        margin: 0 auto;
+        border-radius: 8px;
+        border: 2px solid #444;
+      }
+    </style>
+
+    <script>
+      "use strict";
+
+      const cD = document.getElementById("cD");
+      cD.width = 500;
+      cD.height = 420;
+      const ct = cD.getContext("2d");
+      const W = 500,
+        H = 420;
+
+      const C = 120;
+      let f = 1.5;
+      /* Straßenabschnitt im Canvas ≈ 50 m → visuelle Geschwindigkeit = m/s × px/m */
+      const ROAD_LENGTH_M = 200;
+      const PX_PER_M = W / ROAD_LENGTH_M;
+
+      const C_SOUND = 340;
+      const AUDIO_SCALE = 220;
+      const ROAD_Y = 250;
+      const ROAD_H = 44;
+      const OBS_Y = 340;
+      const OBS_A_X = 130;
+      const OBS_B_X = 370;
+      const SIREN_OFFSET = -22;
+
+      let v = 22 * PX_PER_M;
+      let srcX = -90;
+      let waves = [];
+      let t = 0,
+        lastEmit = 0,
+        lastTs = 0,
+        paused = false;
+      let flying = true;
+      let activeObserver = "A";
+      let soundOn = false;
+      let audioCtx = null;
+      let oscHi = null;
+      let oscLo = null;
+      let oscLoH2 = null;
+      let oscHiH2 = null;
+      let gainHi = null;
+      let gainLo = null;
+      let gainLoH2 = null;
+      let gainHiH2 = null;
+      let masterGain = null;
+      let sirenFilter = null;
+      let hornBody = null;
+      let smoothVol = 0;
+
+      const SIREN_LO = 420;
+      const SIREN_HI = 560;
+      const SIREN_Y = ROAD_Y - 8;
+      const OBS_EAR_Y = OBS_Y - 28;
+      /* Doppler erst spürbar, wenn KW nah vor/am Beobachter vorbeifährt (px entlang Straße) */
+      const PASS_RANGE = 145;
+      const VOL_SMOOTH = 0.12;
+      const FREQ_RAMP = 0.18;
+      const GAIN_RAMP = 0.04;
+      const TONE_XFADE = 0.035;
+
+      function observerX(id) {
+        return id === "A" ? OBS_A_X : OBS_B_X;
+      }
+
+      function sirenX() {
+        return srcX + SIREN_OFFSET;
+      }
+
+      /* 0 weit weg → 1 direkt vor dem Beobachter */
+      function passProximity(sx, obsX) {
+        const along = Math.abs(sx - obsX);
+        if (along >= PASS_RANGE) return 0;
+        const t = 1 - along / PASS_RANGE;
+        return t * t * (3 - 2 * t);
+      }
+
+      /* Radialgeschwindigkeit der Quelle zum Beobachter (2D, glatter Vorbeiflug) */
+      function radialVelocityToward(vMps, sx, obsX) {
+        const dx = obsX - sx;
+        const dy = OBS_EAR_Y - SIREN_Y;
+        const dist = Math.hypot(dx, dy);
+        if (dist < 1) return 0;
+        return vMps * (dx / dist);
+      }
+
+      function observedFreq(fEmit, vMps, sx, obsX) {
+        if (!flying || Math.abs(vMps) < 0.01) return fEmit;
+        const vR = radialVelocityToward(vMps, sx, obsX) * passProximity(sx, obsX);
+        const clamped = Math.max(-C_SOUND + 5, Math.min(C_SOUND - 5, vR));
+        return (fEmit * C_SOUND) / (C_SOUND - clamped);
+      }
+
+      function dopplerMultiplier(vMps, sx, obsX) {
+        return observedFreq(1, vMps, sx, obsX);
+      }
+
+      /* Martinshorn-Takt nach DIN 14610 (Stadthorn, ca. 1 Hz Wechsel) */
+      function martinshornRate() {
+        return 0.85 + f * 0.22;
+      }
+
+      /* Ta-TÜ: zwei feste Töne in reiner Quarte, kurzer Übergang */
+      function martinshornMix(cycle) {
+        const edge = TONE_XFADE;
+        if (cycle < 0.5 - edge) return { lo: 1, hi: 0 };
+        if (cycle < 0.5 + edge) {
+          const t = (cycle - (0.5 - edge)) / (2 * edge);
+          return { lo: 1 - t, hi: t };
+        }
+        return { lo: 0, hi: 1 };
+      }
+
+      function initAudio() {
+        if (audioCtx) return;
+        audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+
+        oscLo = audioCtx.createOscillator();
+        oscHi = audioCtx.createOscillator();
+        oscLoH2 = audioCtx.createOscillator();
+        oscHiH2 = audioCtx.createOscillator();
+        gainLo = audioCtx.createGain();
+        gainHi = audioCtx.createGain();
+        gainLoH2 = audioCtx.createGain();
+        gainHiH2 = audioCtx.createGain();
+        masterGain = audioCtx.createGain();
+        sirenFilter = audioCtx.createBiquadFilter();
+        hornBody = audioCtx.createBiquadFilter();
+
+        oscLo.type = "square";
+        oscHi.type = "square";
+        oscLoH2.type = "sine";
+        oscHiH2.type = "sine";
+        oscLo.frequency.value = SIREN_LO;
+        oscHi.frequency.value = SIREN_HI;
+
+        hornBody.type = "peaking";
+        hornBody.frequency.value = 470;
+        hornBody.Q.value = 1.4;
+        hornBody.gain.value = 5;
+
+        sirenFilter.type = "bandpass";
+        sirenFilter.frequency.value = 490;
+        sirenFilter.Q.value = 0.85;
+
+        gainLo.gain.value = 0;
+        gainHi.gain.value = 0;
+        gainLoH2.gain.value = 0;
+        gainHiH2.gain.value = 0;
+        masterGain.gain.value = 0;
+
+        oscLo.connect(gainLo);
+        oscHi.connect(gainHi);
+        oscLoH2.connect(gainLoH2);
+        oscHiH2.connect(gainHiH2);
+        gainLo.connect(hornBody);
+        gainHi.connect(hornBody);
+        gainLoH2.connect(hornBody);
+        gainHiH2.connect(hornBody);
+        hornBody.connect(sirenFilter);
+        sirenFilter.connect(masterGain);
+        masterGain.connect(audioCtx.destination);
+
+        oscLo.start();
+        oscHi.start();
+        oscLoH2.start();
+        oscHiH2.start();
+      }
+
+      function updateSirenTone(now, dopplerMult, vol) {
+        const rate = martinshornRate();
+        const cycle = (now * rate) % 1;
+        const mix = martinshornMix(cycle);
+
+        const loFreq = SIREN_LO * dopplerMult;
+        const hiFreq = SIREN_HI * dopplerMult;
+        const toneHz = loFreq * mix.lo + hiFreq * mix.hi;
+
+        oscLo.frequency.setTargetAtTime(loFreq, now, FREQ_RAMP);
+        oscHi.frequency.setTargetAtTime(hiFreq, now, FREQ_RAMP);
+        oscLoH2.frequency.setTargetAtTime(loFreq * 2, now, FREQ_RAMP);
+        oscHiH2.frequency.setTargetAtTime(hiFreq * 2, now, FREQ_RAMP);
+
+        const amp = vol * 0.42;
+        const h2 = amp * 0.22;
+        gainLo.gain.setTargetAtTime(amp * mix.lo, now, GAIN_RAMP);
+        gainHi.gain.setTargetAtTime(amp * mix.hi, now, GAIN_RAMP);
+        gainLoH2.gain.setTargetAtTime(h2 * mix.lo, now, GAIN_RAMP);
+        gainHiH2.gain.setTargetAtTime(h2 * mix.hi, now, GAIN_RAMP);
+        masterGain.gain.setTargetAtTime(vol > 0.001 ? 1 : 0, now, GAIN_RAMP);
+
+        hornBody.frequency.setTargetAtTime(460 + dopplerMult * 30, now, FREQ_RAMP);
+        sirenFilter.frequency.setTargetAtTime(480 + dopplerMult * 35, now, FREQ_RAMP);
+
+        return toneHz;
+      }
+
+      function toggleSound() {
+        initAudio();
+        if (audioCtx.state === "suspended") audioCtx.resume();
+        soundOn = !soundOn;
+        const btn = document.getElementById("bSound");
+        btn.textContent = soundOn ? "🔇 Ton ausschalten" : "🔊 Ton einschalten";
+        btn.classList.toggle("audio-on", soundOn);
+        updateAudio();
+      }
+
+      function setObserver(id) {
+        activeObserver = id;
+        document.getElementById("bObsA").classList.toggle("active", id === "A");
+        document.getElementById("bObsB").classList.toggle("active", id === "B");
+        updateFml(+document.getElementById("slV").value);
+        updateAudio();
+      }
+
+      function heardGain(obsX) {
+        const sx = sirenX();
+        const dist = Math.hypot(sx - obsX, SIREN_Y - OBS_EAR_Y);
+        return Math.min(0.22, 900 / (dist * dist + 120));
+      }
+
+      function flyPhase(vMps, sx, obsX) {
+        const prox = passProximity(sx, obsX);
+        if (prox < 0.05) return "noch weit weg";
+        const vR = radialVelocityToward(vMps, sx, obsX) * prox;
+        if (Math.abs(vR) < Math.max(1.5, Math.abs(vMps) * 0.1)) {
+          return "gerade vorbei";
+        }
+        return vR > 0 ? "nähert sich" : "entfernt sich";
+      }
+
+      function updateAudio() {
+        const mps = +document.getElementById("slV").value;
+        const obsX = observerX(activeObserver);
+        const sx = sirenX();
+        const dopMult = dopplerMultiplier(flying ? mps : 0, sx, obsX);
+        const phase = flying ? flyPhase(mps, sx, obsX) : "–";
+
+        const targetVol = soundOn ? heardGain(obsX) : 0;
+        smoothVol += (targetVol - smoothVol) * VOL_SMOOTH;
+
+        let toneHz = SIREN_LO * dopMult;
+        if (soundOn && audioCtx) {
+          toneHz = updateSirenTone(
+            audioCtx.currentTime,
+            dopMult,
+            smoothVol
+          );
+        } else if (masterGain && audioCtx) {
+          masterGain.gain.setTargetAtTime(0, audioCtx.currentTime, GAIN_RAMP);
+        }
+
+        document.getElementById("fObs").textContent =
+          `Martinshorn ~${Math.round(toneHz)} Hz · Doppler ×${dopMult.toFixed(
+            2
+          )} · ${phase}`;
+      }
+
+      function launchAmbulance() {
+        srcX = -90;
+        waves = [];
+        lastEmit = t;
+        flying = true;
+        paused = false;
+        smoothVol = 0;
+        document.getElementById("bPause").textContent = "⏸ Pause";
+        updateAudio();
+      }
+
+      function resetSim() {
+        launchAmbulance();
+        t = 0;
+        lastEmit = 0;
+      }
+
+      function togglePause() {
+        paused = !paused;
+        document.getElementById("bPause").textContent = paused
+          ? "▶ Weiter"
+          : "⏸ Pause";
+      }
+
+      document.getElementById("slV").addEventListener("input", function () {
+        const mps = +this.value;
+        v = mps * PX_PER_M;
+        document.getElementById("vV").textContent =
+          mps + " m/s (" + Math.round(mps * 3.6) + " km/h)";
+        updateFml(mps);
+        updateAudio();
+      });
+      document.getElementById("slF").addEventListener("input", function () {
+        f = +this.value;
+        document.getElementById("vF").textContent = f.toFixed(1) + "/s";
+        updateFml(+document.getElementById("slV").value);
+        updateAudio();
+      });
+
+      function updateFml(mps) {
+        const obsX = observerX(activeObserver);
+        const sx = sirenX();
+        const fO = observedFreq(f, flying ? mps : 0, sx, obsX);
+        const phase = flying ? flyPhase(mps, sx, obsX) : "–";
+        let txt;
+        if (phase === "noch weit weg") {
+          txt = `Beobachter ${activeObserver}: f ≈ ${f.toFixed(
+            1
+          )} Hz – Krankenwagen noch weit entfernt`;
+        } else if (phase === "nähert sich") {
+          txt = `Beobachter ${activeObserver}: f′ ≈ ${fO.toFixed(
+            2
+          )} Hz – Krankenwagen kommt näher`;
+        } else if (phase === "entfernt sich") {
+          txt = `Beobachter ${activeObserver}: f′ ≈ ${fO.toFixed(
+            2
+          )} Hz – Krankenwagen fährt weg`;
+        } else {
+          txt = `Beobachter ${activeObserver}: f′ ≈ ${fO.toFixed(
+            2
+          )} Hz – gerade vorbei`;
+        }
+        document.getElementById("fml").textContent = txt;
+      }
+
+      function update(dt) {
+        if (!flying) return;
+        t += dt;
+        srcX += v * dt;
+
+        if (srcX > W + 100) {
+          srcX = -90;
+          waves = [];
+          lastEmit = t;
+        }
+
+        if (t - lastEmit >= 1 / (f * 2)) {
+          lastEmit = t;
+          waves.push({ x: sirenX(), y: ROAD_Y - 8, born: t });
+        }
+        waves = waves.filter((w) => (t - w.born) * C < 620);
+      }
+
+      function drawSky() {
+        const g = ct.createLinearGradient(0, 0, 0, ROAD_Y);
+        g.addColorStop(0, "#0f1828");
+        g.addColorStop(1, "#1a2840");
+        ct.fillStyle = g;
+        ct.fillRect(0, 0, W, ROAD_Y);
+
+        ct.fillStyle = "rgba(255,255,255,0.08)";
+        ct.fillRect(30, 60, 50, 90);
+        ct.fillRect(110, 40, 40, 110);
+        ct.fillRect(360, 55, 55, 85);
+        ct.fillRect(420, 35, 45, 105);
+      }
+
+      function drawRoad() {
+        ct.fillStyle = "#2a2a2a";
+        ct.fillRect(0, ROAD_Y, W, ROAD_H);
+        ct.fillStyle = "#3a3a3a";
+        ct.fillRect(0, ROAD_Y + ROAD_H, W, H - ROAD_Y - ROAD_H);
+
+        ct.strokeStyle = "#cccc44";
+        ct.setLineDash([18, 14]);
+        ct.lineWidth = 2;
+        ct.beginPath();
+        ct.moveTo(0, ROAD_Y + ROAD_H / 2);
+        ct.lineTo(W, ROAD_Y + ROAD_H / 2);
+        ct.stroke();
+        ct.setLineDash([]);
+      }
+
+      function drawAmbulance(x) {
+        const y = ROAD_Y + ROAD_H / 2 - 4;
+        const w = 78,
+          h = 30;
+        const flash = Math.sin(t * 12) > 0;
+
+        ct.save();
+        ct.translate(x, y);
+
+        ct.fillStyle = "#222";
+        ct.beginPath();
+        ct.ellipse(-24, 14, 7, 7, 0, 0, Math.PI * 2);
+        ct.ellipse(24, 14, 7, 7, 0, 0, Math.PI * 2);
+        ct.fill();
+
+        ct.fillStyle = "#eeeeee";
+        ct.beginPath();
+        ct.roundRect(-w / 2, -h / 2, w, h, 5);
+        ct.fill();
+        ct.strokeStyle = "#999";
+        ct.lineWidth = 1.5;
+        ct.stroke();
+
+        ct.fillStyle = "#cc2222";
+        ct.fillRect(-w / 2 + 8, -h / 2 + 4, w - 16, 6);
+
+        ct.fillStyle = "#dd2222";
+        ct.fillRect(-4, -8, 8, 16);
+        ct.fillRect(-8, -4, 16, 8);
+
+        ct.fillStyle = flash ? "#4488ff" : "#ff4444";
+        ct.fillRect(-w / 2 + 6, -h / 2 - 5, 10, 7);
+        ct.fillStyle = flash ? "#ff4444" : "#4488ff";
+        ct.fillRect(-w / 2 + 20, -h / 2 - 5, 10, 7);
+
+        ct.fillStyle = "#88bbee";
+        ct.fillRect(w / 2 - 18, -h / 2 + 6, 14, 12);
+
+        ct.font = "bold 10px Arial";
+        ct.fillStyle = "#555";
+        ct.textAlign = "center";
+        ct.fillText("🚑", 0, 5);
+
+        ct.restore();
+
+        ct.font = "11px Arial";
+        ct.fillStyle = "#aaa";
+        ct.textAlign = "center";
+        ct.fillText("Martinshorn", x, y - 24);
+      }
+
+      function drawObserver(o) {
+        const isActive = o.id === activeObserver;
+        const x = o.x,
+          y = OBS_Y;
+
+        if (isActive) {
+          ct.beginPath();
+          ct.arc(x, y - 18, 22, 0, Math.PI * 2);
+          ct.strokeStyle = "#ffff88";
+          ct.lineWidth = 2;
+          ct.stroke();
+        }
+
+        ct.strokeStyle = isActive ? "#ffffaa" : "#88ccaa";
+        ct.lineWidth = 2;
+        ct.beginPath();
+        ct.arc(x, y - 28, 8, 0, Math.PI * 2);
+        ct.stroke();
+        ct.beginPath();
+        ct.moveTo(x, y - 20);
+        ct.lineTo(x, y - 4);
+        ct.stroke();
+        ct.beginPath();
+        ct.moveTo(x - 12, y - 14);
+        ct.lineTo(x + 12, y - 14);
+        ct.stroke();
+        if (isActive) {
+          ct.font = "14px Arial";
+          ct.fillText("👂", x + 14, y - 30);
+        }
+
+        ct.font = "11px Arial";
+        ct.fillStyle = isActive ? "#ffffaa" : "#88ccaa";
+        ct.textAlign = "center";
+        ct.fillText(o.lbl, x, y + 14);
+      }
+
+      function draw() {
+        ct.clearRect(0, 0, W, H);
+        drawSky();
+        drawRoad();
+
+        for (const w of waves) {
+          const r = (t - w.born) * C;
+          const alpha = Math.max(0, 0.7 - r / 620);
+          ct.beginPath();
+          ct.arc(w.x, w.y, r, 0, Math.PI * 2);
+          ct.strokeStyle = `rgba(255,120,120,${alpha})`;
+          ct.lineWidth = 1.5;
+          ct.stroke();
+        }
+
+        drawAmbulance(srcX);
+
+        drawObserver({ id: "A", x: OBS_A_X, lbl: "Beobachter A" });
+        drawObserver({ id: "B", x: OBS_B_X, lbl: "Beobachter B" });
+
+        const obsX = observerX(activeObserver);
+        ct.setLineDash([4, 6]);
+        ct.strokeStyle = "rgba(255,255,136,0.35)";
+        ct.beginPath();
+        ct.moveTo(sirenX(), ROAD_Y - 8);
+        ct.lineTo(obsX, OBS_Y - 28);
+        ct.stroke();
+        ct.setLineDash([]);
+
+        if (flying && v > 1) {
+          ct.font = "12px Arial";
+          ct.fillStyle = "#ff8888";
+          ct.textAlign = "center";
+          ct.fillText("← Vorbeifahrt", W / 2, 22);
+        }
+      }
+
+      v = 22 * PX_PER_M;
+      document.getElementById("vV").textContent = "22 m/s (79 km/h)";
+      updateFml(22);
+      updateAudio();
+
+      function loop(ts) {
+        if (!lastTs) lastTs = ts;
+        const dt = Math.min((ts - lastTs) / 1000, 0.05);
+        lastTs = ts;
+        if (!paused) update(dt);
+        draw();
+        updateAudio();
+        requestAnimationFrame(loop);
+      }
+      requestAnimationFrame(loop);
+    </script>
+  </body>
+</html>
