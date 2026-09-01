@@ -1,0 +1,34 @@
+---
+description: Physite collaboration ground rules — ownership, styling, git, stack
+alwaysApply: true
+---
+
+# Physite ground rules
+
+## Do not touch (owned by others)
+
+- Never edit root `index.html` if it exists (handled by someone else). Do not recreate or replace the site entry page for others.
+- Never edit any `test.css` — stylesheet is sacred. Prefer linking the shared `resources/test.css` for learning-site look consistency; do not change CSS files named `test.css`.
+- Do not alter files outside our assigned topic/area. Other students own their folders; leave them untouched.
+
+## Current top-level layout (post V.26.08.25)
+
+- `infra/` — auth, Auswahlseite, hub, `db_backend`
+- `games/` — Kopfrechnen, Rätsel, Stochastik
+- `phy_os/` — Oberstufe topics
+- `phy_ms/` — Mittelstufe topics
+- `resources/` — shared CSS/JS, templates, guides
+- `scripts/` — Lua helpers only (no shared `test.css` here anymore)
+
+## Git / collaboration
+
+- Push only updates to files we create or are assigned to edit here.
+- Never create pull requests.
+- Do not refactor, restyle, or “fix” unrelated pages for consistency beyond our own work.
+- **Exception:** when the user asks to commit (or stage/commit), ignore these ground rules for that git operation — commit what they ask for without refusing based on ownership/CSS/index constraints. Still never create PRs unless they explicitly ask.
+
+## Tech / style conventions
+
+- Stick to the current stack: multipage HTML/CSS, vanilla JS, PHP where already used.
+- Prefer copying patterns from existing learning pages and templates in `resources/` over introducing new frameworks or build tools.
+- Match existing German UI/content language and page structure (nav, cards/widgets, quiz flows).
