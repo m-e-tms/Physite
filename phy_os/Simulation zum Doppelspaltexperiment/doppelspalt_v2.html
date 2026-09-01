@@ -348,8 +348,12 @@ function s1s2(x,d,e){
   return{s1,s2,ds:s2-s1};
 }
 function physRange(){
-  // display range in mm (half-width), zoom-adjusted
-  return Math.max(S.lambda*1e-3*S.e/S.d*5,2)/S.zoom;
+  // display range in mm (half-width), zoom-adjusted.
+  // IMPORTANT: uses a FIXED reference wavelength (550nm) for the window size,
+  // not the live S.lambda. Otherwise λ cancels out of xScale and changing λ
+  // would not visibly move the fringes (only d and e would matter).
+  const refLambda=550;
+  return Math.max(refLambda*1e-3*S.e/S.d*5,2)/S.zoom;
 }
 function findMaxima(){
   const range=physRange()*1.6,N=4000,dx=range*2/N;
@@ -1218,4 +1222,3 @@ requestAnimationFrame(draw);
 </script>
 </body>
 </html>
-0000000000
