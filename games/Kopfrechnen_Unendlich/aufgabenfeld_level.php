@@ -4,7 +4,7 @@
 <head>
 
   <meta charset="UTF-8">
-  <link rel="stylesheet" href="test.css">
+  <link rel="stylesheet" href="../../resources/Vorlage_Standard/test.css">
 
 </head>
 <body>

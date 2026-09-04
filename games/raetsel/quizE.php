@@ -6,7 +6,7 @@ header('Content-Type: text/html; charset=UTF-8');
 <head>
 
   <meta charset="UTF-8">
-  <link rel="stylesheet" href="test.css">
+  <link rel="stylesheet" href="../../resources/Vorlage_Standard/test.css">
 
 </head>
 <body>
