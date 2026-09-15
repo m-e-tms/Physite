@@ -4,55 +4,117 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Hub – Themen</title>
-  <link rel="stylesheet" href="../../resources/test.css">
-  <link rel="stylesheet" href="../hub.css">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500&family=DM+Serif+Display&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../hub.css?v=6">
 </head>
 <body class="hub-themen">
-  <canvas id="space-canvas"></canvas>
-  <main class="stage">
-    <header>
-      <h1>Themenübersicht</h1>
-      <p class="lede">Wähle ein Themenfeld. Die Infoseiten bleiben unverändert.</p>
-    </header>
-    <ul class="hub-grid">
-      <li>
-        <a class="hub-card" href="../Sub_Hubs/Sub_Hub_Mechanik.html">
-          <span class="icon">⚙️</span>
-          <h2>Mechanik</h2>
-          <p>Kräfte, Bewegung, Impuls</p>
-        </a>
-      </li>
-      <li>
-        <a class="hub-card" href="../Sub_Hubs/Sub_Hub_Schwingungen_Wellen.html">
-          <span class="icon">🌊</span>
-          <h2>Schwingungen &amp; Wellen</h2>
-          <p>Schwingungen, Doppler</p>
-        </a>
-      </li>
-      <li>
-        <a class="hub-card" href="../Sub_Hubs/Sub_Hub_ELehre_Magnetismus.html">
-          <span class="icon">⚡</span>
-          <h2>E-Lehre &amp; Magnetismus</h2>
-          <p>Strom, Felder, Induktion</p>
-        </a>
-      </li>
-      <li>
-        <a class="hub-card" href="../Sub_Hubs/Sub_Hub_Lichteigenschaften.html">
-          <span class="icon">🔦</span>
-          <h2>Lichteigenschaften</h2>
-          <p>Optik, Wellen, Doppelspalt</p>
-        </a>
-      </li>
-      <li>
-        <a class="hub-card" href="../Sub_Hubs/Sub_Hub_Games.html">
-          <span class="icon">🎮</span>
-          <h2>Games</h2>
-          <p>Kopfrechnen, Rätsel, Stochastik</p>
-        </a>
-      </li>
-    </ul>
-  </main>
+  <header>
+    <p class="eyebrow">Thomas Mann Schule · Physik</p>
+    <h1>Themen<span>übersicht</span></h1>
+    <div class="divider"></div>
+    <p class="lede">Wähle ein Themenfeld.</p>
+  </header>
+
+  <div class="grid">
+    <a class="card" href="../Sub_Hubs/Sub_Hub_Mechanik.html">
+      <div class="card-bg"></div>
+      <div class="card-orb"></div>
+      <div class="card-icon">
+        <svg viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <circle cx="50" cy="18" r="8" stroke="white" stroke-width="2"/>
+          <line x1="50" y1="26" x2="50" y2="72" stroke="white" stroke-width="2"/>
+          <circle cx="50" cy="80" r="10" stroke="white" stroke-width="2"/>
+        </svg>
+      </div>
+      <div class="card-body">
+        <p class="card-title">Mechanik</p>
+        <span class="card-arrow">Öffnen →</span>
+      </div>
+    </a>
+    <a class="card" href="../Sub_Hubs/Sub_Hub_Schwingungen_Wellen.html">
+      <div class="card-bg"></div>
+      <div class="card-orb"></div>
+      <div class="card-icon">
+        <svg viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M8 50 C 24 18, 40 18, 50 50 S 76 82, 92 50" stroke="white" stroke-width="2"/>
+          <path d="M8 68 C 24 36, 40 36, 50 68 S 76 100, 92 68" stroke="white" stroke-width="2"/>
+        </svg>
+      </div>
+      <div class="card-body">
+        <p class="card-title">Schwingungen &amp; Wellen</p>
+        <span class="card-arrow">Öffnen →</span>
+      </div>
+    </a>
+    <a class="card" href="../Sub_Hubs/Sub_Hub_ELehre_Magnetismus.html">
+      <div class="card-bg"></div>
+      <div class="card-orb"></div>
+      <div class="card-icon">
+        <svg viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M58 10 L34 50 H50 L42 90 L70 46 H52 Z" stroke="white" stroke-width="2" stroke-linejoin="round"/>
+        </svg>
+      </div>
+      <div class="card-body">
+        <p class="card-title">E-Lehre &amp; Magnetismus</p>
+        <span class="card-arrow">Öffnen →</span>
+      </div>
+    </a>
+    <a class="card" href="../Sub_Hubs/Sub_Hub_Lichteigenschaften.html">
+      <div class="card-bg"></div>
+      <div class="card-orb"></div>
+      <div class="card-icon">
+        <svg viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <circle cx="50" cy="50" r="14" stroke="white" stroke-width="2"/>
+          <line x1="50" y1="10" x2="50" y2="28" stroke="white" stroke-width="2"/>
+          <line x1="50" y1="72" x2="50" y2="90" stroke="white" stroke-width="2"/>
+          <line x1="10" y1="50" x2="28" y2="50" stroke="white" stroke-width="2"/>
+          <line x1="72" y1="50" x2="90" y2="50" stroke="white" stroke-width="2"/>
+          <line x1="22" y1="22" x2="34" y2="34" stroke="white" stroke-width="2"/>
+          <line x1="66" y1="66" x2="78" y2="78" stroke="white" stroke-width="2"/>
+          <line x1="78" y1="22" x2="66" y2="34" stroke="white" stroke-width="2"/>
+          <line x1="34" y1="66" x2="22" y2="78" stroke="white" stroke-width="2"/>
+        </svg>
+      </div>
+      <div class="card-body">
+        <p class="card-title">Lichteigenschaften</p>
+        <span class="card-arrow">Öffnen →</span>
+      </div>
+    </a>
+    <a class="card" href="../Sub_Hubs/Sub_Hub_Games.html">
+      <div class="card-bg"></div>
+      <div class="card-orb"></div>
+      <div class="card-icon">
+        <svg viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <rect x="22" y="22" width="56" height="56" rx="10" stroke="white" stroke-width="2"/>
+          <circle cx="38" cy="38" r="4" fill="white"/>
+          <circle cx="62" cy="38" r="4" fill="white"/>
+          <circle cx="50" cy="50" r="4" fill="white"/>
+          <circle cx="38" cy="62" r="4" fill="white"/>
+          <circle cx="62" cy="62" r="4" fill="white"/>
+        </svg>
+      </div>
+      <div class="card-body">
+        <p class="card-title">Spiele</p>
+        <span class="card-arrow">Öffnen →</span>
+      </div>
+    </a>
+    <a class="card" href="../Sub_Hubs/Sub_Hub_weiteres.html">
+      <div class="card-bg"></div>
+      <div class="card-orb"></div>
+      <div class="card-icon">
+        <svg viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <circle cx="50" cy="50" r="28" stroke="white" stroke-width="2"/>
+          <line x1="50" y1="34" x2="50" y2="66" stroke="white" stroke-width="2"/>
+          <line x1="34" y1="50" x2="66" y2="50" stroke="white" stroke-width="2"/>
+        </svg>
+      </div>
+      <div class="card-body">
+        <p class="card-title">weiteres</p>
+        <span class="card-arrow">Öffnen →</span>
+      </div>
+    </a>
+  </div>
+
+  <footer class="page-foot">Thomas Mann Schule · Physik</footer>
   <a class="switch-view" href="../Hub_Stufen/Hub_Stufen.html">Ansicht wechseln · Stufen</a>
-  <script src="../../resources/space.js"></script>
 </body>
 </html>
