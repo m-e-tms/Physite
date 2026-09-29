@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Auswahl der Modi</title>
+  <link rel="stylesheet" href="../../../resources/Vorlage_Standard/test.css">
+  <link rel="stylesheet" href="kopfrechnen.css">
+</head>
+<body>
+
+  <nav>
+    <div class="element" onclick="location.href='../../../infra/Hub_Lernseite_Mint.php'">Home</div>
+    <div class="element">Scoreboard</div>
+    <div class="element">News</div>
+    <div class="element no-border dropdown">
+      Spiele
+      <div class="dropdown-content">
+        <button onclick="location.href='startfeld.html'">Kopfrechnen</button>
+        <button onclick="location.href='../raetsel/quiz_Startseite.html'">Rätsel</button>
+      </div>
+    </div>
+  </nav>
+
+  <div class="card">
+    <h1>Wähle deinen Modus</h1>
+    <p>Löse entweder so viele Aufgaben wie möglich in vorgegebener Zeit im Zeitmodus oder kämpfe dich durch immer schwieriger werdene Aufgaben im Progressivmodus:</p>
+    <div class="mode-grid">
+      <div class="widget">
+        <h2>Zeitmodus</h2>
+        <form class="mode-form" action="aufgabenfeld_zeit.php" method="post">
+          <input type="hidden" name="solution" value="">
+          <input type="hidden" name="score" value="0">
+          <input type="hidden" name="hide" value="1">
+          <input type="hidden" name="endTime" value="">
+          <button type="submit" class="kopfrechnen-btn">Starten</button>
+        </form>
+      </div>
+      <div class="widget">
+        <h2>Progressivmodus</h2>
+        <form class="mode-form" action="aufgabenfeld_level.php" method="post">
+          <input type="hidden" name="solution" value="">
+          <input type="hidden" name="score" value="1">
+          <input type="hidden" name="hide" value="1">
+          <select name="mode">
+            <option value="0">Normal</option>
+            <option value="25">Schwierig</option>
+            <option value="50">Ultraschwierig</option>
+          </select>
+          <button type="submit" class="kopfrechnen-btn">Starten</button>
+        </form>
+      </div>
+    </div>
+  </div>
+
+</body>
+</html>
