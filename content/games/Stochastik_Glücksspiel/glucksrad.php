@@ -41,8 +41,11 @@
             margin: 20px 0;
         }
     </style>
+<link rel="stylesheet" href="../../../resources/nav/physite-nav.css" data-physite-nav-css>
+<script src="../../../resources/nav/physite-nav.js" defer data-physite-nav></script>
 </head>
 <body>
+<nav class="physite-nav" aria-label="Physite"></nav>
     <h1>Glücksrad</h1>
     <p class="subtitle">In der folgenden Anwendung probierst du ein Glücksrad aus.
     <br></br>Dies ist ein Laplace Experiment, d.h., dass alle möglichen Ergebnisse die gleiche Wahrschheinlichkeit besitzen.

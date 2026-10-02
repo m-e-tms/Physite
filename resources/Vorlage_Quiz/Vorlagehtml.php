@@ -5,22 +5,12 @@
   <meta charset="UTF-8">
   <link rel="stylesheet" href="../Vorlage_Standard/test.css">
 
+<link rel="stylesheet" href="../nav/physite-nav.css" data-physite-nav-css>
+<script src="../nav/physite-nav.js" defer data-physite-nav></script>
 </head>
 <body>
 
-  <nav>
-    <div class="element">Home</div>
-    <div class="element">Scoreboard</div>
-    <div class="element">News</div>
-    <div class="element no-border dropdown">
-      Dropdown
-      <div class="dropdown-content">
-        <button>Link 1</button>
-        <button>Link 2</button>
-        <button>Link 3</button>
-      </div>
-    </div>
-  </nav>
+  <nav class="physite-nav" aria-label="Physite"></nav>
 
 <div class="card">
   <div class="widget">

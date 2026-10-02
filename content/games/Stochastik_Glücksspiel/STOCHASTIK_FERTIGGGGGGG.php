@@ -294,9 +294,12 @@ $resultColor = $wheelResult > 0 ? $hex[$wheelResult] : '';
       }
     }
   </style>
+<link rel="stylesheet" href="../../../resources/nav/physite-nav.css" data-physite-nav-css>
+<script src="../../../resources/nav/physite-nav.js" defer data-physite-nav></script>
 </head>
 <!-- body start, buttons zum sidebar-->
 <body>
+<nav class="physite-nav" aria-label="Physite"></nav>
 
 <main class="stage">
   <h1 class="page-title">STOCHASTIK</h1>

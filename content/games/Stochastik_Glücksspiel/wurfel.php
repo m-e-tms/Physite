@@ -41,8 +41,11 @@
             margin: 20px 0;
         }
     </style>
+<link rel="stylesheet" href="../../../resources/nav/physite-nav.css" data-physite-nav-css>
+<script src="../../../resources/nav/physite-nav.js" defer data-physite-nav></script>
 </head>
 <body>
+<nav class="physite-nav" aria-label="Physite"></nav>
     <h1>Würfel</h1>
     <p class="subtitle">In der folgenden Anwendung würfelst du mit einem Würfel.
     <br></br>Dies ein Laplace Experiment, d.h., dass alle möglichen Ergebnisse die gleiche Wahrscheinlichkeit besitzen.
