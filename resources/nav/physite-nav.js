@@ -68,7 +68,7 @@
   }
 
   var brand = el("a", "physite-brand");
-  brand.href = page("infra/Hub_Themen/Hub_Themen.html");
+  brand.href = page("infra/Hub_Themen/Hub_Themen.php");
   brand.setAttribute("aria-label", "Physite Start");
   brand.innerHTML =
     '<span class="physite-mark" aria-hidden="true">' +
@@ -161,8 +161,8 @@
   [
     ["Kopfrechnen", "content/games/Kopfrechnen_Unendlich/startfeld.html"],
     ["Rätsel", "content/games/raetsel/quiz_Startseite.html"],
-    ["Stochastik", "content/games/Stochastik_Glücksspiel/STOCHASTIK_FERTIGGGGGGG.php"],
-    ["Spiele-Übersicht", "infra/Sub_Hubs/Sub_Hub_Games.html"]
+    ["Stochastik", "content/games/Stochastik_Glücksspiel/startseite.html"],
+    ["Spiele-Übersicht", "infra/Sub_Hubs/Sub_Hub_Games.php"]
   ].forEach(function (entry) {
     spielen.appendChild(jump(entry[0], entry[1]));
   });
